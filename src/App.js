@@ -1,9 +1,24 @@
-unnecessaryimport React from "react";
+import React from "react";
 
-import "./App.css";
+import "./App.scss";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Login from "features/Auth/pages/Login";
+import { CssBaseline, ThemeProvider } from "@material-ui/core";
+import theme from "theme";
 
 function App() {
-  return <div className="App">Hello</div>;
+  return (
+    <>
+      <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/login" component={Login} />
+          </Switch>
+        </BrowserRouter>
+      </ThemeProvider>
+    </>
+  );
 }
 
 export default App;
