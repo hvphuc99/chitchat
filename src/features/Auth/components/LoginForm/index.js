@@ -4,6 +4,7 @@ import { FastField, Form, Formik } from "formik";
 import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
@@ -26,6 +27,11 @@ const useStyles = makeStyles({
 function LoginForm(props) {
   const classes = useStyles();
   const { initialValues, handleSubmit } = props;
+  const history = useHistory();
+
+  const handleClickForgotPassword = () => {
+    history.push("/forgotpassword");
+  }
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -58,7 +64,7 @@ function LoginForm(props) {
               display="flex"
               justifyContent="flex-end"
             >
-              <Link href="#" color="inherit">
+              <Link color="inherit" onClick={handleClickForgotPassword}>
                 Forgot Password?
               </Link>
             </Box>
