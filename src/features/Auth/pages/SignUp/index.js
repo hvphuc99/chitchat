@@ -2,15 +2,15 @@ import { Box, Container, makeStyles } from "@material-ui/core";
 
 import AuthHeader from "features/Auth/components/AuthHeader";
 import AuthNavigation from "features/Auth/components/AuthNavigation";
-import LoginForm from "features/Auth/components/LoginForm";
 import React from "react";
+import SignUpForm from "features/Auth/components/SignUpForm";
 
 const useStyles = makeStyles({
   root: {
     height: "100%",
     padding: "40px 0px",
   },
-  loginForm: {
+  signUpForm: {
     backgroundColor: "white",
     padding: "50px",
   },
@@ -19,9 +19,10 @@ const useStyles = makeStyles({
 const initialValues = {
   email: "",
   password: "",
+  confirmPassword: "",
 };
 
-function Login() {
+function SignUp() {
   const classes = useStyles();
 
   const handleSubmit = () => {
@@ -34,9 +35,9 @@ function Login() {
         <Box display="flex" justifyContent="center">
           <AuthNavigation />
         </Box>
-        <div className={classes.loginForm}>
+        <div className={classes.signUpForm}>
           <AuthHeader />
-          <LoginForm
+          <SignUpForm
             initialValues={initialValues}
             handleSubmit={handleSubmit}
           />
@@ -46,4 +47,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;
