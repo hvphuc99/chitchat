@@ -1,4 +1,4 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, Grid, makeStyles } from "@material-ui/core";
 import { FastField, Form, Formik } from "formik";
 
 import InputField from "custom-fields/InputField";
@@ -31,6 +31,29 @@ function SignUpForm(props) {
 
         return (
           <Form>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <FastField
+                  name="firstName"
+                  component={InputField}
+                  label="First Name"
+                  value={values.firstName}
+                  variant="outlined"
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FastField
+                  name="lastName"
+                  component={InputField}
+                  label="Last Name"
+                  value={values.lastName}
+                  variant="outlined"
+                  margin="normal"
+                />
+              </Grid>
+            </Grid>
+
             <FastField
               name="email"
               component={InputField}
@@ -54,7 +77,7 @@ function SignUpForm(props) {
               name="confirmPassword"
               component={InputField}
               type="password"
-              label="Password"
+              label="Confirm Password"
               value={values.confirmPassword}
               variant="outlined"
               margin="normal"

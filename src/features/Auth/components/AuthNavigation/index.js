@@ -57,7 +57,7 @@ function AuthNavigation(props) {
   }, [])
 
   return (
-    <Grid container spacing={2} className={classes.root}>
+    <Grid container spacing={3} className={classes.root}>
       <Grid item xs={12} sm={6}>
         <Button
           className="navigateLoginBtn normal-button"

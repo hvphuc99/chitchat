@@ -17,6 +17,8 @@ const useStyles = makeStyles({
 });
 
 const initialValues = {
+  fistName: "",
+  lastName: "",
   email: "",
   password: "",
   confirmPassword: "",
