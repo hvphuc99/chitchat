@@ -2,6 +2,7 @@ import { Box, Container, makeStyles } from "@material-ui/core";
 
 import AuthHeader from "features/Auth/components/AuthHeader";
 import AuthNavigation from "features/Auth/components/AuthNavigation";
+import MediaLogo from "features/Auth/components/MediaLogo";
 import React from "react";
 import SignUpForm from "features/Auth/components/SignUpForm";
 
@@ -11,6 +12,7 @@ const useStyles = makeStyles({
     padding: "40px 0px",
   },
   signUpForm: {
+    position: "relative",
     backgroundColor: "white",
     padding: "50px",
   },
@@ -43,6 +45,7 @@ function SignUp() {
             initialValues={initialValues}
             handleSubmit={handleSubmit}
           />
+          <MediaLogo />
         </div>
       </Container>
     </Box>

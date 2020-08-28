@@ -1,12 +1,8 @@
-import {
-  Box,
-  Container,
-  makeStyles,
-} from "@material-ui/core";
+import { Box, Container, makeStyles } from "@material-ui/core";
 
 import AuthHeader from "features/Auth/components/AuthHeader";
 import AuthNavigation from "features/Auth/components/AuthNavigation";
-import LoginForm from "features/Auth/components/LoginForm";
+import ForgotPasswordForm from "features/Auth/components/ForgotPasswordForm";
 import MediaLogo from "features/Auth/components/MediaLogo";
 import React from "react";
 
@@ -15,7 +11,7 @@ const useStyles = makeStyles({
     height: "100%",
     padding: "40px 0px",
   },
-  loginForm: {
+  forgotPasswordForm: {
     position: "relative",
     backgroundColor: "white",
     padding: "50px",
@@ -24,10 +20,9 @@ const useStyles = makeStyles({
 
 const initialValues = {
   email: "",
-  password: "",
 };
 
-function Login() {
+function ForgotPassword() {
   const classes = useStyles();
 
   const handleSubmit = () => {
@@ -40,9 +35,9 @@ function Login() {
         <Box display="flex" justifyContent="center">
           <AuthNavigation />
         </Box>
-        <div className={classes.loginForm}>
+        <div className={classes.forgotPasswordForm}>
           <AuthHeader />
-          <LoginForm
+          <ForgotPasswordForm
             initialValues={initialValues}
             handleSubmit={handleSubmit}
           />
@@ -53,4 +48,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgotPassword;
