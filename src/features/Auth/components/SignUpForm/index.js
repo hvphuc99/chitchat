@@ -1,29 +1,26 @@
-import { Box, Button, Link, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import { FastField, Form, Formik } from "formik";
 
 import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";
 import React from "react";
 
-LoginForm.propTypes = {
+SignUpForm.propTypes = {
   handleSubmit: PropTypes.func,
 };
 
-LoginForm.defaultProps = {
+SignUpForm.defaultProps = {
   handleSubmit: null,
 };
 
 const useStyles = makeStyles({
-  forgotPassword: {
-    marginTop: "22px",
-    marginBottom: "30px",
-  },
-  loginButton: {
+  signUpButton: {
     color: "white",
+    marginTop: "30px",
   },
 });
 
-function LoginForm(props) {
+function SignUpForm(props) {
   const classes = useStyles();
   const { initialValues, handleSubmit } = props;
 
@@ -53,25 +50,25 @@ function LoginForm(props) {
               margin="normal"
             />
 
-            <Box
-              className={classes.forgotPassword}
-              display="flex"
-              justifyContent="flex-end"
-            >
-              <Link href="#" color="inherit">
-                Forgot Password?
-              </Link>
-            </Box>
+            <FastField
+              name="confirmPassword"
+              component={InputField}
+              type="password"
+              label="Password"
+              value={values.confirmPassword}
+              variant="outlined"
+              margin="normal"
+            />
 
             <Button
-              className={classes.loginButton}
+              className={classes.signUpButton}
               type="submit"
               size="large"
               color="primary"
               variant="contained"
               fullWidth
             >
-              Login
+              Sign up
             </Button>
           </Form>
         );
@@ -80,4 +77,4 @@ function LoginForm(props) {
   );
 }
 
-export default LoginForm;
+export default SignUpForm;
