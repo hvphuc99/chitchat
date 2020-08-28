@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
   FormControl,
+  IconButton,
+  InputAdornment,
   InputLabel,
   OutlinedInput,
-  InputAdornment,
-  IconButton,
   TextField,
 } from "@material-ui/core";
+import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+
+import PropTypes from "prop-types";
 
 InputField.propTypes = {
   field: PropTypes.object.isRequired,
@@ -17,6 +18,7 @@ InputField.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  value: PropTypes.string,
 
   disabled: PropTypes.bool,
 
@@ -28,6 +30,7 @@ InputField.defaultProps = {
   type: "text",
   label: "",
   placeholder: "",
+  value: "",
 
   disabled: false,
 
@@ -36,7 +39,7 @@ InputField.defaultProps = {
 };
 
 function InputField(props) {
-  const { field, type, label, placeholder, disabled, variant, margin } = props;
+  const { field, type, label, placeholder, value, disabled, variant, margin } = props;
   const { name } = field;
   const [showPassword, setShowPassword] = useState(false);
 
@@ -52,6 +55,7 @@ function InputField(props) {
           name={name}
           type={showPassword ? "text" : type}
           placeholder={placeholder}
+          value={value}
 
           disabled={disabled}
 
@@ -64,6 +68,8 @@ function InputField(props) {
               </IconButton>
             </InputAdornment>
           }
+
+          {...field}
         />
       </FormControl>
     );
@@ -74,12 +80,15 @@ function InputField(props) {
         type={type}
         label={label}
         placeholder={placeholder}
+        value={value}
 
         disabled={disabled}
 
         variant={variant}
         margin={margin}
         fullWidth
+
+        {...field}
       />
     );
   }
