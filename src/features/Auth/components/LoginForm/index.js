@@ -30,7 +30,7 @@ function LoginForm(props) {
   const history = useHistory();
 
   const handleClickForgotPassword = () => {
-    history.push("/forgotpassword");
+    history.push("/forgot-password");
   }
 
   return (

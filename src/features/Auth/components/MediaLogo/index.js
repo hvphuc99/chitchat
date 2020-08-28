@@ -1,9 +1,13 @@
-import { Icon, IconButton, makeStyles } from "@material-ui/core";
+import {
+  Icon,
+  IconButton,
+  Popover,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 
-import PropTypes from "prop-types";
 import React from "react";
-
-MediaLogo.propTypes = {};
+import { useState } from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -21,19 +25,87 @@ const useStyles = makeStyles({
       backgroundColor: "#2c67ce",
     },
   },
+  popover: {
+    pointerEvents: "none",
+  },
 });
 
 function MediaLogo(props) {
   const classes = useStyles();
 
+  const [googleAnchorEl, setGoogleAnchorEl] = useState(null);
+  const [facebookAnchorEl, setFacebookAnchorEl] = useState(null);
+
+  const handleGooglePopoverOpen = (event) => {
+    setGoogleAnchorEl(event.currentTarget);
+  };
+
+  const handleGooglePopoverClose = () => {
+    setGoogleAnchorEl(null);
+  };
+
+  const handleFacebookPopoverOpen = (event) => {
+    setFacebookAnchorEl(event.currentTarget);
+  };
+
+  const handleFacebookPopoverClose = () => {
+    setFacebookAnchorEl(null);
+  };
+
+  const openGoogle = Boolean(googleAnchorEl);
+  const openFacebook = Boolean(facebookAnchorEl);
+
   return (
     <div className={classes.root}>
-      <IconButton className="google-button">
+      <IconButton
+        className="google-button"
+        onMouseEnter={handleGooglePopoverOpen}
+        onMouseLeave={handleGooglePopoverClose}
+      >
         <Icon className="fa fa-google" style={{ color: "white" }} />
       </IconButton>
-      <IconButton className="facebook-button">
+      <Popover
+        className={classes.popover}
+        open={openGoogle}
+        anchorEl={googleAnchorEl}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        onClose={handleGooglePopoverClose}
+        disableRestoreFocus
+      >
+        <Typography>Sign in with google</Typography>
+      </Popover>
+
+      <IconButton
+        className="facebook-button"
+        onMouseEnter={handleFacebookPopoverOpen}
+        onMouseLeave={handleFacebookPopoverClose}
+      >
         <Icon className="fa fa-facebook" style={{ color: "white" }} />
       </IconButton>
+      <Popover
+        className={classes.popover}
+        open={openFacebook}
+        anchorEl={facebookAnchorEl}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        onClose={handleFacebookPopoverClose}
+        disableRestoreFocus
+      >
+        <Typography>Sign in with facebook</Typography>
+      </Popover>
     </div>
   );
 }

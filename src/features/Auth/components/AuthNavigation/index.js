@@ -1,11 +1,8 @@
 import { Button, Grid, makeStyles } from "@material-ui/core";
 
-import PropTypes from "prop-types";
 import React from "react";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-
-AuthNavigation.propTypes = {};
 
 const useStyles = makeStyles({
   root: {
@@ -21,9 +18,9 @@ const useStyles = makeStyles({
     "& .selected-button": {
       backgroundColor: "#1c9dea",
       color: "white",
-    }
+    },
   },
-})
+});
 
 function AuthNavigation(props) {
   const classes = useStyles();
@@ -34,27 +31,27 @@ function AuthNavigation(props) {
     const selectBtn = document.querySelector(select);
     normalBtn.classList.remove("selected-button");
     selectBtn.classList.add("selected-button");
-  }
+  };
 
   const handleClickLoginButton = () => {
     history.push("/login");
-  }
+  };
 
   const handleClickSignUpButton = () => {
-    history.push("/signup");
-  }
+    history.push("/sign-up");
+  };
 
   useEffect(() => {
-    switch(history.location.pathname) {
+    switch (history.location.pathname) {
       case "/login":
-        changeSelectBtn( ".navigateSignUpBtn", ".navigateLoginBtn");
+        changeSelectBtn(".navigateSignUpBtn", ".navigateLoginBtn");
         break;
-      case "/signup":
+      case "/sign-up":
         changeSelectBtn(".navigateLoginBtn", ".navigateSignUpBtn");
         break;
       default:
     }
-  }, [])
+  });
 
   return (
     <Grid container spacing={3} className={classes.root}>

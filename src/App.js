@@ -18,8 +18,8 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/forgotpassword" component={ForgotPassword} />
+            <Route exact path="/sign-up" component={SignUp} />
+            <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route component={NotFound} />
           </Switch>
         </BrowserRouter>
