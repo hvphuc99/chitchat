@@ -5,6 +5,7 @@ import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
@@ -31,10 +32,21 @@ function LoginForm(props) {
 
   const handleClickForgotPassword = () => {
     history.push("/forgot-password");
-  }
+  };
+
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Email is not valid.")
+      .required("Email is required."),
+    password: Yup.string().required("Password is required."),
+  });
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+    >
       {(formikProps) => {
         const { values } = formikProps;
 

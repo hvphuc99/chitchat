@@ -4,6 +4,7 @@ import { FastField, Form, Formik } from "formik";
 import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";
 import React from "react";
+import * as Yup from "yup";
 
 ForgotPasswordForm.propTypes = {
   handleSubmit: PropTypes.func,
@@ -24,8 +25,18 @@ function ForgotPasswordForm(props) {
   const classes = useStyles();
   const { initialValues, handleSubmit } = props;
 
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Email is not valid.")
+      .required("Email is required."),
+  });
+
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+    >
       {(formikProps) => {
         const { values } = formikProps;
 
