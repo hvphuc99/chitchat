@@ -9,6 +9,7 @@ import AuthNavigation from "features/Auth/components/AuthNavigation";
 import LoginForm from "features/Auth/components/LoginForm";
 import MediaLogo from "features/Auth/components/MediaLogo";
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -29,8 +30,10 @@ const initialValues = {
 
 function Login() {
   const classes = useStyles();
+  const history = useHistory();
 
   const handleSubmit = () => {
+    history.push("/");
     console.log("submit");
   };
 

@@ -1,7 +1,7 @@
 import { Typography, makeStyles } from "@material-ui/core";
 
 import React from "react";
-import logo from "assets/images/landing-logo.png";
+import landingLogo from "assets/images/landing-logo.png";
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +23,7 @@ function AuthHeader(props) {
 
   return (
     <div className={classes.root}>
-      <img src={logo} alt="logo" />
+      <img src={landingLogo} alt="landing-logo" />
       <Typography className="loginFormHeader__h6" variant="h6">
         Hello Everyone , We are Chitchat
       </Typography>
