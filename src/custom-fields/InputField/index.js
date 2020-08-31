@@ -22,6 +22,7 @@ InputField.propTypes = {
   value: PropTypes.string,
 
   disabled: PropTypes.bool,
+  autoFocus: PropTypes.bool,
 
   variant: PropTypes.string,
   margin: PropTypes.string,
@@ -34,6 +35,7 @@ InputField.defaultProps = {
   value: "",
 
   disabled: false,
+  autoFocus: false,
 
   variant: "standard",
   margin: "normal",
@@ -48,6 +50,7 @@ function InputField(props) {
     placeholder,
     value,
     disabled,
+    autoFocus,
     variant,
     margin,
   } = props;
@@ -76,6 +79,7 @@ function InputField(props) {
           placeholder={placeholder}
           value={value}
           disabled={disabled}
+          autoFocus={autoFocus}
           labelWidth={70}
           endAdornment={
             <InputAdornment position="end">
@@ -100,6 +104,7 @@ function InputField(props) {
         placeholder={placeholder}
         value={value}
         disabled={disabled}
+        autoFocus={autoFocus}
         variant={variant}
         margin={margin}
         fullWidth

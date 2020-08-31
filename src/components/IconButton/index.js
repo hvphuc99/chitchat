@@ -14,6 +14,9 @@ IconButton.propTypes = {
   anchorOrigin: PropTypes.object,
   transformOrigin: PropTypes.object,
   onClick: PropTypes.func,
+  selected: PropTypes.bool,
+  backgroundColorSelected: PropTypes.string,
+  iconColorSelected: PropTypes.string,
 };
 
 IconButton.defaultProps = {
@@ -31,6 +34,9 @@ IconButton.defaultProps = {
     horizontal: "center",
   },
   onClick: null,
+  selected: false,
+  backgroundColorSelected: "#1c9dea",
+  iconColorSelected: "white",
 };
 
 function IconButton(props) {
@@ -43,8 +49,13 @@ function IconButton(props) {
     badgeContent,
     anchorOrigin,
     transformOrigin,
-    onClick
+    onClick,
+    selected,
+    backgroundColorSelected,
+    iconColorSelected
   } = props;
+
+  const newIconColor = selected ? iconColorSelected : iconColor;
 
   const classes = makeStyles({
     root: {
@@ -56,6 +67,9 @@ function IconButton(props) {
     popover: {
       pointerEvents: "none",
     },
+    selected: {
+      backgroundColor: backgroundColorSelected,
+    }
   })();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -73,17 +87,17 @@ function IconButton(props) {
   return (
     <>
       <StylesLibrary.IconButton
-        className={classes.root}
+        className={selected ? classes.root + " " + classes.selected : classes.root}
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
         onClick={onClick}
       >
         {badgeContent ? (
           <StylesLibrary.Badge badgeContent={4} color="error">
-            <StylesLibrary.Icon className={icon} style={{ color: iconColor }} />
+            <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} />
           </StylesLibrary.Badge>
         ) : (
-          <StylesLibrary.Icon className={icon} style={{ color: iconColor }} />
+          <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} />
         )}
       </StylesLibrary.IconButton>
       {message && (

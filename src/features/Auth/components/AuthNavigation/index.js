@@ -3,6 +3,7 @@ import { Button, Grid, makeStyles } from "@material-ui/core";
 import React from "react";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useState } from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles({
       backgroundColor: "#E2F0FC",
       color: "#1c9dea",
     },
-    "& .selected-button": {
+    "& .selected": {
       backgroundColor: "#1c9dea",
       color: "white",
     },
@@ -25,13 +26,7 @@ const useStyles = makeStyles({
 function AuthNavigation(props) {
   const classes = useStyles();
   const history = useHistory();
-
-  const changeSelectBtn = (normal, select) => {
-    const normalBtn = document.querySelector(normal);
-    const selectBtn = document.querySelector(select);
-    normalBtn.classList.remove("selected-button");
-    selectBtn.classList.add("selected-button");
-  };
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const handleClickLoginButton = () => {
     history.push("/login");
@@ -44,12 +39,13 @@ function AuthNavigation(props) {
   useEffect(() => {
     switch (history.location.pathname) {
       case "/login":
-        changeSelectBtn(".navigateSignUpBtn", ".navigateLoginBtn");
+        setSelectedIndex(0);
         break;
       case "/sign-up":
-        changeSelectBtn(".navigateLoginBtn", ".navigateSignUpBtn");
+        setSelectedIndex(1);
         break;
       default:
+        setSelectedIndex(null);
     }
   });
 
@@ -57,7 +53,7 @@ function AuthNavigation(props) {
     <Grid container spacing={3} className={classes.root}>
       <Grid item xs={12} sm={6}>
         <Button
-          className="navigateLoginBtn normal-button"
+          className={selectedIndex === 0 ? "navigateLoginBtn normal-button selected" : "navigateLoginBtn normal-button"}
           size="medium"
           variant="contained"
           fullWidth
@@ -68,7 +64,7 @@ function AuthNavigation(props) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <Button
-          className="navigateSignUpBtn normal-button"
+          className={selectedIndex === 1 ? "navigateLoginBtn normal-button selected" : "navigateLoginBtn normal-button"}
           size="medium"
           variant="contained"
           fullWidth

@@ -1,12 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core";
 import { IconButton as LogoButton } from "@material-ui/core";
 import logo from "assets/images/logo.png";
 import IconButton from "components/IconButton";
 import { useHistory } from "react-router-dom";
-
-NavigateBar.propTypes = {};
+import { useState } from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -32,7 +30,7 @@ const useStyles = makeStyles({
         width: "100%",
         "& .navigateIcon": {
           marginBottom: "40px",
-        },
+        }
       },
       "& .navigateBarFooter": {
         width: "100%",
@@ -47,15 +45,24 @@ const useStyles = makeStyles({
 function NavigateBar(props) {
   const classes = useStyles();
   const history = useHistory();
-
+  const [selectedIndex, setSelectedIndex] = useState(0);
+ 
   const handleClickLogout = () => {
     history.push("/login");
-  }
+  };
+
+  const handleClickLogoButton = () => {
+    history.push("/");
+  };
+
+  const handleClickListItem = (event, index) => {
+    setSelectedIndex(index);
+  };
 
   return (
     <div className={classes.root}>
       <div className="navigateBarHeader">
-        <LogoButton>
+        <LogoButton onClick={handleClickLogoButton}>
           <img src={logo} alt="logo" />
         </LogoButton>
       </div>
@@ -69,6 +76,8 @@ function NavigateBar(props) {
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
               message="All Message"
+              selected={selectedIndex === 0}
+              onClick={event => handleClickListItem(event, 0)}
             />
           </div>
 
@@ -79,6 +88,8 @@ function NavigateBar(props) {
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
               message="Contact List"
+              selected={selectedIndex === 1}
+              onClick={event => handleClickListItem(event, 1)}
             />
           </div>
 
@@ -90,6 +101,8 @@ function NavigateBar(props) {
               backgroundColorHover="#D3D8DB"
               message="Notification"
               badgeContent="4"
+              selected={selectedIndex === 2}
+              onClick={event => handleClickListItem(event, 2)}
             />
           </div>
 
@@ -100,6 +113,8 @@ function NavigateBar(props) {
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
               message="Setting"
+              selected={selectedIndex === 3}
+              onClick={event => handleClickListItem(event, 3)}
             />
           </div>
         </div>
