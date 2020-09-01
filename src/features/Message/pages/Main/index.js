@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import NavigateBar from "features/Message/components/NavigateBar";
 import MessageList from "features/Message/components/MessageList";
+import MessageForm from "features/Message/components/MessageForm";
 
 const useStyles = makeStyles({
   root: {
@@ -35,7 +36,7 @@ const allMessages = [
     name: "Nguyen Van C",
     message: "OK. Let's go!",
     date: "31/08/2020",
-    active: true,
+    active: false,
     avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
   },
   {
@@ -51,7 +52,7 @@ const allMessages = [
     name: "Nguyen Van E",
     message: "OK. Let's go!",
     date: "31/08/2020",
-    active: true,
+    active: false,
     avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
   },
   {
@@ -86,7 +87,7 @@ function Main(props) {
         </Grid>
       </Grid>
       <Grid item sm={9}>
-        Message
+        <MessageForm />
       </Grid>
     </Grid>
   );

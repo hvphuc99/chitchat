@@ -47,7 +47,7 @@ function AuthNavigation(props) {
       default:
         setSelectedIndex(null);
     }
-  });
+  }, [history.location.pathname]);
 
   return (
     <Grid container spacing={3} className={classes.root}>

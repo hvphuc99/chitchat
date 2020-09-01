@@ -1,12 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  makeStyles,
-  withStyles,
-  Badge,
-  Grid,
-  Avatar,
-} from "@material-ui/core";
+import { makeStyles, Grid } from "@material-ui/core";
+import Avatar from "../Avatar";
 
 MessageListItem.propTypes = {
   name: PropTypes.string.isRequired,
@@ -25,10 +20,6 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
   },
-  avatar: {
-    height: "50px",
-    width: "50px",
-  },
   overviewMessage: {
     display: "flex",
     flexDirection: "column",
@@ -45,7 +36,7 @@ const useStyles = makeStyles({
       fontWeight: "400",
       textTransform: "none",
       color: "#647589",
-      margin: "10px 0px 5px 10px",
+      margin: "5px 0px 5px 10px",
     },
   },
   date: {
@@ -57,35 +48,6 @@ const useStyles = makeStyles({
   },
 });
 
-const StyledBadge = withStyles((theme) => ({
-  badge: {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "$ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}))(Badge);
-
 function MessageListItem(props) {
   const classes = useStyles();
   const { name, message, date, avatar, active } = props;
@@ -93,20 +55,7 @@ function MessageListItem(props) {
   return (
     <Grid container className={classes.root}>
       <Grid item sm={2}>
-        {active ? (
-          <StyledBadge
-            overlap="circle"
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            variant="dot"
-          >
-            <Avatar src={avatar} className={classes.avatar} />
-          </StyledBadge>
-        ) : (
-          <Avatar src={avatar} className={classes.avatar} />
-        )}
+        <Avatar src={avatar} active={active} />
       </Grid>
       <Grid item sm={8} className={classes.overviewMessage}>
         <h5>{name}</h5>

@@ -21,10 +21,10 @@ const useStyles = makeStyles({
     },
     "& .navigateBarContent": {
       display: "flex",
-      justifyContent: "center",
       alignContent: "space-between",
       flexWrap: "wrap",
       flexGrow: "1",
+      textAlign: "center",
       padding: "30px 0px",
       "& .navigateBarBody": {
         width: "100%",

@@ -17,6 +17,8 @@ IconButton.propTypes = {
   selected: PropTypes.bool,
   backgroundColorSelected: PropTypes.string,
   iconColorSelected: PropTypes.string,
+  size: PropTypes.string,
+  fontSize: PropTypes.string,
 };
 
 IconButton.defaultProps = {
@@ -37,6 +39,8 @@ IconButton.defaultProps = {
   selected: false,
   backgroundColorSelected: "#1c9dea",
   iconColorSelected: "white",
+  size: "medium",
+  fontSize: "default",
 };
 
 function IconButton(props) {
@@ -52,7 +56,10 @@ function IconButton(props) {
     onClick,
     selected,
     backgroundColorSelected,
-    iconColorSelected
+    iconColorSelected,
+    size,
+    fontSize,
+    ...other
   } = props;
 
   const newIconColor = selected ? iconColorSelected : iconColor;
@@ -91,13 +98,14 @@ function IconButton(props) {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
         onClick={onClick}
+        size={size}
       >
         {badgeContent ? (
           <StylesLibrary.Badge badgeContent={4} color="error">
-            <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} />
+            <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} {...other} />
           </StylesLibrary.Badge>
         ) : (
-          <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} />
+          <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} {...other} />
         )}
       </StylesLibrary.IconButton>
       {message && (

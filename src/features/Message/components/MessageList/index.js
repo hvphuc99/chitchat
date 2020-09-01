@@ -68,6 +68,23 @@ function MessageList(props) {
             />
           </ListItem>
         ))}
+        {messages.map(({ id, name, message, date, active, avatar }) => (
+          <ListItem
+            className={classes.messageContainer}
+            key={id}
+            button
+            selected={selectedIndex === id}
+            onClick={(event) => handleClickListItem(event, id)}
+          >
+            <MessageListItem
+              name={name}
+              message={message}
+              date={date}
+              active={active}
+              avatar={avatar}
+            />
+          </ListItem>
+        ))}
       </List>
     </Container>
   );
