@@ -1,20 +1,29 @@
 import React from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import NavigateBar from "features/Message/components/NavigateBar";
-import MessageList from "features/Message/components/MessageList";
-import MessageForm from "features/Message/components/MessageForm";
+import MenuChat from "features/Message/components/MenuChat";
+import ChatForm from "features/Message/components/ChatForm";
 
 const useStyles = makeStyles({
   root: {
     height: "100%",
-    maxHeight: "100vh",
   },
   leftSideBar: {
+    height: "100%",
     backgroundColor: "white",
   },
+  navigate: {
+    height: "100%",
+  },
+  menuChat: {
+    height: "100%",
+  },
+  chatForm: {
+    height: "100%",
+  }
 });
 
-const allMessages = [
+const menu = [
   {
     id: 0,
     name: "Nguyen Van A",
@@ -79,15 +88,15 @@ function Main(props) {
   return (
     <Grid container className={classes.root}>
       <Grid container item sm={3} className={classes.leftSideBar}>
-        <Grid item sm={2}>
+        <Grid item sm={2} className={classes.navigate}>
           <NavigateBar />
         </Grid>
-        <Grid item sm={10}>
-          <MessageList messages={allMessages}/>
+        <Grid item sm={10} className={classes.menuChat}>
+          <MenuChat menu={menu}/>
         </Grid>
       </Grid>
-      <Grid item sm={9}>
-        <MessageForm />
+      <Grid item sm={9} className={classes.chatForm}>
+        <ChatForm />
       </Grid>
     </Grid>
   );

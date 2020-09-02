@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, Box } from "@material-ui/core";
-import MessageFormHeader from "../MessageFormHeader";
-import MessageFormFooter from "../MessageFormFooter";
-import MessageFormBody from "../MessageFormBody";
+import ChatHeader from "../ChatHeader";
+import ChatFooter from "../ChatFooter";
+import ChatContent from "../ChatContent";
+import { useEffect } from "react";
 
-MessageForm.propTypes = {};
+ChatForm.propTypes = {};
 
 const useStyles = makeStyles({
   root: {
@@ -15,27 +16,24 @@ const useStyles = makeStyles({
     alignContent: "space-between",
     height: "100%",
   },
-  body: {
-    flexGrow: "1",
-  },
 });
 
-function MessageForm(props) {
+function ChatForm(props) {
   const classes = useStyles();
+
+  useEffect(() => {});
 
   return (
     <Box className={classes.root}>
-      <MessageFormHeader
+      <ChatHeader
         name="Phuc Hoang"
         avatar="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg"
         active={true}
       />
-      <div className={classes.body}>
-        <MessageFormBody />
-      </div>
-      <MessageFormFooter />
+      <ChatContent />
+      <ChatFooter />
     </Box>
   );
 }
 
-export default MessageForm;
+export default ChatForm;

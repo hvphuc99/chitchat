@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles, Grid } from "@material-ui/core";
 import Avatar from "../Avatar";
 
-MessageListItem.propTypes = {
+ChatBox.propTypes = {
   name: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
@@ -11,7 +11,7 @@ MessageListItem.propTypes = {
   active: PropTypes.bool,
 };
 
-MessageListItem.defaultProps = {
+ChatBox.defaultProps = {
   active: false,
 };
 
@@ -29,14 +29,14 @@ const useStyles = makeStyles({
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
-      margin: "0px 0px 5px 10px",
+      margin: "0px 0px 5px 16px",
     },
     "& h6": {
       fontSize: "calc(13px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
       fontWeight: "400",
       textTransform: "none",
       color: "#647589",
-      margin: "5px 0px 5px 10px",
+      margin: "5px 0px 5px 16px",
     },
   },
   date: {
@@ -48,7 +48,7 @@ const useStyles = makeStyles({
   },
 });
 
-function MessageListItem(props) {
+function ChatBox(props) {
   const classes = useStyles();
   const { name, message, date, avatar, active } = props;
 
@@ -68,4 +68,4 @@ function MessageListItem(props) {
   );
 }
 
-export default MessageListItem;
+export default ChatBox;

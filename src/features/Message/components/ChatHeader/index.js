@@ -2,15 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, Box } from "@material-ui/core";
 import Avatar from "../Avatar";
-import IconButton from "components/IconButton";
+import IconButton from "custom-fields/IconButton";
 
-MessageFormHeader.propTypes = {
+ChatHeader.propTypes = {
   name: PropTypes.string.isRequired,
   avatar: PropTypes.string.isRequired,
   active: PropTypes.bool,
 };
 
-MessageFormHeader.defaultProps = {
+ChatHeader.defaultProps = {
   active: false,
 };
 
@@ -31,39 +31,39 @@ const useStyles = makeStyles({
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
-      margin: "0px 0px 5px 10px",
+      margin: "0px 0px 5px 16px",
     },
     "& h6": {
       fontSize: "calc(13px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
       fontWeight: "400",
       textTransform: "none",
       color: "#647589",
-      margin: "5px 0px 5px 10px",
-    }
+      margin: "5px 0px 5px 16px",
+    },
+    "& .online": {
+      color: "#3fcc35",
+    },
   },
   rightSide: {
     display: "flex",
     justifyContent: "center",
     "& .icon": {
       marginLeft: "20px",
-    }
-  }
+    },
+  },
 });
 
-function MessageFormHeader(props) {
+function ChatHeader(props) {
   const classes = useStyles();
   const { name, avatar, active } = props;
 
   return (
     <Box className={classes.root}>
       <div className={classes.leftSide}>
-        <Avatar
-          src={avatar}
-          active={active}
-        />
+        <Avatar src={avatar} active={active} />
         <span>
           <h5>{name}</h5>
-          <h6>{active ? "Online" : "Offline"}</h6>
+          {active ? <h6 className="online">Online</h6> : <h6>Offline</h6>}
         </span>
       </div>
       <div className={classes.rightSide}>
@@ -90,4 +90,4 @@ function MessageFormHeader(props) {
   );
 }
 
-export default MessageFormHeader;
+export default ChatHeader;

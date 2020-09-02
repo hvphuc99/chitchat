@@ -3,20 +3,20 @@ import PropTypes from "prop-types";
 import { makeStyles, Container, List, ListItem } from "@material-ui/core";
 import Search from "../Search";
 import { useState } from "react";
-import MessageListItem from "../MessageListItem";
+import ChatBox from "../ChatBox";
 
-MessageList.propTypes = {
-  messages: PropTypes.array,
+MenuChat.propTypes = {
+  menu: PropTypes.array,
 };
 
-MessageList.defaultProps = {
-  messages: null,
+MenuChat.defaultProps = {
+  menu: null,
 };
 
 const useStyles = makeStyles({
   root: {
     padding: "20px 20px",
-    maxHeight: "100vh",
+    height: "100%",
     overflow: "auto",
     "&::-webkit-scrollbar": {
       width: "0.4em",
@@ -38,9 +38,9 @@ const useStyles = makeStyles({
   },
 });
 
-function MessageList(props) {
+function MenuChat(props) {
   const classes = useStyles();
-  const { messages } = props;
+  const { menu } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleClickListItem = (event, index) => {
@@ -51,7 +51,7 @@ function MessageList(props) {
     <Container className={classes.root}>
       <Search />
       <List>
-        {messages.map(({ id, name, message, date, active, avatar }) => (
+        {menu.map(({ id, name, message, date, active, avatar }) => (
           <ListItem
             className={classes.messageContainer}
             key={id}
@@ -59,7 +59,7 @@ function MessageList(props) {
             selected={selectedIndex === id}
             onClick={(event) => handleClickListItem(event, id)}
           >
-            <MessageListItem
+            <ChatBox
               name={name}
               message={message}
               date={date}
@@ -68,7 +68,7 @@ function MessageList(props) {
             />
           </ListItem>
         ))}
-        {messages.map(({ id, name, message, date, active, avatar }) => (
+        {menu.map(({ id, name, message, date, active, avatar }) => (
           <ListItem
             className={classes.messageContainer}
             key={id}
@@ -76,7 +76,7 @@ function MessageList(props) {
             selected={selectedIndex === id}
             onClick={(event) => handleClickListItem(event, id)}
           >
-            <MessageListItem
+            <ChatBox
               name={name}
               message={message}
               date={date}
@@ -90,4 +90,4 @@ function MessageList(props) {
   );
 }
 
-export default MessageList;
+export default MenuChat;

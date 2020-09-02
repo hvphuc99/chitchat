@@ -99,13 +99,14 @@ function IconButton(props) {
         onMouseLeave={handlePopoverClose}
         onClick={onClick}
         size={size}
+        {...other}
       >
         {badgeContent ? (
           <StylesLibrary.Badge badgeContent={4} color="error">
-            <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} {...other} />
+            <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} />
           </StylesLibrary.Badge>
         ) : (
-          <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} {...other} />
+          <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} />
         )}
       </StylesLibrary.IconButton>
       {message && (

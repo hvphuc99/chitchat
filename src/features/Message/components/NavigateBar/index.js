@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { IconButton as LogoButton } from "@material-ui/core";
 import logo from "assets/images/logo.png";
-import IconButton from "components/IconButton";
+import IconButton from "custom-fields/IconButton";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 
