@@ -5,6 +5,12 @@ import AuthNavigation from "features/Auth/components/AuthNavigation";
 import MediaLogo from "features/Auth/components/MediaLogo";
 import React from "react";
 import SignUpForm from "features/Auth/components/SignUpForm";
+import userApi from "api/userApi";
+import { useDispatch } from "react-redux";
+import { setToken } from "app/userSlice";
+import { useHistory } from "react-router-dom";
+import { useState } from "react";
+import { setNotify } from "app/notifySlice";
 
 const useStyles = makeStyles({
   root: {
@@ -19,7 +25,7 @@ const useStyles = makeStyles({
 });
 
 const initialValues = {
-  fistName: "",
+  firstName: "",
   lastName: "",
   email: "",
   password: "",
@@ -28,9 +34,33 @@ const initialValues = {
 
 function SignUp() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleSubmit = (event) => {
+    const { firstName, lastName, email, password, confirmPassword } = event;
+    setLoading(true);
+    userApi
+      .signUp(firstName, lastName, email, password, confirmPassword)
+      .then(() => {
+        dispatch(
+          setNotify({
+            type: "success",
+            message: "Verify your email address",
+          })
+        );
+        history.push("/login");
+      })
+      .catch((err) => {
+        dispatch(
+          setNotify({
+            type: "error",
+            message: "Email address is already used",
+          })
+        );
+        setLoading(false);
+      });
   };
 
   return (
@@ -44,6 +74,7 @@ function SignUp() {
           <SignUpForm
             initialValues={initialValues}
             handleSubmit={handleSubmit}
+            loading={loading}
           />
           <MediaLogo />
         </div>

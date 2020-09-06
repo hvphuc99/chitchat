@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core";
 
 import React from "react";
 import IconButton from "custom-fields/IconButton";
+import userApi from "api/userApi";
 
 const useStyles = makeStyles({
   root: {
@@ -18,6 +19,14 @@ const useStyles = makeStyles({
 function MediaLogo(props) {
   const classes = useStyles();
 
+  const handleClickLoginWithGoogle = () => {
+    userApi.loginWithGoogle().then(token => console.log(token));
+  }
+
+  const handleClickLoginWithFacebook = () => {
+    userApi.loginWithFacebook().then(token => console.log(token));
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.iconBtn}>
@@ -27,6 +36,7 @@ function MediaLogo(props) {
           backgroundColor="#ff4e2b"
           backgroundColorHover="#F73F37"
           message="Sign in with Google"
+          onClick={handleClickLoginWithGoogle}
         />
       </div>
       <div className={classes.iconBtn}>
@@ -36,6 +46,7 @@ function MediaLogo(props) {
           backgroundColor="#2D67CE"
           backgroundColorHover="#2D67CE"
           message="Sign in with Facebook"
+          onClick={handleClickLoginWithFacebook}
         />
       </div>
     </div>

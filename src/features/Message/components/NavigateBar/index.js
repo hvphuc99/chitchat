@@ -5,6 +5,8 @@ import logo from "assets/images/logo.png";
 import IconButton from "custom-fields/IconButton";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { removeToken } from "app/userSlice";
 
 const useStyles = makeStyles({
   root: {
@@ -46,8 +48,10 @@ function NavigateBar(props) {
   const classes = useStyles();
   const history = useHistory();
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const dispatch = useDispatch();
  
   const handleClickLogout = () => {
+    dispatch(removeToken());
     history.push("/login");
   };
 

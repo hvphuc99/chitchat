@@ -108,6 +108,7 @@ function ChatFooter(props) {
                   placeholder="Write your message..."
                   variant="outlined"
                   margin="none"
+                  autoComplete="off"
                 />
               </div>
               <div className={classes.rightSide}>

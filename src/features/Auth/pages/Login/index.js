@@ -1,8 +1,4 @@
-import {
-  Box,
-  Container,
-  makeStyles,
-} from "@material-ui/core";
+import { Box, Container, makeStyles } from "@material-ui/core";
 
 import AuthHeader from "features/Auth/components/AuthHeader";
 import AuthNavigation from "features/Auth/components/AuthNavigation";
@@ -10,6 +6,11 @@ import LoginForm from "features/Auth/components/LoginForm";
 import MediaLogo from "features/Auth/components/MediaLogo";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import userApi from "api/userApi";
+import { useDispatch } from "react-redux";
+import { setToken } from "app/userSlice";
+import { setNotify } from "app/notifySlice";
+import { useState } from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -31,10 +32,27 @@ const initialValues = {
 function Login() {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    history.push("/");
-    console.log("submit");
+  const handleSubmit = (event) => {
+    setLoading(true);
+    const { email, password } = event;
+    userApi
+      .login(email, password)
+      .then((token) => {
+        dispatch(setToken(token));
+        history.push("/");
+      })
+      .catch((err) => {
+        setLoading(false);
+        dispatch(
+          setNotify({
+            type: "error",
+            message: "Email or password is incorrect",
+          })
+        );
+      });
   };
 
   return (
@@ -48,6 +66,7 @@ function Login() {
           <LoginForm
             initialValues={initialValues}
             handleSubmit={handleSubmit}
+            loading={loading}
           />
           <MediaLogo />
         </div>

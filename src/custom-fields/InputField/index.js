@@ -18,11 +18,13 @@ InputField.propTypes = {
 
   type: PropTypes.string,
   label: PropTypes.string,
+  labelWidth: PropTypes.string,
   placeholder: PropTypes.string,
   value: PropTypes.string,
 
   disabled: PropTypes.bool,
   autoFocus: PropTypes.bool,
+  autoComplete: PropTypes.string,
 
   variant: PropTypes.string,
   margin: PropTypes.string,
@@ -31,11 +33,13 @@ InputField.propTypes = {
 InputField.defaultProps = {
   type: "text",
   label: "",
+  labelWidth: 75,
   placeholder: "",
   value: "",
 
   disabled: false,
   autoFocus: false,
+  autoComplete: "on",
 
   variant: "standard",
   margin: "normal",
@@ -47,12 +51,14 @@ function InputField(props) {
     form,
     type,
     label,
+    labelWidth,
     placeholder,
     value,
     disabled,
     autoFocus,
     variant,
     margin,
+    autoComplete
   } = props;
   const { name } = field;
   const { errors, touched } = form;
@@ -80,7 +86,8 @@ function InputField(props) {
           value={value}
           disabled={disabled}
           autoFocus={autoFocus}
-          labelWidth={70}
+          autoComplete={autoComplete}
+          labelWidth={labelWidth}
           endAdornment={
             <InputAdornment position="end">
               <IconButton onClick={handleClickShowPassword}>
@@ -105,6 +112,7 @@ function InputField(props) {
         value={value}
         disabled={disabled}
         autoFocus={autoFocus}
+        autoComplete={autoComplete}
         variant={variant}
         margin={margin}
         fullWidth

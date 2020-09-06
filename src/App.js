@@ -8,15 +8,20 @@ import Login from "features/Auth/pages/Login";
 import NotFound from "components/NotFound";
 import React from "react";
 import SignUp from "features/Auth/pages/SignUp";
-import theme from "theme";
+import theme from "custom-theme";
 import Message from "features/Message";
+import { useSelector } from "react-redux";
+import Notify from "custom-fields/Notify";
 
 function App() {
+  const { type, message } = useSelector((state) => state.notify);
+
   return (
     <>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <BrowserRouter>
+          {message && <Notify type={type} message={message} />}
           <Switch>
             <Redirect exact from="/" to="/messages" />
 

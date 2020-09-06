@@ -1,4 +1,4 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, makeStyles, CircularProgress } from "@material-ui/core";
 import { FastField, Form, Formik } from "formik";
 
 import InputField from "custom-fields/InputField";
@@ -7,23 +7,29 @@ import React from "react";
 import * as Yup from "yup";
 
 ForgotPasswordForm.propTypes = {
+  initialValues: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 ForgotPasswordForm.defaultProps = {
   handleSubmit: null,
+  loading: false,
 };
 
 const useStyles = makeStyles({
   forgotPasswordButton: {
     color: "white",
-    marginTop: "30px",
+    marginTop: "20px",
   },
+  circular: {
+    color: "white",
+  }
 });
 
 function ForgotPasswordForm(props) {
   const classes = useStyles();
-  const { initialValues, handleSubmit } = props;
+  const { initialValues, handleSubmit, loading } = props;
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -59,7 +65,7 @@ function ForgotPasswordForm(props) {
               variant="contained"
               fullWidth
             >
-              Reset Password
+              {loading ? <CircularProgress className={classes.circular} size={25.57} /> : "Send password reset email" }
             </Button>
           </Form>
         );
