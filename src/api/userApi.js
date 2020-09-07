@@ -66,5 +66,18 @@ const userApi = {
         .catch((err) => reject(err));
     });
   },
+  verifyToken: (authToken) => {
+    return new Promise((resolve, reject) => {
+      auth().onAuthStateChanged((user) => {
+        if (user) {
+          user.getIdToken().then((token) => {
+            resolve(token === authToken);
+          });
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  },
 };
 export default userApi;

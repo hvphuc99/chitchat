@@ -7,7 +7,6 @@ import React from "react";
 import SignUpForm from "features/Auth/components/SignUpForm";
 import userApi from "api/userApi";
 import { useDispatch } from "react-redux";
-import { setToken } from "app/userSlice";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { setNotify } from "app/notifySlice";

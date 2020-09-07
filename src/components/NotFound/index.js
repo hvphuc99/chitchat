@@ -26,6 +26,9 @@ const useStyles = makeStyles({
       marginBottom: "20px",
     },
   },
+  container: {
+    textAlign: "center",
+  },
   homeButton: {
     color: "white",
     width: "50%",
@@ -37,7 +40,7 @@ function NotFound(props) {
 
   return (
     <Box display="flex" justifyContent="center" className={classes.root}>
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" className={classes.container}>
         <h1>404</h1>
         <h2>Page Not Found</h2>
         <h4>
