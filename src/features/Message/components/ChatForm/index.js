@@ -1,12 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { makeStyles, Box } from "@material-ui/core";
 import ChatHeader from "../ChatHeader";
 import ChatFooter from "../ChatFooter";
 import ChatContent from "../ChatContent";
-import { useEffect } from "react";
-
-ChatForm.propTypes = {};
+import { useDispatch, useSelector } from "react-redux";
+import { addMessage } from "features/Message/messageSlice";
+import messageApi from "api/messageApi";
 
 const useStyles = makeStyles({
   root: {
@@ -20,18 +19,31 @@ const useStyles = makeStyles({
 
 function ChatForm(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { currentGroupChatName, currentGroupChatId } = useSelector(
+    (state) => state.message
+  );
+  const { currentUserId } = useSelector((state) => state.user);
 
-  useEffect(() => {});
+  const handleSendMessage = (values, { resetForm }) => {
+    const { message } = values;
+    if (message === "") return;
+    messageApi.sendMessage(currentUserId, currentGroupChatId, message, 0);
+    const itemMessage = {
+      senderId: currentUserId,
+      timestamp: Date.now(),
+      content: message,
+      type: 0,
+    };
+    dispatch(addMessage(itemMessage));
+    resetForm();
+  };
 
   return (
     <Box className={classes.root}>
-      <ChatHeader
-        name="Phuc Hoang"
-        avatar="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg"
-        active={true}
-      />
+      <ChatHeader name={currentGroupChatName} avatar={null} active={true} />
       <ChatContent />
-      <ChatFooter />
+      <ChatFooter onSubmit={handleSendMessage} />
     </Box>
   );
 }

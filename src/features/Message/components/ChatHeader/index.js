@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles, Box } from "@material-ui/core";
 import Avatar from "../Avatar";
 import IconButton from "custom-fields/IconButton";
+import { useSelector } from "react-redux";
 
 ChatHeader.propTypes = {
   name: PropTypes.string.isRequired,
@@ -73,7 +74,7 @@ function ChatHeader(props) {
             iconColor="#223645"
             backgroundColor="#eff1f2"
             backgroundColorHover="#D3D8DB"
-            message="Audio"
+            message="Voice Call"
           />
         </div>
         <div className="icon">
@@ -82,7 +83,7 @@ function ChatHeader(props) {
             iconColor="#223645"
             backgroundColor="#eff1f2"
             backgroundColorHover="#D3D8DB"
-            message="Video"
+            message="Video Chat"
           />
         </div>
       </div>

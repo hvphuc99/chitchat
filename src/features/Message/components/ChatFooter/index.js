@@ -3,6 +3,15 @@ import { Box, makeStyles } from "@material-ui/core";
 import IconButton from "custom-fields/IconButton";
 import { Formik, Form, FastField } from "formik";
 import InputField from "custom-fields/InputField";
+import PropTypes from "prop-types";
+
+ChatFooter.propTypes = {
+  onSubmit: PropTypes.func,
+}
+
+ChatFooter.defaultProps = {
+  onSubmit: null,
+}
 
 const useStyles = makeStyles({
   root: {
@@ -48,13 +57,10 @@ const initialValues = {
 
 function ChatFooter(props) {
   const classes = useStyles();
-
-  const handleSubmit = (event) => {
-    console.log("submit");
-  };
+  const { onSubmit } = props;
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {(formikProps) => {
         const { submitForm } = formikProps;
         return (

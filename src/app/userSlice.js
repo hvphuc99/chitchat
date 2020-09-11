@@ -5,6 +5,7 @@ const cookies = new Cookies();
 
 const initialState = {
   token: cookies.get("token", { path: "/" }),
+  currentUserId: localStorage.getItem("userId"),
 };
 
 const userSlice = createSlice({
@@ -19,9 +20,22 @@ const userSlice = createSlice({
       state.token = "";
       cookies.remove("token", { path: "/" });
     },
+    setCurrentUserId: (state, action) => {
+      state.currentUserId = action.payload;
+      localStorage.setItem("userId", action.payload);
+    },
+    removeCurrentUserId: (state, action) => {
+      state.currentUserId = "";
+      localStorage.removeItem("userId");
+    },
   },
 });
 
 const { reducer, actions } = userSlice;
-export const { setToken, removeToken } = actions;
+export const {
+  setToken,
+  removeToken,
+  setCurrentUserId,
+  removeCurrentUserId,
+} = actions;
 export default reducer;

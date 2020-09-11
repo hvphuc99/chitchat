@@ -3,6 +3,13 @@ import { Grid, makeStyles } from "@material-ui/core";
 import NavigateBar from "features/Message/components/NavigateBar";
 import MenuChat from "features/Message/components/MenuChat";
 import ChatForm from "features/Message/components/ChatForm";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import userApi from "api/userApi";
+import messageApi from "api/messageApi";
+import { useState } from "react";
+import Loading from "components/Loading";
+import Search from "features/Message/components/Search";
 
 const useStyles = makeStyles({
   root: {
@@ -15,75 +22,59 @@ const useStyles = makeStyles({
   navigate: {
     height: "100%",
   },
-  menuChat: {
+  menu: {
+    display: "flex",
+    flexDirection: "column",
     height: "100%",
+    padding: "20px 20px",
   },
   chatForm: {
     height: "100%",
-  }
+  },
 });
-
-const menu = [
-  {
-    id: 0,
-    name: "Nguyen Van A",
-    message: "OK. Let's go!",
-    date: "31/08/2020",
-    active: true,
-    avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-  },
-  {
-    id: 1,
-    name: "Nguyen Van B",
-    message: "OK. Let's go!",
-    date: "31/08/2020",
-    active: true,
-    avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-  },
-  {
-    id: 2,
-    name: "Nguyen Van C",
-    message: "OK. Let's go!",
-    date: "31/08/2020",
-    active: false,
-    avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-  },
-  {
-    id: 3,
-    name: "Nguyen Van D",
-    message: "OK. Let's go!",
-    date: "31/08/2020",
-    active: true,
-    avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-  },
-  {
-    id: 4,
-    name: "Nguyen Van E",
-    message: "OK. Let's go!",
-    date: "31/08/2020",
-    active: false,
-    avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-  },
-  {
-    id: 5,
-    name: "Nguyen Van F",
-    message: "OK. Let's go!",
-    date: "31/08/2020",
-    active: true,
-    avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-  },
-  {
-    id: 6,
-    name: "Nguyen Van G",
-    message: "OK. Let's go!",
-    date: "31/08/2020",
-    active: true,
-    avatar: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-  },
-];
 
 function Main(props) {
   const classes = useStyles();
+  const { currentUserId } = useSelector((state) => state.user);
+  const { showChatForm } = useSelector((state) => state.message);
+  const [groupChats, setGroupChats] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    messageApi.getGroupChatList(currentUserId).then((groupChatList) => {
+      const standardizedList = (groupChatList) => {
+        let list = [];
+        return new Promise((resolve, reject) => {
+          groupChatList.forEach((groupChat, index) => {
+            const { groupChatId, groupChatName, members } = groupChat;
+            if (groupChatName === "") {
+              let uid = members[0] === currentUserId ? members[1] : members[0];
+              userApi.getUserInfo(uid).then((userInfo) => {
+                const { firstName, lastName } = userInfo;
+                messageApi.getLastMessage(groupChatId).then((message) => {
+                  const { senderId, content, timestamp } = message;
+                  list = list.concat({
+                    groupChatId,
+                    groupChatName: firstName + " " + lastName,
+                    senderId,
+                    content,
+                    timestamp,
+                  });
+                  if (list.length === groupChatList.length) {
+                    resolve(list);
+                  }
+                });
+              });
+            }
+          });
+        });
+      };
+      standardizedList(groupChatList).then((list) => {
+        setGroupChats(list);
+        setLoading(false);
+      });
+    });
+  });
 
   return (
     <Grid container className={classes.root}>
@@ -91,12 +82,13 @@ function Main(props) {
         <Grid item sm={2} className={classes.navigate}>
           <NavigateBar />
         </Grid>
-        <Grid item sm={10} className={classes.menuChat}>
-          <MenuChat menu={menu}/>
+        <Grid item sm={10} className={classes.menu}>
+          <Search />
+          {loading ? <Loading /> : <MenuChat groupChats={groupChats} />}
         </Grid>
       </Grid>
       <Grid item sm={9} className={classes.chatForm}>
-        <ChatForm />
+        {showChatForm ? <ChatForm /> : ""}
       </Grid>
     </Grid>
   );

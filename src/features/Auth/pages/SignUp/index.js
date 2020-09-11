@@ -37,8 +37,8 @@ function SignUp() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
-    const { firstName, lastName, email, password, confirmPassword } = event;
+  const handleSubmit = (values) => {
+    const { firstName, lastName, email, password, confirmPassword } = values;
     setLoading(true);
     userApi
       .signUp(firstName, lastName, email, password, confirmPassword)
@@ -52,6 +52,7 @@ function SignUp() {
         history.push("/login");
       })
       .catch((err) => {
+        console.log(err);
         dispatch(
           setNotify({
             type: "error",

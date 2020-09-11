@@ -1,22 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, Container, List, ListItem } from "@material-ui/core";
-import Search from "../Search";
 import { useState } from "react";
 import ChatBox from "../ChatBox";
+import { convertTimestamp } from "utils";
+import { useDispatch, useSelector } from "react-redux";
+import messageApi from "api/messageApi";
+import {
+  setMessageList,
+  setCurrentGroupChatId,
+  setCurrentGroupChatName,
+  setShowChatForm,
+  clearMessageList,
+} from "features/Message/messageSlice";
+import userApi from "api/userApi";
 
 MenuChat.propTypes = {
-  menu: PropTypes.array,
+  groupChats: PropTypes.array,
 };
 
 MenuChat.defaultProps = {
-  menu: null,
+  groupChats: null,
 };
 
 const useStyles = makeStyles({
   root: {
-    padding: "20px 20px",
-    height: "100%",
+    padding: "0",
+    flexGrow: "1",
     overflow: "auto",
     "&::-webkit-scrollbar": {
       width: "0.4em",
@@ -34,57 +44,77 @@ const useStyles = makeStyles({
     },
   },
   messageContainer: {
-    margin: "10px 0px"
+    margin: "0px 0px 10px 0px",
   },
 });
 
 function MenuChat(props) {
   const classes = useStyles();
-  const { menu } = props;
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const { groupChats } = props;
+  const { currentUserId } = useSelector((state) => state.user);
+  const [selectedGroupChatId, setSelectedGroupChatId] = useState(null);
+  const dispatch = useDispatch();
 
-  const handleClickListItem = (event, index) => {
-    setSelectedIndex(index);
+  const handleClickListItem = (event, groupChatId, groupChatName) => {
+    setSelectedGroupChatId(groupChatId);
+    dispatch(setCurrentGroupChatId(groupChatId));
+    dispatch(setCurrentGroupChatName(groupChatName));
+    dispatch(setShowChatForm(true));
+    dispatch(clearMessageList());
+    messageApi
+      .getMessageList(groupChatId)
+      .then((messageList) => {
+        let list = [];
+        messageList.forEach((message, index) => {
+          const { senderId } = message;
+          userApi.getUserInfo(senderId).then((userInfo) => {
+            const { firstName, lastName } = userInfo;
+            const name = firstName + " " + lastName;
+            list = list.concat({
+              name,
+              ...message,
+            });
+            if (list.length === messageList.length) {
+              dispatch(
+                setMessageList(
+                  list.sort((firstMess, secondMess) => {
+                    return secondMess.timestamp > firstMess.timestamp ? -1 : 1;
+                  })
+                )
+              );
+            }
+          });
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <Container className={classes.root}>
-      <Search />
       <List>
-        {menu.map(({ id, name, message, date, active, avatar }) => (
-          <ListItem
-            className={classes.messageContainer}
-            key={id}
-            button
-            selected={selectedIndex === id}
-            onClick={(event) => handleClickListItem(event, id)}
-          >
-            <ChatBox
-              name={name}
-              message={message}
-              date={date}
-              active={active}
-              avatar={avatar}
-            />
-          </ListItem>
-        ))}
-        {menu.map(({ id, name, message, date, active, avatar }) => (
-          <ListItem
-            className={classes.messageContainer}
-            key={id}
-            button
-            selected={selectedIndex === id}
-            onClick={(event) => handleClickListItem(event, id)}
-          >
-            <ChatBox
-              name={name}
-              message={message}
-              date={date}
-              active={active}
-              avatar={avatar}
-            />
-          </ListItem>
-        ))}
+        {groupChats.map(
+          ({ groupChatId, groupChatName, senderId, content, timestamp }) => (
+            <ListItem
+              className={classes.messageContainer}
+              key={groupChatId}
+              button
+              selected={selectedGroupChatId === groupChatId}
+              onClick={(event) =>
+                handleClickListItem(event, groupChatId, groupChatName)
+              }
+            >
+              <ChatBox
+                name={groupChatName}
+                message={
+                  senderId === currentUserId ? `You: ${content}` : content
+                }
+                date={convertTimestamp(timestamp)}
+                active={true}
+                avatar={null}
+              />
+            </ListItem>
+          )
+        )}
       </List>
     </Container>
   );

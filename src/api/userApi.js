@@ -1,15 +1,18 @@
-import { auth } from "services/firebase";
+import { auth, db } from "services/firebase";
 import firebase from "firebase";
 
 const userApi = {
   login: (email, password) => {
     return new Promise((resolve, reject) => {
-      auth()
+      auth
         .signInWithEmailAndPassword(email, password)
         .then((res) => {
           if (res.user.emailVerified) {
             res.user.getIdToken().then((token) => {
-              resolve(token);
+              resolve({
+                id: res.user.uid,
+                token: token,
+              });
             });
           } else {
             reject("Email not verify");
@@ -22,10 +25,16 @@ const userApi = {
   },
   signUp: (firstName, lastName, email, password, confirmPassword) => {
     return new Promise((resolve, reject) => {
-      auth()
+      auth
         .createUserWithEmailAndPassword(email, password)
         .then((res) => {
-          res.user.sendEmailVerification();
+          const user = res.user;
+          user.sendEmailVerification();
+          db.collection("users").doc(user.uid).set({
+            id: user.uid,
+            firstName: firstName,
+            lastName: lastName,
+          });
           resolve();
         })
         .catch((err) => {
@@ -35,7 +44,7 @@ const userApi = {
   },
   resetPassword: (email) => {
     return new Promise((resolve, reject) => {
-      auth()
+      auth
         .sendPasswordResetEmail(email)
         .then(() => resolve())
         .catch((err) => reject(err));
@@ -45,7 +54,7 @@ const userApi = {
     return new Promise((resolve, reject) => {
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
-      auth()
+      auth
         .signInWithPopup(provider)
         .then((res) => {
           const token = res.credential.accessToken;
@@ -57,7 +66,7 @@ const userApi = {
   loginWithFacebook: () => {
     return new Promise((resolve, reject) => {
       const provider = new firebase.auth.FacebookAuthProvider();
-      auth()
+      auth
         .signInWithPopup(provider)
         .then((res) => {
           const token = res.credential.accessToken;
@@ -66,17 +75,46 @@ const userApi = {
         .catch((err) => reject(err));
     });
   },
+  logout: () => {
+    return new Promise((resolve, reject) => {
+      auth
+        .signOut()
+        .then(() => {
+          resolve("Log out successful");
+        })
+        .catch(() => reject("An error happened"));
+    });
+  },
   verifyToken: (authToken) => {
     return new Promise((resolve, reject) => {
-      auth().onAuthStateChanged((user) => {
+      auth.onAuthStateChanged((user) => {
         if (user) {
           user.getIdToken().then((token) => {
-            resolve(token === authToken);
+            if (token === authToken) {
+              resolve(user.uid);
+            } else {
+              resolve(null);
+            }
           });
         } else {
-          resolve(false);
+          resolve(null);
         }
       });
+    });
+  },
+  getUserInfo: (userId) => {
+    return new Promise((resolve, reject) => {
+      db.collection("users")
+        .where("id", "==", userId)
+        .get()
+        .then((queryUser) => {
+          const { firstName, lastName } = queryUser.docs[0].data();
+          resolve({
+            firstName,
+            lastName,
+          });
+        })
+        .catch((err) => reject(err));
     });
   },
 };

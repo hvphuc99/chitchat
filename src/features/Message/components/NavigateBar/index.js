@@ -6,7 +6,10 @@ import IconButton from "custom-fields/IconButton";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeToken } from "app/userSlice";
+import { removeToken, removeCurrentUserId } from "app/userSlice";
+import userApi from "api/userApi";
+import { setNotify } from "app/notifySlice";
+import { setShowChatForm } from "features/Message/messageSlice";
 
 const useStyles = makeStyles({
   root: {
@@ -32,7 +35,7 @@ const useStyles = makeStyles({
         width: "100%",
         "& .navigateIcon": {
           marginBottom: "40px",
-        }
+        },
       },
       "& .navigateBarFooter": {
         width: "100%",
@@ -49,13 +52,34 @@ function NavigateBar(props) {
   const history = useHistory();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const dispatch = useDispatch();
- 
+
   const handleClickLogout = () => {
+    userApi
+      .logout()
+      .then((res) => {
+        dispatch(
+          setNotify({
+            type: "success",
+            message: res,
+          })
+        );
+      })
+      .catch((err) => {
+        dispatch(
+          setNotify({
+            type: "error",
+            message: err,
+          })
+        );
+      });
     dispatch(removeToken());
+    dispatch(removeCurrentUserId());
+    dispatch(setShowChatForm(false));
     history.push("/login");
   };
 
   const handleClickLogoButton = () => {
+    dispatch(setShowChatForm(false));
     history.push("/");
   };
 
@@ -81,7 +105,7 @@ function NavigateBar(props) {
               backgroundColorHover="#D3D8DB"
               message="All Message"
               selected={selectedIndex === 0}
-              onClick={event => handleClickListItem(event, 0)}
+              onClick={(event) => handleClickListItem(event, 0)}
             />
           </div>
 
@@ -93,7 +117,7 @@ function NavigateBar(props) {
               backgroundColorHover="#D3D8DB"
               message="Contact List"
               selected={selectedIndex === 1}
-              onClick={event => handleClickListItem(event, 1)}
+              onClick={(event) => handleClickListItem(event, 1)}
             />
           </div>
 
@@ -106,7 +130,7 @@ function NavigateBar(props) {
               message="Notification"
               badgeContent="4"
               selected={selectedIndex === 2}
-              onClick={event => handleClickListItem(event, 2)}
+              onClick={(event) => handleClickListItem(event, 2)}
             />
           </div>
 
@@ -118,7 +142,7 @@ function NavigateBar(props) {
               backgroundColorHover="#D3D8DB"
               message="Setting"
               selected={selectedIndex === 3}
-              onClick={event => handleClickListItem(event, 3)}
+              onClick={(event) => handleClickListItem(event, 3)}
             />
           </div>
         </div>

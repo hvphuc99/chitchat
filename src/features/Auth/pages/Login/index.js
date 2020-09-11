@@ -8,7 +8,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import userApi from "api/userApi";
 import { useDispatch } from "react-redux";
-import { setToken } from "app/userSlice";
+import { setToken, setCurrentUser, setCurrentUserId } from "app/userSlice";
 import { setNotify } from "app/notifySlice";
 import { useState } from "react";
 
@@ -35,12 +35,14 @@ function Login() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (values) => {
     setLoading(true);
-    const { email, password } = event;
+    const { email, password } = values;
     userApi
       .login(email, password)
-      .then((token) => {
+      .then((user) => {
+        const { id, token } = user;
+        dispatch(setCurrentUserId(id));
         dispatch(setToken(token));
         history.push("/");
       })

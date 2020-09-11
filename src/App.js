@@ -16,7 +16,7 @@ import PrivateRoute from "components/PrivateRoute";
 import PublishRoute from "components/PublishRoute";
 import { useState } from "react";
 import userApi from "api/userApi";
-import { removeToken } from "app/userSlice";
+import { removeToken, setCurrentUserId } from "app/userSlice";
 import Loading from "components/Loading";
 
 function App() {
@@ -26,8 +26,10 @@ function App() {
   const dispatch = useDispatch();
 
   if (loading) {
-    userApi.verifyToken(token).then((res) => {
-      if (!res) {
+    userApi.verifyToken(token).then((userId) => {
+      if (userId) {
+        dispatch(setCurrentUserId(userId));
+      } else {
         dispatch(removeToken());
       }
       setLoading(false);

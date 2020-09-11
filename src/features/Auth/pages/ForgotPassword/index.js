@@ -33,8 +33,8 @@ function ForgotPassword() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
-    const { email } = event;
+  const handleSubmit = (values) => {
+    const { email } = values;
     setLoading(true);
     userApi
       .resetPassword(email)
