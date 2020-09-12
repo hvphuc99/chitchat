@@ -30,7 +30,7 @@ const userApi = {
         .then((res) => {
           const user = res.user;
           user.sendEmailVerification();
-          db.collection("users").doc(user.uid).set({
+          db.ref("/users/" + user.uid).set({
             id: user.uid,
             firstName: firstName,
             lastName: lastName,
