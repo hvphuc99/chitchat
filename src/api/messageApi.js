@@ -1,38 +1,30 @@
 import { db } from "services/firebase";
 
 const messageApi = {
-  getGroupChatList: (userId) => {
-    return new Promise((resolve, reject) => {
-      db.ref("/groupChats").on("value", (snapshot) => {
-        const groupChats = snapshot.val();
-        let list = [];
-        for (let groupChatKey in groupChats) {
-          const { members } = groupChats[groupChatKey];
-          for (let memberKey in members) {
-            if (members[memberKey] === userId) {
-              list = list.concat(groupChats[groupChatKey]);
-            }
-          }
-        }
-        resolve(list);
-      });
-    });
+  groupChatsListener: (userId, handleData) => {
+    return db.ref("/groupChats").on("value", handleData);
   },
   getLastMessage: (groupChatId) => {
     return new Promise((resolve, reject) => {
-      db.ref("/groupChats/" + groupChatId + "/messages/").orderByChild("timestamp").limitToLast(1).on("value", (snapshot) => {
-        const lastMessage = Object.values(snapshot.val())[0];
-        resolve(lastMessage);
-      });
+      db.ref("/groupChats/" + groupChatId + "/messages/")
+        .orderByChild("timestamp")
+        .limitToLast(1)
+        .once("value")
+        .then((message) => {
+          if (!message.val()) {
+            resolve("");
+          } else {
+            const lastMessage = Object.values(message.val())[0];
+          resolve(lastMessage);
+          }
+        });
     });
   },
-  getMessageList: (groupChatId) => {
-    return new Promise((resolve, reject) => {
-      db.ref("/groupChats/" + groupChatId + "/messages").orderByChild("timestamp").on("value", (snapshot) => {
-        const messageList = Object.values(snapshot.val());
-        resolve(messageList);
-      })
-    });
+  messageListListener: (groupChatId, handleData) => {
+    return db
+      .ref("/groupChats/" + groupChatId + "/messages")
+      .orderByChild("timestamp")
+      .on("value", handleData);
   },
   sendMessage: (senderId, groupChatId, content, type) => {
     const timestamp = Date.now();
@@ -42,7 +34,7 @@ const messageApi = {
         content,
         type,
         timestamp,
-      })
+      });
     });
   },
 };

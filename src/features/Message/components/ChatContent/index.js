@@ -2,15 +2,12 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { useEffect } from "react";
 import MessageBox from "../MessageBox";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { convertTimestampFull } from "utils";
-import Loading from "components/Loading";
-import { setLoadingMessageList } from "features/Message/messageSlice";
 
 const useStyles = makeStyles({
   root: {
-    flexGrow: "1",
-    height: "500px",
+    height: "100%",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
       width: "0.4em",
@@ -32,7 +29,7 @@ const useStyles = makeStyles({
 function ChatContent(props) {
   const classes = useStyles();
   const { currentUserId } = useSelector((state) => state.user);
-  const { loadingMessageList, messageList } = useSelector(
+  const { messageList } = useSelector(
     (state) => state.message
   );
   const scrollToBottom = (id) => {
@@ -45,26 +42,22 @@ function ChatContent(props) {
 
   return (
     <div id="chatBox" className={classes.root}>
-      {loadingMessageList ? (
-        <Loading />
-      ) : (
-        messageList.map(({ senderId, content, timestamp, type, name }) =>
-          senderId === currentUserId ? (
-            <MessageBox
-              position="right"
-              content={content}
-              timestamp={convertTimestampFull(timestamp)}
-              type={type}
-            />
-          ) : (
-            <MessageBox
-              name={name}
-              position="left"
-              content={content}
-              timestamp={convertTimestampFull(timestamp)}
-              type={type}
-            />
-          )
+      {messageList.map(({ senderId, content, timestamp, type, name }) =>
+        senderId === currentUserId ? (
+          <MessageBox
+            position="right"
+            content={content}
+            timestamp={convertTimestampFull(timestamp)}
+            type={type}
+          />
+        ) : (
+          <MessageBox
+            name={name}
+            position="left"
+            content={content}
+            timestamp={convertTimestampFull(timestamp)}
+            type={type}
+          />
         )
       )}
       <div id="messageEnd"></div>

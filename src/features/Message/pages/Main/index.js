@@ -41,44 +41,65 @@ function Main(props) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    messageApi
-      .getGroupChatList(currentUserId)
-      .then((groupChatList) => {
-        const standardizedList = (groupChatList) => {
-          let list = [];
-          return new Promise((resolve, reject) => {
-            groupChatList.forEach((groupChat) => {
-              const { id, name, members } = groupChat;
-              if (name === "") {
-                let uid =
-                  members[0] === currentUserId ? members[1] : members[0];
-                userApi.getUserInfo(uid).then((userInfo) => {
-                  const { firstName, lastName } = userInfo;
-                  messageApi.getLastMessage(id).then((message) => {
-                    const { senderId, content, timestamp } = message;
-                    list = list.concat({
-                      id,
-                      name: firstName + " " + lastName,
-                      senderId,
-                      content,
-                      timestamp,
-                    });
-                    if (list.length === groupChatList.length) {
-                      resolve(list);
-                    }
-                  });
-                });
-              }
-            });
+    messageApi.groupChatsListener(currentUserId, (snapshot) => {
+      if (!snapshot.val()) {
+        setLoading(false);
+        return;
+      }
+
+      const groupChats = snapshot.val();
+      let belongGroups = [];
+      for (let groupChatKey in groupChats) {
+        const { members } = groupChats[groupChatKey];
+        for (let memberKey in members) {
+          if (members[memberKey] === currentUserId) {
+            belongGroups = belongGroups.concat(groupChats[groupChatKey]);
+          }
+        }
+      }
+
+      debugger;
+
+      if (belongGroups.length === 0) {
+        setLoading(false);
+        return;
+      }
+
+      let standardizedList = [];
+
+      belongGroups.forEach((groupChat) => {
+        const { id, name, members } = groupChat;
+        messageApi.getLastMessage(id).then((message) => {
+          const { senderId, content, timestamp } = message;
+          userApi.getUserInfo(senderId).then((userInfo) => {
+            const { firstName, lastName } = userInfo;
+            if (members.length === 2) {
+              standardizedList = standardizedList.concat({
+                id,
+                name: firstName + " " + lastName,
+                senderId,
+                content,
+                timestamp,
+              });
+            } else {
+              standardizedList = standardizedList.concat({
+                id,
+                name,
+                senderId,
+                senderName: firstName + " " + lastName,
+                content,
+                timestamp,
+              });
+            }
+            if (standardizedList.length === belongGroups.length) {
+              setGroupChats(standardizedList);
+              setLoading(false);
+            }
           });
-        };
-        standardizedList(groupChatList).then((list) => {
-          setGroupChats(list);
-          setLoading(false);
         });
-      })
-      .catch((err) => {});
-  });
+      });
+    });
+  }, []);
 
   return (
     <Grid container className={classes.root}>

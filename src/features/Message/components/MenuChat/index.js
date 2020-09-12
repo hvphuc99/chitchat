@@ -58,44 +58,16 @@ function MenuChat(props) {
 
   const handleClickListItem = (event, id, name) => {
     setSelectedGroupChatId(id);
-    dispatch(clearMessageList());
     dispatch(setCurrentGroupChatId(id));
     dispatch(setCurrentGroupChatName(name));
     dispatch(setLoadingMessageList(true));
     dispatch(setShowChatForm(true));
-    messageApi
-      .getMessageList(id)
-      .then((messageList) => {
-        let list = [];
-        messageList.forEach((message, index) => {
-          const { senderId } = message;
-          userApi.getUserInfo(senderId).then((userInfo) => {
-            const { firstName, lastName } = userInfo;
-            const name = firstName + " " + lastName;
-            list = list.concat({
-              name,
-              ...message,
-            });
-            if (list.length === messageList.length) {
-              dispatch(
-                setMessageList(
-                  list.sort((firstMess, secondMess) => {
-                    return secondMess.timestamp > firstMess.timestamp ? -1 : 1;
-                  })
-                )
-              );
-              dispatch(setLoadingMessageList(false));
-            }
-          });
-        });
-      })
-      .catch((err) => console.log(err));
   };
 
   return (
     <Container className={classes.root}>
       <List>
-        {groupChats.map(({ id, name, senderId, content, timestamp }) => (
+        {groupChats.map(({ id, name, senderId, senderName, content, timestamp }) => (
           <ListItem
             className={classes.messageContainer}
             key={id}
@@ -105,7 +77,7 @@ function MenuChat(props) {
           >
             <ChatBox
               name={name}
-              message={senderId === currentUserId ? `You: ${content}` : content}
+              message={senderId === currentUserId ? `You: ${content}` : (senderName ? `${senderName}: ${content}` : content)}
               date={convertTimestamp(timestamp)}
               active={true}
               avatar={null}
