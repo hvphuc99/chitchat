@@ -41,39 +41,43 @@ function Main(props) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    messageApi.getGroupChatList(currentUserId).then((groupChatList) => {
-      const standardizedList = (groupChatList) => {
-        let list = [];
-        return new Promise((resolve, reject) => {
-          groupChatList.forEach((groupChat, index) => {
-            const { groupChatId, groupChatName, members } = groupChat;
-            if (groupChatName === "") {
-              let uid = members[0] === currentUserId ? members[1] : members[0];
-              userApi.getUserInfo(uid).then((userInfo) => {
-                const { firstName, lastName } = userInfo;
-                messageApi.getLastMessage(groupChatId).then((message) => {
-                  const { senderId, content, timestamp } = message;
-                  list = list.concat({
-                    groupChatId,
-                    groupChatName: firstName + " " + lastName,
-                    senderId,
-                    content,
-                    timestamp,
+    messageApi
+      .getGroupChatList(currentUserId)
+      .then((groupChatList) => {
+        const standardizedList = (groupChatList) => {
+          let list = [];
+          return new Promise((resolve, reject) => {
+            groupChatList.forEach((groupChat) => {
+              const { id, name, members } = groupChat;
+              if (name === "") {
+                let uid =
+                  members[0] === currentUserId ? members[1] : members[0];
+                userApi.getUserInfo(uid).then((userInfo) => {
+                  const { firstName, lastName } = userInfo;
+                  messageApi.getLastMessage(id).then((message) => {
+                    const { senderId, content, timestamp } = message;
+                    list = list.concat({
+                      id,
+                      name: firstName + " " + lastName,
+                      senderId,
+                      content,
+                      timestamp,
+                    });
+                    if (list.length === groupChatList.length) {
+                      resolve(list);
+                    }
                   });
-                  if (list.length === groupChatList.length) {
-                    resolve(list);
-                  }
                 });
-              });
-            }
+              }
+            });
           });
+        };
+        standardizedList(groupChatList).then((list) => {
+          setGroupChats(list);
+          setLoading(false);
         });
-      };
-      standardizedList(groupChatList).then((list) => {
-        setGroupChats(list);
-        setLoading(false);
-      });
-    });
+      })
+      .catch((err) => {});
   });
 
   return (

@@ -104,17 +104,14 @@ const userApi = {
   },
   getUserInfo: (userId) => {
     return new Promise((resolve, reject) => {
-      db.collection("users")
-        .where("id", "==", userId)
-        .get()
-        .then((queryUser) => {
-          const { firstName, lastName } = queryUser.docs[0].data();
+      db.ref("/users/" + userId).once("value").then(userInfo => {
+        const { firstName, lastName } = userInfo.val();
           resolve({
             firstName,
             lastName,
           });
-        })
-        .catch((err) => reject(err));
+      })
+      .catch((err) => reject(err));
     });
   },
 };

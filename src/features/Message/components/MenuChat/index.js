@@ -12,6 +12,7 @@ import {
   setCurrentGroupChatName,
   setShowChatForm,
   clearMessageList,
+  setLoadingMessageList,
 } from "features/Message/messageSlice";
 import userApi from "api/userApi";
 
@@ -55,14 +56,15 @@ function MenuChat(props) {
   const [selectedGroupChatId, setSelectedGroupChatId] = useState(null);
   const dispatch = useDispatch();
 
-  const handleClickListItem = (event, groupChatId, groupChatName) => {
-    setSelectedGroupChatId(groupChatId);
-    dispatch(setCurrentGroupChatId(groupChatId));
-    dispatch(setCurrentGroupChatName(groupChatName));
-    dispatch(setShowChatForm(true));
+  const handleClickListItem = (event, id, name) => {
+    setSelectedGroupChatId(id);
     dispatch(clearMessageList());
+    dispatch(setCurrentGroupChatId(id));
+    dispatch(setCurrentGroupChatName(name));
+    dispatch(setLoadingMessageList(true));
+    dispatch(setShowChatForm(true));
     messageApi
-      .getMessageList(groupChatId)
+      .getMessageList(id)
       .then((messageList) => {
         let list = [];
         messageList.forEach((message, index) => {
@@ -82,6 +84,7 @@ function MenuChat(props) {
                   })
                 )
               );
+              dispatch(setLoadingMessageList(false));
             }
           });
         });
@@ -92,29 +95,23 @@ function MenuChat(props) {
   return (
     <Container className={classes.root}>
       <List>
-        {groupChats.map(
-          ({ groupChatId, groupChatName, senderId, content, timestamp }) => (
-            <ListItem
-              className={classes.messageContainer}
-              key={groupChatId}
-              button
-              selected={selectedGroupChatId === groupChatId}
-              onClick={(event) =>
-                handleClickListItem(event, groupChatId, groupChatName)
-              }
-            >
-              <ChatBox
-                name={groupChatName}
-                message={
-                  senderId === currentUserId ? `You: ${content}` : content
-                }
-                date={convertTimestamp(timestamp)}
-                active={true}
-                avatar={null}
-              />
-            </ListItem>
-          )
-        )}
+        {groupChats.map(({ id, name, senderId, content, timestamp }) => (
+          <ListItem
+            className={classes.messageContainer}
+            key={id}
+            button
+            selected={selectedGroupChatId === id}
+            onClick={(event) => handleClickListItem(event, id, name)}
+          >
+            <ChatBox
+              name={name}
+              message={senderId === currentUserId ? `You: ${content}` : content}
+              date={convertTimestamp(timestamp)}
+              active={true}
+              avatar={null}
+            />
+          </ListItem>
+        ))}
       </List>
     </Container>
   );

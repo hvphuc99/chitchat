@@ -2,9 +2,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { useEffect } from "react";
 import MessageBox from "../MessageBox";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { convertTimestampFull } from "utils";
 import Loading from "components/Loading";
+import { setLoadingMessageList } from "features/Message/messageSlice";
 
 const useStyles = makeStyles({
   root: {
@@ -30,15 +31,24 @@ const useStyles = makeStyles({
 
 function ChatContent(props) {
   const classes = useStyles();
-  const { messageList } = useSelector((state) => state.message);
   const { currentUserId } = useSelector((state) => state.user);
+  const { loadingMessageList, messageList } = useSelector(
+    (state) => state.message
+  );
+  const scrollToBottom = (id) => {
+    const element = document.getElementById(id);
+    element.scrollIntoView();
+  };
+  useEffect(() => {
+    scrollToBottom("messageEnd");
+  }, [messageList]);
 
-  const arrChatBox = [];
-
-  for (let i = 0; i < 1; i++) {
-    arrChatBox.push(
-      <div key={i}>
-        {messageList.map(({ senderId, content, timestamp, type, name }) =>
+  return (
+    <div id="chatBox" className={classes.root}>
+      {loadingMessageList ? (
+        <Loading />
+      ) : (
+        messageList.map(({ senderId, content, timestamp, type, name }) =>
           senderId === currentUserId ? (
             <MessageBox
               position="right"
@@ -55,23 +65,8 @@ function ChatContent(props) {
               type={type}
             />
           )
-        )}
-      </div>
-    );
-  }
-
-  const scrollToBottom = (id) => {
-    const element = document.getElementById(id);
-    element.scrollIntoView();
-  };
-
-  useEffect(() => {
-    scrollToBottom("messageEnd");
-  }, [messageList]);
-
-  return (
-    <div id="chatBox" className={classes.root}>
-      {messageList.length === 0 ? <Loading /> : arrChatBox.map((box) => box)}
+        )
+      )}
       <div id="messageEnd"></div>
     </div>
   );
