@@ -7,10 +7,12 @@ const userApi = {
       auth
         .signInWithEmailAndPassword(email, password)
         .then((res) => {
-          if (res.user.emailVerified) {
-            res.user.getIdToken().then((token) => {
+          const user = res.user;
+          const id = user.uid;
+          if (user.emailVerified) {
+            user.getIdToken().then((token) => {
               resolve({
-                id: res.user.uid,
+                id,
                 token: token,
               });
             });
@@ -28,14 +30,26 @@ const userApi = {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((res) => {
-          const user = res.user;
-          user.sendEmailVerification();
-          db.ref("/users/" + user.uid).set({
-            id: user.uid,
-            firstName: firstName,
-            lastName: lastName,
-          });
-          resolve();
+          const {isNewUser} = res.additionalUserInfo;
+          if (isNewUser) {
+            const user = res.user;
+            const id = user.uid;
+            user.sendEmailVerification();
+            db.ref("/users/" + id).set({
+              id,
+              firstName,
+              lastName,
+              picture: "",
+            }, (err) => {
+              if (err) {
+                reject("An error happened");
+              } else {
+                resolve(true);
+              }
+            });
+          } else {
+            reject("Email address is already used")
+          }
         })
         .catch((err) => {
           reject(err);
@@ -53,12 +67,35 @@ const userApi = {
   loginWithGoogle: () => {
     return new Promise((resolve, reject) => {
       const provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
       auth
         .signInWithPopup(provider)
         .then((res) => {
-          const token = res.credential.accessToken;
-          resolve(token);
+          const user = res.user;
+          const id = user.uid;
+          const { isNewUser } = res.additionalUserInfo;
+          const {
+            family_name,
+            given_name,
+            picture,
+          } = res.additionalUserInfo.profile;
+          if (isNewUser) {
+            db.ref("/users/" + id).set({
+              id,
+              firstName: given_name,
+              lastName: family_name,
+              picture,
+            }, (err) => {
+              if (err) {
+                reject("An error happened");
+              }
+            });
+          }
+          user.getIdToken().then((token) => {
+            resolve({
+              id,
+              token,
+            });
+          });
         })
         .catch((err) => reject(err));
     });
@@ -104,14 +141,17 @@ const userApi = {
   },
   getUserInfo: (userId) => {
     return new Promise((resolve, reject) => {
-      db.ref("/users/" + userId).once("value").then(userInfo => {
-        const { firstName, lastName } = userInfo.val();
+      db.ref("/users/" + userId)
+        .once("value")
+        .then((userInfo) => {
+          const { firstName, lastName, picture } = userInfo.val();
           resolve({
             firstName,
             lastName,
+            picture,
           });
-      })
-      .catch((err) => reject(err));
+        })
+        .catch((err) => reject(err));
     });
   },
 };

@@ -4,6 +4,7 @@ const initialState = {
   messageList: [],
   currentGroupChatId: "",
   currentGroupChatName: "",
+  currentGroupChatPicture: "",
   showChatForm: false,
   loadingMessageList: false,
 };
@@ -39,6 +40,12 @@ const messageSlice = createSlice({
     setLoadingMessageList: (state, action) => {
       state.loadingMessageList = action.payload;
     },
+    setCurrentGroupChatPicture: (state, action) => {
+      state.currentGroupChatPicture = action.payload;
+    },
+    removeCurrentGroupChatPicture: (state, action) => {
+      state.currentGroupChatPicture = "";
+    },
   },
 });
 
@@ -53,5 +60,7 @@ export const {
   removeCurrentGroupChatName,
   setShowChatForm,
   setLoadingMessageList,
+  setCurrentGroupChatPicture,
+  removeCurrentGroupChatPicture,
 } = actions;
 export default reducer;

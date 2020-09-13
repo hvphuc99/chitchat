@@ -8,12 +8,14 @@ MessageBox.propTypes = {
   name: PropTypes.string,
   position: PropTypes.string,
   type: PropTypes.string,
+  avatar: PropTypes.string,
 };
 
 MessageBox.defaultProps = {
   name: "",
   position: "left",
   type: 0,
+  avatar: "",
 };
 
 const useStyles = makeStyles({
@@ -87,12 +89,12 @@ const useStyles = makeStyles({
 
 function MessageBox(props) {
   const classes = useStyles();
-  const { name, position, content, timestamp, type } = props;
+  const { name, avatar, position, content, timestamp, type } = props;
 
   if (position === "left") {
     return (
       <Box className={classes.messageBoxLeft}>
-        <Avatar src={null} />
+        <Avatar src={avatar} />
         <span>
           <div className="messageBoxLeftHeader">
             <h5>{name}</h5>

@@ -5,16 +5,14 @@ import { useState } from "react";
 import ChatBox from "../ChatBox";
 import { convertTimestamp } from "utils";
 import { useDispatch, useSelector } from "react-redux";
-import messageApi from "api/messageApi";
 import {
-  setMessageList,
   setCurrentGroupChatId,
   setCurrentGroupChatName,
   setShowChatForm,
   clearMessageList,
   setLoadingMessageList,
+  setCurrentGroupChatPicture,
 } from "features/Message/messageSlice";
-import userApi from "api/userApi";
 
 MenuChat.propTypes = {
   groupChats: PropTypes.array,
@@ -56,10 +54,12 @@ function MenuChat(props) {
   const [selectedGroupChatId, setSelectedGroupChatId] = useState(null);
   const dispatch = useDispatch();
 
-  const handleClickListItem = (event, id, name) => {
+  const handleClickListItem = (event, id, name, picture) => {
     setSelectedGroupChatId(id);
+    dispatch(clearMessageList());
     dispatch(setCurrentGroupChatId(id));
     dispatch(setCurrentGroupChatName(name));
+    dispatch(setCurrentGroupChatPicture(picture));
     dispatch(setLoadingMessageList(true));
     dispatch(setShowChatForm(true));
   };
@@ -67,20 +67,20 @@ function MenuChat(props) {
   return (
     <Container className={classes.root}>
       <List>
-        {groupChats.map(({ id, name, senderId, senderName, content, timestamp }) => (
+        {groupChats.map(({ id, name, senderId, senderName, picture, content, timestamp }) => (
           <ListItem
             className={classes.messageContainer}
             key={id}
             button
             selected={selectedGroupChatId === id}
-            onClick={(event) => handleClickListItem(event, id, name)}
+            onClick={(event) => handleClickListItem(event, id, name, picture)}
           >
             <ChatBox
               name={name}
               message={senderId === currentUserId ? `You: ${content}` : (senderName ? `${senderName}: ${content}` : content)}
               date={convertTimestamp(timestamp)}
               active={true}
-              avatar={null}
+              avatar={picture}
             />
           </ListItem>
         ))}

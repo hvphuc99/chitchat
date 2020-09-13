@@ -42,7 +42,7 @@ function ChatContent(props) {
 
   return (
     <div id="chatBox" className={classes.root}>
-      {messageList.map(({ senderId, content, timestamp, type, name }) =>
+      {messageList.map(({ senderId, content, timestamp, type, name, picture }) =>
         senderId === currentUserId ? (
           <MessageBox
             position="right"
@@ -53,6 +53,7 @@ function ChatContent(props) {
         ) : (
           <MessageBox
             name={name}
+            avatar={picture}
             position="left"
             content={content}
             timestamp={convertTimestampFull(timestamp)}

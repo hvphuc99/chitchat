@@ -3,6 +3,10 @@ import { makeStyles } from "@material-ui/core";
 import React from "react";
 import IconButton from "custom-fields/IconButton";
 import userApi from "api/userApi";
+import { useDispatch } from "react-redux";
+import { setCurrentUserId, setToken } from "app/userSlice";
+import { useHistory } from "react-router-dom";
+import { setNotify } from "app/notifySlice";
 
 const useStyles = makeStyles({
   root: {
@@ -13,19 +17,29 @@ const useStyles = makeStyles({
   },
   iconBtn: {
     marginBottom: "15px",
-  }
+  },
 });
 
 function MediaLogo(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleClickLoginWithGoogle = () => {
-    userApi.loginWithGoogle().then(token => console.log(token));
-  }
+    userApi.loginWithGoogle().then((user) => {
+      const { id, token } = user;
+      dispatch(setCurrentUserId(id));
+      dispatch(setToken(token));
+      history.push("/");
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  };
 
   const handleClickLoginWithFacebook = () => {
-    userApi.loginWithFacebook().then(token => console.log(token));
-  }
+    userApi.loginWithFacebook().then((token) => console.log(token));
+  };
 
   return (
     <div className={classes.root}>

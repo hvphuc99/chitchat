@@ -56,7 +56,7 @@ function SignUp() {
         dispatch(
           setNotify({
             type: "error",
-            message: "Email address is already used",
+            message: err,
           })
         );
         setLoading(false);

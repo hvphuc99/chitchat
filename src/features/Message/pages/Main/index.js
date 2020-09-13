@@ -58,8 +58,6 @@ function Main(props) {
         }
       }
 
-      debugger;
-
       if (belongGroups.length === 0) {
         setLoading(false);
         return;
@@ -69,34 +67,78 @@ function Main(props) {
 
       belongGroups.forEach((groupChat) => {
         const { id, name, members } = groupChat;
-        messageApi.getLastMessage(id).then((message) => {
-          const { senderId, content, timestamp } = message;
-          userApi.getUserInfo(senderId).then((userInfo) => {
-            const { firstName, lastName } = userInfo;
-            if (members.length === 2) {
-              standardizedList = standardizedList.concat({
-                id,
-                name: firstName + " " + lastName,
-                senderId,
-                content,
-                timestamp,
-              });
-            } else {
+        if (members.length === 2) {
+          let uid = members[0] === currentUserId ? members[1] : members[0];
+          userApi.getUserInfo(uid).then((userInfo) => {
+            const { firstName, lastName, picture } = userInfo;
+            messageApi.getLastMessage(id).then((message) => {
+              if (!message) {
+                standardizedList = standardizedList.concat({
+                  id,
+                  name: firstName + " " + lastName,
+                });
+              } else {
+                const { senderId, content, timestamp } = message;
+                standardizedList = standardizedList.concat({
+                  id,
+                  name: firstName + " " + lastName,
+                  senderId,
+                  picture,
+                  content,
+                  timestamp,
+                });
+              }
+              if (standardizedList.length === belongGroups.length) {
+                setGroupChats(
+                  standardizedList.sort((firstMess, secondMess) => {
+                    return secondMess.timestamp > firstMess.timestamp ? 1 : -1;
+                  })
+                );
+                setLoading(false);
+              }
+            });
+          });
+        } else {
+          messageApi.getLastMessage(id).then((message) => {
+            if (!message) {
               standardizedList = standardizedList.concat({
                 id,
                 name,
-                senderId,
-                senderName: firstName + " " + lastName,
-                content,
-                timestamp,
+              });
+              if (standardizedList.length === belongGroups.length) {
+                setGroupChats(
+                  standardizedList.sort((firstMess, secondMess) => {
+                    return secondMess.timestamp > firstMess.timestamp ? 1 : -1;
+                  })
+                );
+                setLoading(false);
+              }
+            } else {
+              const { senderId, content, timestamp } = message;
+              userApi.getUserInfo(senderId).then((userInfo) => {
+                const { firstName, lastName } = userInfo;
+                standardizedList = standardizedList.concat({
+                  id,
+                  name,
+                  senderId,
+                  senderName: firstName + " " + lastName,
+                  content,
+                  timestamp,
+                });
+                if (standardizedList.length === belongGroups.length) {
+                  setGroupChats(
+                    standardizedList.sort((firstMess, secondMess) => {
+                      return secondMess.timestamp > firstMess.timestamp
+                        ? 1
+                        : -1;
+                    })
+                  );
+                  setLoading(false);
+                }
               });
             }
-            if (standardizedList.length === belongGroups.length) {
-              setGroupChats(standardizedList);
-              setLoading(false);
-            }
           });
-        });
+        }
       });
     });
   }, []);

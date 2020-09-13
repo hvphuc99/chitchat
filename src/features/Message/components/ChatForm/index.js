@@ -31,9 +31,12 @@ const useStyles = makeStyles({
 function ChatForm(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { currentGroupChatName, currentGroupChatId, loadingMessageList } = useSelector(
-    (state) => state.message
-  );
+  const {
+    currentGroupChatName,
+    currentGroupChatId,
+    loadingMessageList,
+    currentGroupChatPicture,
+  } = useSelector((state) => state.message);
   const { currentUserId } = useSelector((state) => state.user);
 
   const handleSendMessage = (values, { resetForm }) => {
@@ -61,10 +64,11 @@ function ChatForm(props) {
       messageList.forEach((message, index) => {
         const { senderId } = message;
         userApi.getUserInfo(senderId).then((userInfo) => {
-          const { firstName, lastName } = userInfo;
+          const { firstName, lastName, picture } = userInfo;
           const name = firstName + " " + lastName;
           newList = newList.concat({
             name,
+            picture,
             ...message,
           });
           if (newList.length === messageList.length) {
@@ -84,9 +88,13 @@ function ChatForm(props) {
 
   return (
     <Box className={classes.root}>
-      <ChatHeader name={currentGroupChatName} avatar={null} active={true} />
+      <ChatHeader
+        name={currentGroupChatName}
+        avatar={currentGroupChatPicture}
+        active={true}
+      />
       <div className={classes.content}>
-        {loadingMessageList ? <Loading /> : <ChatContent /> }
+        {loadingMessageList ? <Loading /> : <ChatContent />}
       </div>
       <ChatFooter onSubmit={handleSendMessage} />
     </Box>
