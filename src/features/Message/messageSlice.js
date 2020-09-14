@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ALL_MESSAGE_OPTION } from "constants/index";
 
 const initialState = {
   currentGroupChatId: "",
@@ -6,6 +7,7 @@ const initialState = {
   currentGroupChatPicture: "",
   showChatForm: false,
   loadingMessageList: false,
+  selectedOption: ALL_MESSAGE_OPTION,
 };
 
 const messageSlice = createSlice({
@@ -36,6 +38,12 @@ const messageSlice = createSlice({
     removeCurrentGroupChatPicture: (state, action) => {
       state.currentGroupChatPicture = "";
     },
+    setSelectedOption: (state, action) => {
+      state.selectedOption = action.payload;
+    },
+    resetMessage: (state, action) => (
+      initialState
+    )
   },
 });
 
@@ -49,5 +57,7 @@ export const {
   setLoadingMessageList,
   setCurrentGroupChatPicture,
   removeCurrentGroupChatPicture,
+  setSelectedOption,
+  resetMessage,
 } = actions;
 export default reducer;

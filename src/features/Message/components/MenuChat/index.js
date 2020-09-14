@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   Typography,
+  Icon,
 } from "@material-ui/core";
 import { useState } from "react";
 import ChatBox from "../ChatBox";
@@ -15,7 +16,6 @@ import {
   setCurrentGroupChatId,
   setCurrentGroupChatName,
   setShowChatForm,
-  clearMessageList,
   setLoadingMessageList,
   setCurrentGroupChatPicture,
 } from "features/Message/messageSlice";
@@ -83,6 +83,7 @@ function MenuChat(props) {
       {groupChats.length === 0 ? (
         <div className={classes.logoContainer}>
           <div className={classes.centerContainer}>
+            <Icon className="fas fa-users-slash" style={{ fontSize: 50, width: 100 }} />
             <Typography variant="h6">No chat room</Typography>
             <Typography variant="subtitle1">
               If you don't have friends, you can search and add friends to chat

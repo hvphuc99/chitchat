@@ -6,7 +6,7 @@ const initialState = {
 };
 
 const notifySlice = createSlice({
-  name: "notify123",
+  name: "notify",
   initialState: initialState,
   reducers: {
     setNotify: (state, action) => {

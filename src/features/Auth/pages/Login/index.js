@@ -8,7 +8,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import userApi from "api/userApi";
 import { useDispatch } from "react-redux";
-import { setToken, setCurrentUser, setCurrentUserId } from "app/userSlice";
+import { setToken, setCurrentUserId } from "app/userSlice";
 import { setNotify } from "app/notifySlice";
 import { useState } from "react";
 

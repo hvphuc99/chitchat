@@ -4,12 +4,16 @@ import { IconButton as LogoButton } from "@material-ui/core";
 import logo from "assets/images/logo.png";
 import IconButton from "custom-fields/IconButton";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeToken, removeCurrentUserId } from "app/userSlice";
 import userApi from "api/userApi";
 import { setNotify } from "app/notifySlice";
-import { setShowChatForm, removeCurrentGroupChatId, removeCurrentGroupChatPicture } from "features/Message/messageSlice";
+import {
+  setShowChatForm,
+  setSelectedOption,
+  resetMessage,
+} from "features/Message/messageSlice";
+import * as options from "constants/index";
 
 const useStyles = makeStyles({
   root: {
@@ -50,7 +54,7 @@ const useStyles = makeStyles({
 function NavigateBar(props) {
   const classes = useStyles();
   const history = useHistory();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const { selectedOption } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
   const handleClickLogout = () => {
@@ -59,15 +63,14 @@ function NavigateBar(props) {
       .then((res) => {
         dispatch(removeToken());
         dispatch(removeCurrentUserId());
-        dispatch(removeCurrentGroupChatPicture());
-        dispatch(setShowChatForm(false));
+        dispatch(resetMessage());
         dispatch(
           setNotify({
             type: "success",
             message: res,
           })
-          );
-          history.push("/login");
+        );
+        history.push("/login");
       })
       .catch((err) => {
         dispatch(
@@ -84,8 +87,8 @@ function NavigateBar(props) {
     history.push("/");
   };
 
-  const handleClickListItem = (event, index) => {
-    setSelectedIndex(index);
+  const handleClickListItem = (event, option) => {
+    dispatch(setSelectedOption(option));
   };
 
   return (
@@ -105,8 +108,8 @@ function NavigateBar(props) {
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
               message="All Message"
-              selected={selectedIndex === 0}
-              onClick={(event) => handleClickListItem(event, 0)}
+              selected={selectedOption === options.ALL_MESSAGE_OPTION}
+              onClick={(event) => handleClickListItem(event, options.ALL_MESSAGE_OPTION)}
             />
           </div>
 
@@ -117,8 +120,8 @@ function NavigateBar(props) {
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
               message="Contact List"
-              selected={selectedIndex === 1}
-              onClick={(event) => handleClickListItem(event, 1)}
+              selected={selectedOption === options.CONTACT_LIST_OPTION}
+              onClick={(event) => handleClickListItem(event, options.CONTACT_LIST_OPTION)}
             />
           </div>
 
@@ -130,25 +133,25 @@ function NavigateBar(props) {
               backgroundColorHover="#D3D8DB"
               message="Notification"
               badgeContent="4"
-              selected={selectedIndex === 2}
-              onClick={(event) => handleClickListItem(event, 2)}
-            />
-          </div>
-
-          <div className="navigateIcon">
-            <IconButton
-              icon="fas fa-cog"
-              iconColor="#223645"
-              backgroundColor="#eff1f2"
-              backgroundColorHover="#D3D8DB"
-              message="Setting"
-              selected={selectedIndex === 3}
-              onClick={(event) => handleClickListItem(event, 3)}
+              selected={selectedOption === options.NOTIFICATION_OPTION}
+              onClick={(event) => handleClickListItem(event, options.NOTIFICATION_OPTION)}
             />
           </div>
         </div>
 
         <div className="navigateBarFooter">
+          <div className="navigateIcon">
+            <IconButton
+              icon="fas fa-user"
+              iconColor="#223645"
+              backgroundColor="#eff1f2"
+              backgroundColorHover="#D3D8DB"
+              message="Profile"
+              selected={selectedOption === options.PROFILE_OPTION}
+              onClick={(event) => handleClickListItem(event, options.PROFILE_OPTION)}
+            />
+          </div>
+
           <div className="navigateIcon">
             <IconButton
               icon="fas fa-power-off"
