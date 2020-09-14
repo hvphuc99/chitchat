@@ -117,7 +117,7 @@ const userApi = {
       auth
         .signOut()
         .then(() => {
-          resolve("Log out successful");
+          resolve("Logout successful");
         })
         .catch(() => reject("An error happened"));
     });

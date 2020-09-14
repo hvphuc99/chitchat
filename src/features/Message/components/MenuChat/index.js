@@ -1,6 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, Container, List, ListItem } from "@material-ui/core";
+import {
+  makeStyles,
+  Container,
+  List,
+  ListItem,
+  Typography,
+} from "@material-ui/core";
 import { useState } from "react";
 import ChatBox from "../ChatBox";
 import { convertTimestamp } from "utils";
@@ -45,6 +51,15 @@ const useStyles = makeStyles({
   messageContainer: {
     margin: "0px 0px 10px 0px",
   },
+  logoContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  centerContainer: {
+    textAlign: "center",
+  }
 });
 
 function MenuChat(props) {
@@ -66,25 +81,54 @@ function MenuChat(props) {
 
   return (
     <Container className={classes.root}>
-      <List>
-        {groupChats.map(({ id, name, senderId, senderName, picture, content, timestamp }) => (
-          <ListItem
-            className={classes.messageContainer}
-            key={id}
-            button
-            selected={selectedGroupChatId === id}
-            onClick={(event) => handleClickListItem(event, id, name, picture)}
-          >
-            <ChatBox
-              name={name}
-              message={senderId === currentUserId ? `You: ${content}` : (senderName ? `${senderName}: ${content}` : content)}
-              date={convertTimestamp(timestamp)}
-              active={true}
-              avatar={picture}
-            />
-          </ListItem>
-        ))}
-      </List>
+      {groupChats.length === 0 ? (
+        <div className={classes.logoContainer}>
+          <div className={classes.centerContainer}>
+            <Typography variant="h6">No chat room</Typography>
+            <Typography variant="subtitle1">
+              If you don't have friends, you can search and add friends to chat
+            </Typography>
+          </div>
+        </div>
+      ) : (
+        <List>
+          {groupChats.map(
+            ({
+              id,
+              name,
+              senderId,
+              senderName,
+              picture,
+              content,
+              timestamp,
+            }) => (
+              <ListItem
+                className={classes.messageContainer}
+                key={id}
+                button
+                selected={selectedGroupChatId === id}
+                onClick={(event) =>
+                  handleClickListItem(event, id, name, picture)
+                }
+              >
+                <ChatBox
+                  name={name}
+                  message={
+                    senderId === currentUserId
+                      ? `You: ${content}`
+                      : senderName
+                      ? `${senderName}: ${content}`
+                      : content
+                  }
+                  date={convertTimestamp(timestamp)}
+                  active={true}
+                  avatar={picture}
+                />
+              </ListItem>
+            )
+          )}
+        </List>
+      )}
     </Container>
   );
 }

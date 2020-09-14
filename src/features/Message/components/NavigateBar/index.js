@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { removeToken, removeCurrentUserId } from "app/userSlice";
 import userApi from "api/userApi";
 import { setNotify } from "app/notifySlice";
-import { setShowChatForm } from "features/Message/messageSlice";
+import { setShowChatForm, removeCurrentGroupChatId, removeCurrentGroupChatPicture } from "features/Message/messageSlice";
 
 const useStyles = makeStyles({
   root: {
@@ -57,12 +57,17 @@ function NavigateBar(props) {
     userApi
       .logout()
       .then((res) => {
+        dispatch(removeToken());
+        dispatch(removeCurrentUserId());
+        dispatch(removeCurrentGroupChatPicture());
+        dispatch(setShowChatForm(false));
         dispatch(
           setNotify({
             type: "success",
             message: res,
           })
-        );
+          );
+          history.push("/login");
       })
       .catch((err) => {
         dispatch(
@@ -72,10 +77,6 @@ function NavigateBar(props) {
           })
         );
       });
-    dispatch(removeToken());
-    dispatch(removeCurrentUserId());
-    dispatch(setShowChatForm(false));
-    history.push("/login");
   };
 
   const handleClickLogoButton = () => {

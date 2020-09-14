@@ -10,6 +10,7 @@ import messageApi from "api/messageApi";
 import { useState } from "react";
 import Loading from "components/Loading";
 import Search from "features/Message/components/Search";
+import Banner from "features/Message/components/Banner";
 
 const useStyles = makeStyles({
   root: {
@@ -29,6 +30,12 @@ const useStyles = makeStyles({
     padding: "20px 20px",
   },
   chatForm: {
+    height: "100%",
+  },
+  banner: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     height: "100%",
   },
 });
@@ -155,7 +162,7 @@ function Main(props) {
         </Grid>
       </Grid>
       <Grid item sm={9} className={classes.chatForm}>
-        {showChatForm ? <ChatForm /> : ""}
+        {showChatForm ? <ChatForm /> :<div className={classes.banner}> <Banner /></div>}
       </Grid>
     </Grid>
   );

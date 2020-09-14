@@ -45,6 +45,12 @@ function Login() {
         dispatch(setCurrentUserId(id));
         dispatch(setToken(token));
         history.push("/");
+        dispatch(
+          setNotify({
+            type: "success",
+            message: "Login successful",
+          })
+        );
       })
       .catch((err) => {
         setLoading(false);
