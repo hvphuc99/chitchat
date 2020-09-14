@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  messageList: [],
   currentGroupChatId: "",
   currentGroupChatName: "",
   currentGroupChatPicture: "",
@@ -13,15 +12,6 @@ const messageSlice = createSlice({
   name: "message",
   initialState: initialState,
   reducers: {
-    setMessageList: (state, action) => {
-      state.messageList = action.payload;
-    },
-    addMessage: (state, action) => {
-      state.messageList.push(action.payload);
-    },
-    clearMessageList: (state, action) => {
-      state.messageList = [];
-    },
     setCurrentGroupChatId: (state, action) => {
       state.currentGroupChatId = action.payload;
     },
@@ -51,9 +41,6 @@ const messageSlice = createSlice({
 
 const { reducer, actions } = messageSlice;
 export const {
-  setMessageList,
-  addMessage,
-  clearMessageList,
   setCurrentGroupChatId,
   removeCurrentGroupChatId,
   setCurrentGroupChatName,

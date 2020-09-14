@@ -71,7 +71,6 @@ function MenuChat(props) {
 
   const handleClickListItem = (event, id, name, picture) => {
     setSelectedGroupChatId(id);
-    dispatch(clearMessageList());
     dispatch(setCurrentGroupChatId(id));
     dispatch(setCurrentGroupChatName(name));
     dispatch(setCurrentGroupChatPicture(picture));

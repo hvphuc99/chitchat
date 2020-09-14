@@ -4,15 +4,12 @@ import ChatHeader from "../ChatHeader";
 import ChatFooter from "../ChatFooter";
 import ChatContent from "../ChatContent";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addMessage,
-  setMessageList,
-  setLoadingMessageList,
-} from "features/Message/messageSlice";
+import { setLoadingMessageList } from "features/Message/messageSlice";
 import messageApi from "api/messageApi";
 import { useEffect } from "react";
 import userApi from "api/userApi";
 import Loading from "components/Loading";
+import { useState } from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +35,7 @@ function ChatForm(props) {
     currentGroupChatPicture,
   } = useSelector((state) => state.message);
   const { currentUserId } = useSelector((state) => state.user);
+  const [messageList, setMessageList] = useState([]);
 
   const handleSendMessage = (values, { resetForm }) => {
     const { message } = values;
@@ -49,7 +47,7 @@ function ChatForm(props) {
       content: message,
       type: 0,
     };
-    dispatch(addMessage(itemMessage));
+    setMessageList([...messageList, itemMessage]);
     resetForm();
   };
 
@@ -59,9 +57,9 @@ function ChatForm(props) {
         dispatch(setLoadingMessageList(false));
         return;
       }
-      const messageList = Object.values(snapshot.val());
+      const list = Object.values(snapshot.val());
       let newList = [];
-      messageList.forEach((message, index) => {
+      list.forEach((message, index) => {
         const { senderId } = message;
         userApi.getUserInfo(senderId).then((userInfo) => {
           const { firstName, lastName, picture } = userInfo;
@@ -71,13 +69,11 @@ function ChatForm(props) {
             picture,
             ...message,
           });
-          if (newList.length === messageList.length) {
-            dispatch(
-              setMessageList(
-                newList.sort((firstMess, secondMess) => {
-                  return secondMess.timestamp > firstMess.timestamp ? -1 : 1;
-                })
-              )
+          if (newList.length === list.length) {
+            setMessageList(
+              newList.sort((firstMess, secondMess) => {
+                return secondMess.timestamp > firstMess.timestamp ? -1 : 1;
+              })
             );
             dispatch(setLoadingMessageList(false));
           }
@@ -94,7 +90,7 @@ function ChatForm(props) {
         active={true}
       />
       <div className={classes.content}>
-        {loadingMessageList ? <Loading /> : <ChatContent />}
+        {loadingMessageList ? <Loading /> : <ChatContent messageList={messageList} />}
       </div>
       <ChatFooter onSubmit={handleSendMessage} />
     </Box>

@@ -4,6 +4,15 @@ import { useEffect } from "react";
 import MessageBox from "../MessageBox";
 import { useSelector } from "react-redux";
 import { convertTimestampFull } from "utils";
+import PropTypes from "prop-types";
+
+ChatContent.propTypes = {
+  messageList: PropTypes.array,
+};
+
+ChatContent.defaultProps = {
+  messageList: [],
+};
 
 const useStyles = makeStyles({
   root: {
@@ -29,9 +38,7 @@ const useStyles = makeStyles({
 function ChatContent(props) {
   const classes = useStyles();
   const { currentUserId } = useSelector((state) => state.user);
-  const { messageList } = useSelector(
-    (state) => state.message
-  );
+  const { messageList } = props;
   const scrollToBottom = (id) => {
     const element = document.getElementById(id);
     element.scrollIntoView();

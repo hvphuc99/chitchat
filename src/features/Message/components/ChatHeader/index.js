@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { makeStyles, Box } from "@material-ui/core";
 import Avatar from "../Avatar";
 import IconButton from "custom-fields/IconButton";
-import { useSelector } from "react-redux";
 
 ChatHeader.propTypes = {
   name: PropTypes.string.isRequired,
