@@ -144,15 +144,40 @@ const userApi = {
       db.ref("/users/" + userId)
         .once("value")
         .then((userInfo) => {
-          const { firstName, lastName, picture } = userInfo.val();
+          const { firstName, lastName, picture, sendFriendRequests, receiveFriendRequests, friends } = userInfo.val();
           resolve({
             firstName,
             lastName,
             picture,
+            sendFriendRequests,
+            receiveFriendRequests,
+            friends,
           });
         })
         .catch((err) => reject(err));
     });
+  },
+  searchUser: (searchTerm) => {
+    return new Promise((resolve, reject) => {
+      searchTerm = searchTerm.trim();
+      searchTerm = searchTerm.replace(/\s\s+/g, ' ');
+      if (!searchTerm) resolve([]);
+      db.ref("/users").once("value").then((queryUsers) => {
+        const users = queryUsers.val();
+        let userList = [];
+        for (let userKey in users) {
+          const user = users[userKey];
+          let name = user.firstName + " " + user.lastName;
+          name = name.trim();
+          name = name.replace(/\s\s+/g, ' ');
+          name = name.toLowerCase();
+          if (name.indexOf(searchTerm) !== -1) {
+            userList = userList.concat(user);
+          }
+        }
+        resolve(userList);
+      })
+    })
   },
 };
 export default userApi;

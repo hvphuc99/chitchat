@@ -1,34 +1,43 @@
 import React from "react";
-import { Button, makeStyles, Modal, Container } from "@material-ui/core";
+import { Button, makeStyles, TextField, InputAdornment } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { useState } from "react";
-import { Formik, Form, FastField } from "formik";
-import InputField from "custom-fields/InputField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+import { useRef } from "react";
+import userApi from "api/userApi";
+import SearchResult from "../SearchResult";
+import { useSelector } from "react-redux";
+import Loading from "components/Loading";
+import { useEffect } from "react";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 const useStyles = makeStyles({
   root: {
-    marginBottom: "30px",
+    "& .MuiDialog-paper": {
+      position: "absolute",
+      top: "10%",
+      width: "40%",
+    },
+    "& .MuiDialog-paperWidthSm": {
+      maxWidth: "none",
+    },
   },
   searchButton: {
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
     height: "50px",
-    backgroundColor: "transparent",
-    borderRadius: "10px",
-  },
-  searchForm: {
-    position: "absolute",
-    left: "50%",
-    top: "10%",
-    transform: "translateX(-50%)",
-    width: "50%",
-    height: "100px",
-    backgroundColor: "white",
-    boxShadow:
-      "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
-    "&:focus": {
-      outline: "0",
+    marginBottom: "30px",
+    borderRadius: "15px",
+    color: "#1c9dea",
+    "&:hover": {
+      backgroundColor: "transparent",
     },
   },
 });
@@ -36,55 +45,136 @@ const useStyles = makeStyles({
 function Search(props) {
   const classes = useStyles();
 
-  const [showSearch, setShowSearch] = useState(false);
+  const { currentUserId } = useSelector((state) => state.user);
 
-  const handleOpenSearchForm = () => {
-    setShowSearch(true);
+  const [showSearchForm, setShowSearchForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [userList, setUserList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const typingTimeoutRef = useRef(null);
+
+  const handleClickOpenSearchForm = () => {
+    setShowSearchForm(true);
   };
 
-  const handleCloseSearchForm = () => {
-    setShowSearch(false);
+  const handleClickCloseSearchForm = () => {
+    setShowSearchForm(false);
   };
 
-  const initialValues = {
-    query: "",
+  const handleOnChangeSearchForm = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    setUserList([]);
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      const formValues = {
+        searchTerm: value,
+      };
+      handleSubmitSearchForm(formValues);
+    }, 300);
+  };
+
+  const handleSubmitSearchForm = (formValues) => {
+    const { searchTerm } = formValues;
+    if (!searchTerm) return;
+    setLoading(true);
+    userApi.searchUser(searchTerm).then((list) => {
+      userApi.getUserInfo(currentUserId).then((userInfo) => {
+        const { sendFriendRequests, friends } = userInfo;
+        const newList = list.map((user) => {
+          const { id, firstName, lastName, picture } = user;
+          let sendRequest = false;
+          let friend = false;
+          for (let userIdKey in sendFriendRequests) {
+            const userId = sendFriendRequests[userIdKey];
+            if (userId === id) {
+              sendRequest = true;
+              break;
+            }
+          }
+          if (!sendRequest) {
+            for (let userIdKey in friends) {
+              const userId = friends[userIdKey];
+              if (userId === id) {
+                friend = true;
+                break;
+              }
+            }
+          }
+          return {
+            firstName,
+            lastName,
+            picture,
+            sendRequest,
+            friend,
+          };
+        });
+        setUserList(newList);
+        setLoading(false);
+      });
+    });
   };
 
   return (
-    <div className={classes.root}>
+    <>
       <Button
         className={classes.searchButton}
         variant="contained"
         color="secondary"
         startIcon={<SearchIcon />}
-        onClick={handleOpenSearchForm}
+        onClick={handleClickOpenSearchForm}
       >
         Search
       </Button>
-
-      <Modal open={showSearch} onClose={handleCloseSearchForm}>
-        <Container className={classes.searchForm}>
-          <Formik initialValues={initialValues}>
-            {(formikProps) => {
-              const { values } = formikProps;
-
-              return (
-                <Form>
-                  <FastField
-                    name="query"
-                    component={InputField}
-                    placeholder="Search"
-                    value={values.query}
-                    margin="normal"
-                    autoFocus={true}
-                  />
-                </Form>
-              );
+      <Dialog
+        className={classes.root}
+        open={showSearchForm}
+        TransitionComponent={Transition}
+        onClose={handleClickCloseSearchForm}
+      >
+        <DialogTitle>
+          <TextField
+            name="searchTerm"
+            placeholder="Search"
+            value={searchTerm}
+            autoFocus="true"
+            autoComplete="off"
+            margin="normal"
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
             }}
-          </Formik>
-        </Container>
-      </Modal>
-    </div>
+            onChange={handleOnChangeSearchForm}
+          />
+        </DialogTitle>
+        <DialogContent>
+          {loading ? (
+            <Loading />
+          ) : (
+            userList.map(
+              ({ firstName, lastName, picture, sendRequest, friend }) => (
+                <SearchResult
+                  firstName={firstName}
+                  lastName={lastName}
+                  picture={picture}
+                  sendRequest={sendRequest}
+                  friend={friend}
+                />
+              )
+            )
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
