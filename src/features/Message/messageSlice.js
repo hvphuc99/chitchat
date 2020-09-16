@@ -8,6 +8,7 @@ const initialState = {
   showChatForm: false,
   loadingMessageList: false,
   selectedOption: ALL_MESSAGE_OPTION,
+  numberOfFriendRequest: 0,
 };
 
 const messageSlice = createSlice({
@@ -41,6 +42,9 @@ const messageSlice = createSlice({
     setSelectedOption: (state, action) => {
       state.selectedOption = action.payload;
     },
+    setNumberOfFriendRequest: (state, action) => {
+      state.numberOfFriendRequest = action.payload;
+    },
     resetMessage: (state, action) => (
       initialState
     )
@@ -59,5 +63,6 @@ export const {
   removeCurrentGroupChatPicture,
   setSelectedOption,
   resetMessage,
+  setNumberOfFriendRequest,
 } = actions;
 export default reducer;

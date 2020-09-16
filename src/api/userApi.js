@@ -30,25 +30,28 @@ const userApi = {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((res) => {
-          const {isNewUser} = res.additionalUserInfo;
+          const { isNewUser } = res.additionalUserInfo;
           if (isNewUser) {
             const user = res.user;
             const id = user.uid;
             user.sendEmailVerification();
-            db.ref("/users/" + id).set({
-              id,
-              firstName,
-              lastName,
-              picture: "",
-            }, (err) => {
-              if (err) {
-                reject("An error happened");
-              } else {
-                resolve(true);
+            db.ref("/users/" + id).set(
+              {
+                id,
+                firstName,
+                lastName,
+                picture: "",
+              },
+              (err) => {
+                if (err) {
+                  reject("An error happened");
+                } else {
+                  resolve(true);
+                }
               }
-            });
+            );
           } else {
-            reject("Email address is already used")
+            reject("Email address is already used");
           }
         })
         .catch((err) => {
@@ -79,16 +82,19 @@ const userApi = {
             picture,
           } = res.additionalUserInfo.profile;
           if (isNewUser) {
-            db.ref("/users/" + id).set({
-              id,
-              firstName: given_name,
-              lastName: family_name,
-              picture,
-            }, (err) => {
-              if (err) {
-                reject("An error happened");
+            db.ref("/users/" + id).set(
+              {
+                id,
+                firstName: given_name,
+                lastName: family_name,
+                picture,
+              },
+              (err) => {
+                if (err) {
+                  reject("An error happened");
+                }
               }
-            });
+            );
           }
           user.getIdToken().then((token) => {
             resolve({
@@ -144,8 +150,17 @@ const userApi = {
       db.ref("/users/" + userId)
         .once("value")
         .then((userInfo) => {
-          const { firstName, lastName, picture, sendFriendRequests, receiveFriendRequests, friends } = userInfo.val();
+          const {
+            id,
+            firstName,
+            lastName,
+            picture,
+            sendFriendRequests,
+            receiveFriendRequests,
+            friends,
+          } = userInfo.val();
           resolve({
+            id,
             firstName,
             lastName,
             picture,
@@ -160,24 +175,109 @@ const userApi = {
   searchUser: (searchTerm) => {
     return new Promise((resolve, reject) => {
       searchTerm = searchTerm.trim();
-      searchTerm = searchTerm.replace(/\s\s+/g, ' ');
+      searchTerm = searchTerm.replace(/\s\s+/g, " ");
       if (!searchTerm) resolve([]);
-      db.ref("/users").once("value").then((queryUsers) => {
-        const users = queryUsers.val();
-        let userList = [];
-        for (let userKey in users) {
-          const user = users[userKey];
-          let name = user.firstName + " " + user.lastName;
-          name = name.trim();
-          name = name.replace(/\s\s+/g, ' ');
-          name = name.toLowerCase();
-          if (name.indexOf(searchTerm) !== -1) {
-            userList = userList.concat(user);
+      db.ref("/users")
+        .once("value")
+        .then((queryUsers) => {
+          const users = queryUsers.val();
+          let userList = [];
+          for (let userKey in users) {
+            const user = users[userKey];
+            let name = user.firstName + " " + user.lastName;
+            name = name.trim();
+            name = name.replace(/\s\s+/g, " ");
+            name = name.toLowerCase();
+            if (name.indexOf(searchTerm) !== -1) {
+              userList = userList.concat(user);
+            }
           }
+          resolve(userList);
+        });
+    });
+  },
+  sendFriendRequest: (idFrom, idTo) => {
+    const timestamp = Date.now();
+    return new Promise((resolve, reject) => {
+      db.ref("/users/" + idFrom + "/sendFriendRequests/" + idTo).set(
+        {
+          id: idTo,
+          timestamp,
+        },
+        (err) => {
+          if (err) reject("An error happened");
         }
-        resolve(userList);
-      })
-    })
+      );
+      db.ref("/users/" + idTo + "/receiveFriendRequests/" + idFrom).set(
+        {
+          id: idFrom,
+          timestamp,
+        },
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      resolve("Send request successful");
+    });
+  },
+  removeFriendRequest: (idFrom, idTo) => {
+    return new Promise((resolve, reject) => {
+      db.ref("/users/" + idFrom + "/sendFriendRequests/" + idTo).remove(
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      db.ref("/users/" + idTo + "/receiveFriendRequests/" + idFrom).remove(
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      resolve("Cancel request successful");
+    });
+  },
+  friendRequestsListener: (userId, handleData) => {
+    return db
+      .ref("/users/" + userId + "/receiveFriendRequests")
+      .on("value", handleData);
+  },
+  acceptFriendRequest: (userId, senderId) => {
+    return new Promise((resolve, reject) => {
+      db.ref("/users/" + userId + "/friends/" + senderId).set(
+        senderId,
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      db.ref("/users/" + senderId + "/friends/" + userId).set(userId, (err) => {
+        if (err) reject("An error happened");
+      });
+      db.ref("/users/" + userId + "/receiveFriendRequests/" + senderId).remove(
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      db.ref("/users/" + senderId + "/sendFriendRequests/" + userId).remove(
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      resolve("Accept request successful");
+    });
+  },
+  deleteFriendRequest: (userId, senderId) => {
+    return new Promise((resolve, reject) => {
+      db.ref("/users/" + userId + "/receiveFriendRequests/" + senderId).remove(
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      db.ref("/users/" + senderId + "/sendFriendRequests/" + userId).remove(
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      resolve("Delete request successful");
+    });
   },
 };
 export default userApi;

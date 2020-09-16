@@ -102,7 +102,7 @@ function IconButton(props) {
         {...other}
       >
         {badgeContent ? (
-          <StylesLibrary.Badge badgeContent={4} color="error">
+          <StylesLibrary.Badge badgeContent={badgeContent} color="error">
             <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} />
           </StylesLibrary.Badge>
         ) : (

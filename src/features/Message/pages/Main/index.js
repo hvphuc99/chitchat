@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
 import NavigateBar from "features/Message/components/NavigateBar";
 import MenuChat from "features/Message/components/MenuChat";
 import ChatForm from "features/Message/components/ChatForm";
@@ -12,6 +12,7 @@ import Loading from "components/Loading";
 import Search from "features/Message/components/Search";
 import Banner from "features/Message/components/Banner";
 import * as options from "constants/index";
+import MenuFriendRequest from "features/Message/components/MenuFriendRequest";
 
 const useStyles = makeStyles({
   root: {
@@ -39,6 +40,10 @@ const useStyles = makeStyles({
     alignItems: "center",
     height: "100%",
   },
+  requestTitle: {
+    margin: "auto",
+    marginBottom: "30px",
+  }
 });
 
 function Main(props) {
@@ -48,7 +53,10 @@ function Main(props) {
     (state) => state.message
   );
   const [groupChats, setGroupChats] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [friendRequests, setFriendRequests] = useState([]);
+  const [loadingAllMessages, setLoadingAllMessages] = useState(true);
+  const [loadingFriendRequests, setLoadingFriendRequests] = useState(true);
+  const [numberOfFriendRequest, setNumberOfFriendRequest] = useState(0);
 
   const renderOption = () => {
     let element = null;
@@ -58,7 +66,11 @@ function Main(props) {
         element = (
           <>
             <Search />
-            {loading ? <Loading /> : <MenuChat groupChats={groupChats} />}
+            {loadingAllMessages ? (
+              <Loading />
+            ) : (
+              <MenuChat groupChats={groupChats} />
+            )}
           </>
         );
         break;
@@ -66,89 +78,111 @@ function Main(props) {
         element = <p>Contact list</p>;
         break;
       case options.NOTIFICATION_OPTION:
-        element = <p>notification</p>;
+        element = (
+          <>
+            <Typography variant="h5" className={classes.requestTitle}>
+              Friend Requests
+            </Typography>
+            {loadingFriendRequests ? (
+              <Loading />
+            ) : (
+              <MenuFriendRequest friendRequests={friendRequests} />
+            )}
+          </>
+        );
         break;
       case options.PROFILE_OPTION:
         element = <p>profile</p>;
         break;
       default:
-        element = (
-          <>
-            <Search />
-            {loading ? <Loading /> : <MenuChat groupChats={groupChats} />}
-          </>
-        );
     }
     return element;
   };
 
   useEffect(() => {
-    if (selectedOption === options.ALL_MESSAGE_OPTION) {
-      messageApi.groupChatsListener(currentUserId, (snapshot) => {
-        if (!snapshot.val()) {
-          setLoading(false);
-          return;
-        }
+    messageApi.groupChatsListener(currentUserId, (snapshot) => {
+      if (!snapshot.val()) {
+        setLoadingAllMessages(false);
+        return;
+      }
 
-        const groupChats = snapshot.val();
-        let belongGroups = [];
-        for (let groupChatKey in groupChats) {
-          const { members } = groupChats[groupChatKey];
-          for (let memberKey in members) {
-            if (members[memberKey] === currentUserId) {
-              belongGroups = belongGroups.concat(groupChats[groupChatKey]);
-            }
+      const groupChats = snapshot.val();
+      let belongGroups = [];
+      for (let groupChatKey in groupChats) {
+        const { members } = groupChats[groupChatKey];
+        for (let memberKey in members) {
+          if (members[memberKey] === currentUserId) {
+            belongGroups = belongGroups.concat(groupChats[groupChatKey]);
           }
         }
+      }
 
-        if (belongGroups.length === 0) {
-          setLoading(false);
-          return;
-        }
+      if (belongGroups.length === 0) {
+        setLoadingAllMessages(false);
+        return;
+      }
 
-        let standardizedList = [];
+      let standardizedList = [];
 
-        belongGroups.forEach((groupChat) => {
-          const { id, name, members } = groupChat;
-          if (members.length === 2) {
-            let uid = members[0] === currentUserId ? members[1] : members[0];
-            userApi.getUserInfo(uid).then((userInfo) => {
-              const { firstName, lastName, picture } = userInfo;
-              messageApi.getLastMessage(id).then((message) => {
-                if (!message) {
-                  standardizedList = standardizedList.concat({
-                    id,
-                    name: firstName + " " + lastName,
-                  });
-                } else {
-                  const { senderId, content, timestamp } = message;
-                  standardizedList = standardizedList.concat({
-                    id,
-                    name: firstName + " " + lastName,
-                    senderId,
-                    picture,
-                    content,
-                    timestamp,
-                  });
-                }
-                if (standardizedList.length === belongGroups.length) {
-                  setGroupChats(
-                    standardizedList.sort((firstMess, secondMess) => {
-                      return secondMess.timestamp > firstMess.timestamp
-                        ? 1
-                        : -1;
-                    })
-                  );
-                  setLoading(false);
-                }
-              });
-            });
-          } else {
+      belongGroups.forEach((groupChat) => {
+        const { id, name, members } = groupChat;
+        if (members.length === 2) {
+          let uid = members[0] === currentUserId ? members[1] : members[0];
+          userApi.getUserInfo(uid).then((userInfo) => {
+            const { firstName, lastName, picture } = userInfo;
             messageApi.getLastMessage(id).then((message) => {
               if (!message) {
                 standardizedList = standardizedList.concat({
                   id,
+                  name: firstName + " " + lastName,
+                });
+              } else {
+                const { senderId, content, timestamp } = message;
+                standardizedList = standardizedList.concat({
+                  id,
+                  name: firstName + " " + lastName,
+                  senderId,
+                  picture,
+                  content,
+                  timestamp,
+                });
+              }
+              if (standardizedList.length === belongGroups.length) {
+                setGroupChats(
+                  standardizedList.sort((firstMess, secondMess) => {
+                    return secondMess.timestamp > firstMess.timestamp ? 1 : -1;
+                  })
+                );
+                setLoadingAllMessages(false);
+              }
+            });
+          });
+        } else {
+          messageApi.getLastMessage(id).then((message) => {
+            if (!message) {
+              standardizedList = standardizedList.concat({
+                id,
+                name,
+              });
+              if (standardizedList.length === belongGroups.length) {
+                setGroupChats(
+                  standardizedList.sort((firstMess, secondMess) => {
+                    return secondMess.timestamp > firstMess.timestamp ? 1 : -1;
+                  })
+                );
+                setLoadingAllMessages(false);
+              }
+            } else {
+              const { senderId, content, timestamp } = message;
+              userApi.getUserInfo(senderId).then((userInfo) => {
+                const { firstName, lastName } = userInfo;
+                standardizedList = standardizedList.concat({
+                  id,
                   name,
+                  senderId,
+                  senderName: firstName + " " + lastName,
+                  content,
+                  timestamp,
                 });
                 if (standardizedList.length === belongGroups.length) {
                   setGroupChats(
@@ -158,44 +192,57 @@ function Main(props) {
                         : -1;
                     })
                   );
-                  setLoading(false);
+                  setLoadingAllMessages(false);
                 }
-              } else {
-                const { senderId, content, timestamp } = message;
-                userApi.getUserInfo(senderId).then((userInfo) => {
-                  const { firstName, lastName } = userInfo;
-                  standardizedList = standardizedList.concat({
-                    id,
-                    name,
-                    senderId,
-                    senderName: firstName + " " + lastName,
-                    content,
-                    timestamp,
-                  });
-                  if (standardizedList.length === belongGroups.length) {
-                    setGroupChats(
-                      standardizedList.sort((firstMess, secondMess) => {
-                        return secondMess.timestamp > firstMess.timestamp
-                          ? 1
-                          : -1;
-                      })
-                    );
-                    setLoading(false);
-                  }
-                });
-              }
-            });
+              });
+            }
+          });
+        }
+      });
+    });
+
+    userApi.friendRequestsListener(currentUserId, (snapshot) => {
+      if (!snapshot.val()) {
+        setFriendRequests([]);
+        setLoadingFriendRequests(false);
+        setNumberOfFriendRequest(0);
+        return;
+      }
+
+      const requests = snapshot.val();
+
+      let list = [];
+
+      for (let userIdKey in requests) {
+        const {id, timestamp} = requests[userIdKey];
+        userApi.getUserInfo(id).then((userInfo) => {
+          const { id, firstName, lastName, picture } = userInfo;
+          const name = firstName + " " + lastName;
+
+          list = list.concat({
+            id,
+            name,
+            picture,
+            timestamp,
+          });
+
+          if (list.length === Object.keys(requests).length) {
+            setFriendRequests(list.sort((firstRequest, secondRequest) => {
+              return secondRequest.timestamp > firstRequest.timestamp ? -1 : 1;
+            }));
+            setNumberOfFriendRequest(list.length);
+            setLoadingFriendRequests(false);
           }
         });
-      });
-    }
-  }, [selectedOption]);
+      }
+    });
+  }, []);
 
   return (
     <Grid container className={classes.root}>
       <Grid container item sm={3} className={classes.leftSideBar}>
         <Grid item sm={2} className={classes.navigate}>
-          <NavigateBar />
+          <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
         </Grid>
         <Grid item sm={10} className={classes.menu}>
           {renderOption()}

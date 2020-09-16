@@ -56,6 +56,7 @@ function NavigateBar(props) {
   const history = useHistory();
   const { selectedOption } = useSelector((state) => state.message);
   const dispatch = useDispatch();
+  const { numberOfFriendRequest } = props;
 
   const handleClickLogout = () => {
     userApi
@@ -83,7 +84,7 @@ function NavigateBar(props) {
   };
 
   const handleClickLogoButton = () => {
-    dispatch(setShowChatForm(false));
+    dispatch(resetMessage());
     history.push("/");
   };
 
@@ -132,7 +133,7 @@ function NavigateBar(props) {
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
               message="Notification"
-              badgeContent="4"
+              badgeContent={numberOfFriendRequest}
               selected={selectedOption === options.NOTIFICATION_OPTION}
               onClick={(event) => handleClickListItem(event, options.NOTIFICATION_OPTION)}
             />

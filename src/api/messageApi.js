@@ -23,7 +23,6 @@ const messageApi = {
   messageListListener: (groupChatId, handleData) => {
     return db
       .ref("/groupChats/" + groupChatId + "/messages")
-      .orderByChild("timestamp")
       .on("value", handleData);
   },
   sendMessage: (senderId, groupChatId, content, type) => {
