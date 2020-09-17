@@ -6,10 +6,16 @@ import * as StylesLibrary from "@material-ui/core";
 Avatar.propTypes = {
   src: PropTypes.string.isRequired,
   active: PropTypes.bool,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+  cursorHover: PropTypes.bool,
 };
 
 Avatar.defaultProps = {
   active: false,
+  onClick: null,
+  className: "",
+  cursorHover: false,
 };
 
 const StyledBadge = withStyles((theme) => ({
@@ -46,11 +52,16 @@ const useStyles = makeStyles({
     height: "60px",
     width: "60px",
   },
+  cursorHover: {
+    "&:hover": {
+      cursor: "pointer",
+    },
+  }
 });
 
 function Avatar(props) {
   const classes = useStyles();
-  const { src, active } = props;
+  const { src, active, onClick, cursorHover } = props;
 
   return (
     <>
@@ -63,10 +74,10 @@ function Avatar(props) {
           }}
           variant="dot"
         >
-          <StylesLibrary.Avatar src={src} className={classes.root} />
+          <StylesLibrary.Avatar src={src} className={cursorHover ? classes.root + " " + classes.cursorHover : classes.root} onClick={onClick}/>
         </StyledBadge>
       ) : (
-        <StylesLibrary.Avatar src={src} className={classes.root} />
+        <StylesLibrary.Avatar src={src} className={cursorHover ? classes.root + " " + classes.cursorHover : classes.root} onClick={onClick}/>
       )}
     </>
   );

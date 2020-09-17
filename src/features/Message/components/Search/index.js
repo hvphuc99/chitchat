@@ -4,6 +4,7 @@ import {
   makeStyles,
   TextField,
   InputAdornment,
+  Typography,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { useState } from "react";
@@ -14,9 +15,10 @@ import Slide from "@material-ui/core/Slide";
 import { useRef } from "react";
 import userApi from "api/userApi";
 import SearchResult from "../SearchResult";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Loading from "components/Loading";
 import * as options from "constants/index";
+import { setCurrentGroupChatId, setCurrentGroupChatName, setCurrentGroupChatPicture, setLoadingMessageList, setShowChatForm } from "features/Message/messageSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -45,10 +47,14 @@ const useStyles = makeStyles({
       backgroundColor: "transparent",
     },
   },
+  notFoundContainer: {
+    textAlign: "center",
+  },
 });
 
 function Search(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const { currentUserId } = useSelector((state) => state.user);
 
@@ -56,8 +62,14 @@ function Search(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [userList, setUserList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   const typingTimeoutRef = useRef(null);
+
+  const resetSearchForm = () => {
+    setSearchTerm("");
+    setUserList([]);
+  }
 
   const handleClickOpenSearchForm = () => {
     setShowSearchForm(true);
@@ -65,8 +77,7 @@ function Search(props) {
 
   const handleClickCloseSearchForm = () => {
     setShowSearchForm(false);
-    setSearchTerm("");
-    setUserList([]);
+    resetSearchForm();
   };
 
   const handleOnChangeSearchForm = (e) => {
@@ -119,6 +130,7 @@ function Search(props) {
 
   const handleSubmitSearchForm = (formValues) => {
     const { searchTerm } = formValues;
+    setNotFound(false);
     if (!searchTerm) {
       setUserList([]);
       setLoading(false);
@@ -171,9 +183,73 @@ function Search(props) {
           };
         });
         setUserList(newList);
+        if (newList.length === 0) setNotFound(true);
         setLoading(false);
       });
     });
+  };
+
+  const renderResult = () => {
+    if (loading) return <Loading />;
+    if (userList.length === 0 && searchTerm === "") return;
+    if (notFound) {
+      return (
+        <div className={classes.notFoundContainer}>
+          <Typography variant="h6">No results found</Typography>
+          <Typography variant="subtitle1">Try different keywords or remove search filters</Typography>
+        </div>
+      )
+    }
+    return userList.map(
+      ({
+        id,
+        firstName,
+        lastName,
+        picture,
+        currentOption,
+        afterOption,
+        self,
+      }) => (
+        <SearchResult
+          userId={id}
+          firstName={firstName}
+          lastName={lastName}
+          picture={picture}
+          currentOption={currentOption}
+          self={self}
+          handleClickAddFriend={handleClickAddFriend}
+          handleClickCancelRequest={handleClickCancelRequest}
+          handleClickAcceptRequest={handleClickAcceptRequest}
+          handleClickUser={handleClickUser}
+          handleUnfriend={handleUnfriend}
+        />
+      )
+    );
+  };
+
+  const handleClickUser = (userId, name, picture) => {
+    let groupId;
+    if (userId < currentUserId) {
+      groupId = userId + "-" + currentUserId;
+    } else {
+      groupId = currentUserId + "-" + userId;
+    }
+    dispatch(setCurrentGroupChatId(groupId));
+    dispatch(setCurrentGroupChatName(name));
+    dispatch(setCurrentGroupChatPicture(picture));
+    dispatch(setLoadingMessageList(true));
+    setShowSearchForm(false);
+    resetSearchForm();
+    dispatch(setShowChatForm(true));
+  }
+
+  const handleUnfriend = (userId) => {
+    userApi
+      .removeFriend(currentUserId, userId)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -212,35 +288,7 @@ function Search(props) {
             onChange={handleOnChangeSearchForm}
           />
         </DialogTitle>
-        <DialogContent>
-          {loading ? (
-            <Loading />
-          ) : (
-            userList.map(
-              ({
-                id,
-                firstName,
-                lastName,
-                picture,
-                currentOption,
-                afterOption,
-                self,
-              }) => (
-                <SearchResult
-                  userId={id}
-                  firstName={firstName}
-                  lastName={lastName}
-                  picture={picture}
-                  currentOption={currentOption}
-                  self={self}
-                  handleClickAddFriend={handleClickAddFriend}
-                  handleClickCancelRequest={handleClickCancelRequest}
-                  handleClickAcceptRequest={handleClickAcceptRequest}
-                />
-              )
-            )
-          )}
-        </DialogContent>
+        <DialogContent>{renderResult()}</DialogContent>
       </Dialog>
     </>
   );

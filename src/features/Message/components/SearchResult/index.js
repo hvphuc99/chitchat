@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, Grid, Avatar, Button, Icon } from "@material-ui/core";
+import { makeStyles, Grid, Avatar, Button, Icon, withStyles, Menu, MenuItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import { useState } from "react";
 import * as options from "constants/index";
 
@@ -14,6 +14,8 @@ SearchResult.propTypes = {
   handleClickAddFriend: PropTypes.func,
   handleClickCancelRequest: PropTypes.func,
   handleClickAcceptRequest: PropTypes.func,
+  handleClickUser: PropTypes.func,
+  handleUnfriend: PropTypes.func,
 };
 
 SearchResult.defaultProps = {
@@ -26,6 +28,8 @@ SearchResult.defaultProps = {
   handleClickAddFriend: null,
   handleClickCancelRequest: null,
   handleClickAcceptRequest: null,
+  handleClickUser: null,
+  handleUnfriend: null,
 };
 
 const useStyles = makeStyles({
@@ -56,7 +60,38 @@ const useStyles = makeStyles({
     backgroundColor: "#D8DADF",
     marginLeft: "20px",
   },
+  name: {
+    "&:hover": {
+      textDecoration: "underline",
+      cursor: "pointer",
+    }
+  },
+  avatar: {
+    "&:hover": {
+      cursor: "pointer",
+    }
+  }
 });
+
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "center",
+    }}
+    {...props}
+  />
+));
 
 function SearchResult(props) {
   const classes = useStyles();
@@ -70,8 +105,24 @@ function SearchResult(props) {
     handleClickAddFriend,
     handleClickCancelRequest,
     handleClickAcceptRequest,
+    handleClickUser,
+    handleUnfriend,
   } = props;
   const [option, setOption] = useState(currentOption);
+  const [showUnfriend, setShowUnfriend] = useState(null);
+
+  const handleClickFriendOption = (event) => {
+    setShowUnfriend(event.currentTarget);
+  };
+
+  const closeFriendOption = () => {
+    setShowUnfriend(null);
+  };
+
+  const onClickUnfriend = () => {
+    handleUnfriend(userId);
+    setOption(options.ADD_FRIEND_OPTION);
+  }
 
   const renderAddFriendOption = () => {
     const content = "Add Friend";
@@ -120,17 +171,33 @@ function SearchResult(props) {
     const icon = (
       <Icon className="fas fa-user-check" style={{ width: 30, height: 20 }} />
     );
-    const onClick = () => {
-    };
     return (
-      <Button
-        variant="contained"
-        startIcon={icon}
-        className={classes.optionButton}
-        onClick={onClick}
+      <>
+        <Button
+          variant="contained"
+          startIcon={icon}
+          className={classes.optionButton}
+          onClick={handleClickFriendOption}
+        >
+          {content}
+        </Button>
+        <StyledMenu
+        anchorEl={showUnfriend}
+        keepMounted
+        open={Boolean(showUnfriend)}
+        onClose={closeFriendOption}
       >
-        {content}
-      </Button>
+        <MenuItem onClick={onClickUnfriend}>
+          <ListItemIcon>
+            <Icon
+              className="fas fa-user-times"
+              style={{ width: 30, height: 20 }}
+            />
+          </ListItemIcon>
+          <ListItemText primary="Unfriend" />
+        </MenuItem>
+      </StyledMenu>
+      </>
     );
   };
 
@@ -165,11 +232,16 @@ function SearchResult(props) {
       return renderAcceptRequestOption();
   };
 
+  const onClickResult = () => {
+    const name = firstName + " " + lastName;
+    handleClickUser(userId, name, picture);
+  }
+
   return (
     <Grid container className={classes.root}>
       <Grid item sm={7} className={classes.info}>
-        <Avatar src={picture} />
-        <h5>{firstName + " " + lastName}</h5>
+        <Avatar className={classes.avatar} src={picture} onClick={onClickResult}/>
+        <h5 className={classes.name} onClick={onClickResult}>{firstName + " " + lastName}</h5>
       </Grid>
       <Grid item sm={5} className={classes.option}>
         {renderOption()}

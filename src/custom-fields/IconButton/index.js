@@ -70,6 +70,11 @@ function IconButton(props) {
       "&:hover": {
         backgroundColor: backgroundColorHover,
       },
+      "& .MuiIcon-root": {
+        width: "30px",
+        height: "25px",
+        margin: "2px 0px 2px 0px",
+      }
     },
     popover: {
       pointerEvents: "none",

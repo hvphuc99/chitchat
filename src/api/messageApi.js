@@ -15,7 +15,7 @@ const messageApi = {
             resolve("");
           } else {
             const lastMessage = Object.values(message.val())[0];
-          resolve(lastMessage);
+            resolve(lastMessage);
           }
         });
     });
@@ -28,12 +28,41 @@ const messageApi = {
   sendMessage: (senderId, groupChatId, content, type) => {
     const timestamp = Date.now();
     return new Promise((resolve, reject) => {
-      db.ref("/groupChats/" + groupChatId + "/messages/" + timestamp).set({
-        senderId,
-        content,
-        type,
-        timestamp,
-      });
+      db.ref("/groupChats/" + groupChatId)
+        .once("value")
+        .then((groupChat) => {
+          if (!groupChat.val()) {
+            let members = [];
+            members[0] = groupChatId.slice(0, groupChatId.indexOf("-"));
+            members[1] = groupChatId.slice(groupChatId.indexOf("-") + 1);
+            db.ref("/groupChats/" + groupChatId).set(
+              {
+                id: groupChatId,
+                members,
+                name: "",
+              },
+              (err) => {
+                db.ref(
+                  "/groupChats/" + groupChatId + "/messages/" + timestamp
+                ).set({
+                  senderId,
+                  content,
+                  type,
+                  timestamp,
+                });
+              }
+            );
+          } else {
+            db.ref("/groupChats/" + groupChatId + "/messages/" + timestamp).set(
+              {
+                senderId,
+                content,
+                type,
+                timestamp,
+              }
+            );
+          }
+        });
     });
   },
 };

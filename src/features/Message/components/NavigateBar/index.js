@@ -9,7 +9,6 @@ import { removeToken, removeCurrentUserId } from "app/userSlice";
 import userApi from "api/userApi";
 import { setNotify } from "app/notifySlice";
 import {
-  setShowChatForm,
   setSelectedOption,
   resetMessage,
 } from "features/Message/messageSlice";
@@ -104,7 +103,7 @@ function NavigateBar(props) {
         <div className="navigateBarBody">
           <div className="navigateIcon">
             <IconButton
-              icon="fas fa-comments"
+              icon="fas fa-comment-dots"
               iconColor="#223645"
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
@@ -116,26 +115,26 @@ function NavigateBar(props) {
 
           <div className="navigateIcon">
             <IconButton
-              icon="fa fa-users"
+              icon="fas fa-address-book"
               iconColor="#223645"
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
-              message="Contact List"
-              selected={selectedOption === options.CONTACT_LIST_OPTION}
-              onClick={(event) => handleClickListItem(event, options.CONTACT_LIST_OPTION)}
+              message="Friends"
+              selected={selectedOption === options.FRIENDs_OPTION}
+              onClick={(event) => handleClickListItem(event, options.FRIENDs_OPTION)}
             />
           </div>
 
           <div className="navigateIcon">
             <IconButton
-              icon="fa fa-bell"
+              icon="fas fa-user-plus"
               iconColor="#223645"
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"
-              message="Notification"
+              message="Friend Requests"
               badgeContent={numberOfFriendRequest}
-              selected={selectedOption === options.NOTIFICATION_OPTION}
-              onClick={(event) => handleClickListItem(event, options.NOTIFICATION_OPTION)}
+              selected={selectedOption === options.FRIEND_REQUESTS_OPTION}
+              onClick={(event) => handleClickListItem(event, options.FRIEND_REQUESTS_OPTION)}
             />
           </div>
         </div>
@@ -143,7 +142,7 @@ function NavigateBar(props) {
         <div className="navigateBarFooter">
           <div className="navigateIcon">
             <IconButton
-              icon="fas fa-user"
+              icon="fas fa-user-edit"
               iconColor="#223645"
               backgroundColor="#eff1f2"
               backgroundColorHover="#D3D8DB"

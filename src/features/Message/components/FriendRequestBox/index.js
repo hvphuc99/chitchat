@@ -24,22 +24,15 @@ const useStyles = makeStyles({
     alignItems: "center",
     marginBottom: "2px",
   },
-  overviewMessage: {
+  content: {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    "& h5": {
-      fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
-      fontWeight: "700",
-      textTransform: "none",
-      color: "#223645",
-      margin: "0px 0px 10px 16px",
-    },
   },
   buttonContainer: {
     display: "flex",
     justifyContent: "center",
-    width: "90%",
+    width: "100%",
     "& .delete-button": {
       color: "#1C1F22",
       backgroundColor: "#D8DADF",
@@ -51,11 +44,25 @@ const useStyles = makeStyles({
       marginLeft: "16px",
     },
   },
-  date: {
+  header: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+    "& h5": {
+      fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
+      fontWeight: "700",
+      textTransform: "none",
+      color: "#223645",
+      margin: "0px 0px 0px 16px",
+    },
     "& h6": {
       fontSize: "calc(11px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
       fontWeight: "400",
       color: "#647589",
+      margin: "0px 0px 0px 0px",
+      height: "fit-content",
     },
   },
 });
@@ -84,8 +91,11 @@ function FriendRequestBox(props) {
       <Grid item sm={2}>
         <Avatar src={avatar} />
       </Grid>
-      <Grid item sm={8} className={classes.overviewMessage}>
-        <h5>{name}</h5>
+      <Grid item sm={10} className={classes.content}>
+        <div className={classes.header}>
+          <h5>{name}</h5>
+          <h6>{convertTimestamp(timestamp)}</h6>
+        </div>
         <div className={classes.buttonContainer}>
           <Button
             className="navigateLoginBtn confirm-button"
@@ -107,9 +117,6 @@ function FriendRequestBox(props) {
           </Button>
         </div>
         <span></span>
-      </Grid>
-      <Grid item sm={2} className={classes.date}>
-        <h6>{convertTimestamp(timestamp)}</h6>
       </Grid>
     </Grid>
   );

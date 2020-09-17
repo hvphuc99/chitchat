@@ -13,6 +13,7 @@ import Search from "features/Message/components/Search";
 import Banner from "features/Message/components/Banner";
 import * as options from "constants/index";
 import MenuFriendRequest from "features/Message/components/MenuFriendRequest";
+import MenuFriend from "features/Message/components/MenuFriend";
 
 const useStyles = makeStyles({
   root: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     height: "100%",
   },
-  requestTitle: {
+  menuTitle: {
     margin: "auto",
     marginBottom: "30px",
   }
@@ -54,8 +55,10 @@ function Main(props) {
   );
   const [groupChats, setGroupChats] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [loadingAllMessages, setLoadingAllMessages] = useState(true);
   const [loadingFriendRequests, setLoadingFriendRequests] = useState(true);
+  const [loadingFriends, setLoadingFriends] = useState(true);
   const [numberOfFriendRequest, setNumberOfFriendRequest] = useState(0);
 
   const renderOption = () => {
@@ -74,13 +77,24 @@ function Main(props) {
           </>
         );
         break;
-      case options.CONTACT_LIST_OPTION:
-        element = <p>Contact list</p>;
-        break;
-      case options.NOTIFICATION_OPTION:
+      case options.FRIENDs_OPTION:
         element = (
           <>
-            <Typography variant="h5" className={classes.requestTitle}>
+            <Typography variant="h5" className={classes.menuTitle}>
+              Friends
+            </Typography>
+            {loadingFriends ? (
+              <Loading />
+            ) : (
+              <MenuFriend friends={friends} />
+            )}
+          </>
+        );
+        break;
+      case options.FRIEND_REQUESTS_OPTION:
+        element = (
+          <>
+            <Typography variant="h5" className={classes.menuTitle}>
               Friend Requests
             </Typography>
             {loadingFriendRequests ? (
@@ -113,6 +127,7 @@ function Main(props) {
         for (let memberKey in members) {
           if (members[memberKey] === currentUserId) {
             belongGroups = belongGroups.concat(groupChats[groupChatKey]);
+            break;
           }
         }
       }
@@ -211,7 +226,7 @@ function Main(props) {
 
       const requests = snapshot.val();
 
-      let list = [];
+      let requestList = [];
 
       for (let userIdKey in requests) {
         const {id, timestamp} = requests[userIdKey];
@@ -219,36 +234,70 @@ function Main(props) {
           const { id, firstName, lastName, picture } = userInfo;
           const name = firstName + " " + lastName;
 
-          list = list.concat({
+          requestList = requestList.concat({
             id,
             name,
             picture,
             timestamp,
           });
 
-          if (list.length === Object.keys(requests).length) {
-            setFriendRequests(list.sort((firstRequest, secondRequest) => {
+          if (requestList.length === Object.keys(requests).length) {
+            setFriendRequests(requestList.sort((firstRequest, secondRequest) => {
               return secondRequest.timestamp > firstRequest.timestamp ? -1 : 1;
             }));
-            setNumberOfFriendRequest(list.length);
+            setNumberOfFriendRequest(requestList.length);
             setLoadingFriendRequests(false);
           }
         });
       }
     });
+
+    userApi.friendsListener(currentUserId, (snapshot) => {
+      if (!snapshot.val()) {
+        setFriends([]);
+        setLoadingFriends(false);
+        return;
+      }
+
+      const friends = snapshot.val();
+
+      let friendList = [];
+
+      for (let userIdKey in friends) {
+        const id = friends[userIdKey];
+        userApi.getUserInfo(id).then((userInfo) => {
+          const { id, firstName, lastName, picture } = userInfo;
+          const name = firstName + " " + lastName;
+
+          friendList = friendList.concat({
+            id,
+            name,
+            picture,
+          });
+
+          if (friendList.length === Object.keys(friends).length) {
+            setFriends(friendList.sort((firstFriend, secondFriend) => {
+              return firstFriend.firstName > secondFriend.firstName ? -1 : 1;
+            }));
+            setLoadingFriends(false);
+          }
+        });
+      }
+    });
+
   }, []);
 
   return (
     <Grid container className={classes.root}>
-      <Grid container item sm={3} className={classes.leftSideBar}>
-        <Grid item sm={2} className={classes.navigate}>
+      <Grid container item xs={3} className={classes.leftSideBar}>
+        <Grid item xs={2} className={classes.navigate}>
           <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
         </Grid>
-        <Grid item sm={10} className={classes.menu}>
+        <Grid item xs={10} className={classes.menu}>
           {renderOption()}
         </Grid>
       </Grid>
-      <Grid item sm={9} className={classes.chatForm}>
+      <Grid item xs={9} className={classes.chatForm}>
         {showChatForm ? (
           <ChatForm />
         ) : (

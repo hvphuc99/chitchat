@@ -279,5 +279,25 @@ const userApi = {
       resolve("Delete request successful");
     });
   },
+  friendsListener: (userId, handleData) => {
+    return db
+      .ref("/users/" + userId + "/friends")
+      .on("value", handleData);
+  },
+  removeFriend: (userId, friendId) => {
+    return new Promise((resolve, reject) => {
+      db.ref("/users/" + userId + "/friends/" + friendId).remove(
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      db.ref("/users/" + friendId + "/friends/" + userId).remove(
+        (err) => {
+          if (err) reject("An error happened");
+        }
+      );
+      resolve("remove friend successful");
+    });
+  },
 };
 export default userApi;

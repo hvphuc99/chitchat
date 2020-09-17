@@ -7,17 +7,18 @@ import {
   ListItem,
   Typography,
 } from "@material-ui/core";
-import FriendRequestBox from "../FriendRequestBox";
 import userApi from "api/userApi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import FriendBox from "../FriendBox";
 import search from "assets/images/search.png";
+import { setCurrentGroupChatId, setCurrentGroupChatName, setCurrentGroupChatPicture, setLoadingMessageList, setShowChatForm } from "features/Message/messageSlice";
 
-MenuFriendRequest.propTypes = {
-  friendRequests: PropTypes.array,
+MenuFriend.propTypes = {
+  friends: PropTypes.array,
 };
 
-MenuFriendRequest.defaultProps = {
-  friendRequests: null,
+MenuFriend.defaultProps = {
+  friends: null,
 };
 
 const useStyles = makeStyles({
@@ -41,7 +42,7 @@ const useStyles = makeStyles({
       borderLeft: "4px solid #1c9dea",
     },
   },
-  requestsContainer: {
+  friendsContainer: {
     margin: "0px 0px 10px 0px",
   },
   logoContainer: {
@@ -58,50 +59,54 @@ const useStyles = makeStyles({
   },
 });
 
-function MenuFriendRequest(props) {
+function MenuFriend(props) {
   const classes = useStyles();
-  const { friendRequests } = props;
+  const { friends } = props;
   const { currentUserId } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const handleConfirmRequest = (senderId) => {
+  const handleUnfriend = (userId) => {
     userApi
-      .acceptFriendRequest(currentUserId, senderId)
+      .removeFriend(currentUserId, userId)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => console.log(err));
   };
 
-  const handleDeleteRequest = (senderId) => {
-    userApi
-      .deleteFriendRequest(currentUserId, senderId)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
-  };
-
+  const handleClickUser = (userId, name, picture) => {
+    let groupId;
+    if (userId < currentUserId) {
+      groupId = userId + "-" + currentUserId;
+    } else {
+      groupId = currentUserId + "-" + userId;
+    }
+    dispatch(setCurrentGroupChatId(groupId));
+    dispatch(setCurrentGroupChatName(name));
+    dispatch(setCurrentGroupChatPicture(picture));
+    dispatch(setLoadingMessageList(true));
+    dispatch(setShowChatForm(true));
+  }
 
   return (
     <Container className={classes.root}>
-      {friendRequests.length === 0 ? (
+      {friends.length === 0 ? (
         <div className={classes.logoContainer}>
           <div className={classes.centerContainer}>
-          <img className={classes.searchImage} src={search} alt="search" />
-            <Typography variant="h6">No friend requests found</Typography>
+            <img className={classes.searchImage} src={search} alt="search" />
+            <Typography variant="h6">No friends found</Typography>
           </div>
         </div>
       ) : (
         <List>
-          {friendRequests.map(({ id, name, picture, timestamp }) => (
-            <ListItem className={classes.requestsContainer} key={id}>
-              <FriendRequestBox
+          {friends.map(({ id, name, picture }) => (
+            <ListItem className={classes.friendsContainer} key={id}>
+              <FriendBox
                 id={id}
                 name={name}
-                avatar={picture}
-                timestamp={timestamp}
-                handleConfirmRequest={handleConfirmRequest}
-                handleDeleteRequest={handleDeleteRequest}
+                picture={picture}
+                handleUnfriend={handleUnfriend}
+                handleClickUser={handleClickUser}
               />
             </ListItem>
           ))}
@@ -111,4 +116,4 @@ function MenuFriendRequest(props) {
   );
 }
 
-export default MenuFriendRequest;
+export default MenuFriend;

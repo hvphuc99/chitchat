@@ -6,7 +6,6 @@ import {
   List,
   ListItem,
   Typography,
-  Icon,
 } from "@material-ui/core";
 import { useState } from "react";
 import ChatBox from "../ChatBox";
@@ -19,6 +18,8 @@ import {
   setLoadingMessageList,
   setCurrentGroupChatPicture,
 } from "features/Message/messageSlice";
+import search from "assets/images/search.png";
+import { useEffect } from "react";
 
 MenuChat.propTypes = {
   groupChats: PropTypes.array,
@@ -59,13 +60,17 @@ const useStyles = makeStyles({
   },
   centerContainer: {
     textAlign: "center",
-  }
+  },
+  searchImage: {
+    width: "100%",
+  },
 });
 
 function MenuChat(props) {
   const classes = useStyles();
   const { groupChats } = props;
   const { currentUserId } = useSelector((state) => state.user);
+  const { currentGroupChatId } = useSelector((state) => state.message);
   const [selectedGroupChatId, setSelectedGroupChatId] = useState(null);
   const dispatch = useDispatch();
 
@@ -78,12 +83,16 @@ function MenuChat(props) {
     dispatch(setShowChatForm(true));
   };
 
+  useEffect(() => {
+    setSelectedGroupChatId(currentGroupChatId);
+  }, [currentGroupChatId])
+
   return (
     <Container className={classes.root}>
       {groupChats.length === 0 ? (
         <div className={classes.logoContainer}>
           <div className={classes.centerContainer}>
-            <Icon className="fas fa-users-slash" style={{ fontSize: 50, width: 100 }} />
+            <img className={classes.searchImage} src={search} alt="search" />
             <Typography variant="h6">No chat room</Typography>
             <Typography variant="subtitle1">
               If you don't have friends, you can search and add friends to chat

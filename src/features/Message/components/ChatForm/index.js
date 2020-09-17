@@ -54,6 +54,7 @@ function ChatForm(props) {
   useEffect(() => {
     messageApi.messageListListener(currentGroupChatId, (snapshot) => {
       if (!snapshot.val()) {
+        setMessageList([]);
         dispatch(setLoadingMessageList(false));
         return;
       }
