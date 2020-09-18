@@ -161,7 +161,7 @@ function ChatFooter(props) {
                     onClose={handleCloseEmoji}
                   >
                     <Picker
-                      set="facebook"
+                      set="twitter"
                       title="Pick your emoji"
                       emoji="point_up"
                       onSelect={handleSelectEmoji}

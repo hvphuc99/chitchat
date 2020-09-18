@@ -116,6 +116,7 @@ function FriendBox(props) {
           variant="contained"
           fullWidth
           onClick={handleClickFriendOption}
+          startIcon={<Icon className="fas fa-user-check" style={{ width: 30, height: 20, color: "#1c9dea" }} />}
         >
           Friends
         </Button>
@@ -129,7 +130,7 @@ function FriendBox(props) {
             <ListItemIcon>
               <Icon
                 className="fas fa-user-times"
-                style={{ width: 30, height: 20 }}
+                style={{ width: 30, height: 20, color: "#1c9dea" }}
               />
             </ListItemIcon>
             <ListItemText primary="Unfriend" />

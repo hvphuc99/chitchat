@@ -124,7 +124,7 @@ function MenuChat(props) {
                   name={name}
                   message={
                     senderId === currentUserId
-                      ? `You: ${content}`
+                      ? "You: " + content
                       : senderName
                       ? `${senderName}: ${content}`
                       : content

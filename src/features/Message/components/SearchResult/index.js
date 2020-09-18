@@ -127,7 +127,7 @@ function SearchResult(props) {
   const renderAddFriendOption = () => {
     const content = "Add Friend";
     const icon = (
-      <Icon className="fas fa-user-plus" style={{ width: 30, height: 20 }} />
+      <Icon className="fas fa-user-plus" style={{ width: 30, height: 20, color: "#1c9dea" }} />
     );
     const onClick = () => {
       handleClickAddFriend(userId);
@@ -148,7 +148,7 @@ function SearchResult(props) {
   const renderCancelRequestOption = () => {
     const content = "Cancel Request";
     const icon = (
-      <Icon className="fas fa-user-times" style={{ width: 30, height: 20 }} />
+      <Icon className="fas fa-user-times" style={{ width: 30, height: 20, color: "#1c9dea" }} />
     );
     const onClick = () => {
       handleClickCancelRequest(userId);
@@ -169,7 +169,7 @@ function SearchResult(props) {
   const renderFriendsOption = () => {
     const content = "Friends";
     const icon = (
-      <Icon className="fas fa-user-check" style={{ width: 30, height: 20 }} />
+      <Icon className="fas fa-user-check" style={{ width: 30, height: 20, color: "#1c9dea" }} />
     );
     return (
       <>
@@ -191,7 +191,7 @@ function SearchResult(props) {
           <ListItemIcon>
             <Icon
               className="fas fa-user-times"
-              style={{ width: 30, height: 20 }}
+              style={{ width: 30, height: 20, color: "#1c9dea" }}
             />
           </ListItemIcon>
           <ListItemText primary="Unfriend" />
@@ -204,7 +204,7 @@ function SearchResult(props) {
   const renderAcceptRequestOption = () => {
     const content = "Accept Request";
     const icon = (
-      <Icon className="fas fa-user-plus" style={{ width: 30, height: 20 }} />
+      <Icon className="fas fa-user-plus" style={{ width: 30, height: 20, color: "#1c9dea" }} />
     );
     const onClick = () => {
       handleClickAcceptRequest(userId);
