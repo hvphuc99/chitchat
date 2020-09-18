@@ -1,17 +1,28 @@
-import React from "react";
-import { Box, makeStyles } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+  Box,
+  Icon,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Popover,
+  withStyles,
+} from "@material-ui/core";
 import IconButton from "custom-fields/IconButton";
 import { Formik, Form, FastField } from "formik";
 import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";
+import { Picker } from "emoji-mart";
 
 ChatFooter.propTypes = {
   onSubmit: PropTypes.func,
-}
+};
 
 ChatFooter.defaultProps = {
   onSubmit: null,
-}
+};
 
 const useStyles = makeStyles({
   root: {
@@ -31,6 +42,9 @@ const useStyles = makeStyles({
   },
   midSide: {
     flexGrow: "1",
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "30px",
+    },
   },
   rightSide: {
     display: "flex",
@@ -55,22 +69,64 @@ const initialValues = {
   message: "",
 };
 
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "top",
+      horizontal: "center",
+    }}
+    transformOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+    {...props}
+  />
+));
+
 function ChatFooter(props) {
   const classes = useStyles();
   const { onSubmit } = props;
+  const [showEmoji, setShowEmoji] = useState(null);
+  const [showMoreOption, setShowMoreOption] = useState(null);
+
+  const handleClickEmoji = (event) => {
+    setShowEmoji(event.currentTarget);
+  };
+
+  const handleCloseEmoji = () => {
+    setShowEmoji(null);
+  };
+
+  const handleClickMoreOption = (event) => {
+    setShowMoreOption(event.currentTarget);
+  };
+
+  const closeMoreOption = () => {
+    setShowMoreOption(null);
+  };
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {(formikProps) => {
         const { submitForm } = formikProps;
+        const handleSelectEmoji = (emoji) => {
+          formikProps.setFieldValue(
+            "message",
+            formikProps.values.message + emoji.native
+          );
+        };
         return (
           <Form>
             <Box className={classes.root}>
               <div className={classes.leftSide}>
                 <div className="icon">
-                  <FastField
-                    name="sticker"
-                    component={IconButton}
+                  <IconButton
                     icon="far fa-sticky-note"
                     iconColor="#1c9dea"
                     backgroundColor="rgba(28,157,234,0.15)"
@@ -81,9 +137,7 @@ function ChatFooter(props) {
                   />
                 </div>
                 <div className="icon">
-                  <FastField
-                    name="emoji"
-                    component={IconButton}
+                  <IconButton
                     icon="far fa-smile"
                     iconColor="#1c9dea"
                     backgroundColor="rgba(28,157,234,0.15)"
@@ -91,22 +145,68 @@ function ChatFooter(props) {
                     anchorOrigin={customAnchorOrigin}
                     transformOrigin={customTransformOrigin}
                     message="Choose an emoji"
+                    onClick={handleClickEmoji}
                   />
+                  <Popover
+                    open={Boolean(showEmoji)}
+                    anchorEl={showEmoji}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    onClose={handleCloseEmoji}
+                  >
+                    <Picker
+                      set="facebook"
+                      title="Pick your emoji"
+                      emoji="point_up"
+                      onSelect={handleSelectEmoji}
+                    />
+                  </Popover>
                 </div>
                 <div className="icon">
-                  <FastField
-                    name="attach"
-                    component={IconButton}
-                    icon="fas fa-paperclip"
+                  <IconButton
+                    icon="fas fa-plus"
                     iconColor="#1c9dea"
                     backgroundColor="rgba(28,157,234,0.15)"
                     backgroundColorHover="#D3D8DB"
                     anchorOrigin={customAnchorOrigin}
                     transformOrigin={customTransformOrigin}
-                    message="Attach a file"
+                    message="Open more option"
+                    onClick={handleClickMoreOption}
                   />
+                  <StyledMenu
+                    anchorEl={showMoreOption}
+                    keepMounted
+                    open={Boolean(showMoreOption)}
+                    onClose={closeMoreOption}
+                  >
+                    <MenuItem>
+                      <ListItemIcon>
+                        <Icon
+                          className="fas fa-image"
+                          style={{ color: "#1c9dea" }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Attach a photo" />
+                    </MenuItem>
+                    <MenuItem>
+                      <ListItemIcon>
+                        <Icon
+                          className="fas fa-paperclip"
+                          style={{ color: "#1c9dea" }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Attach a file" />
+                    </MenuItem>
+                  </StyledMenu>
                 </div>
               </div>
+
               <div className={classes.midSide}>
                 <FastField
                   name="message"

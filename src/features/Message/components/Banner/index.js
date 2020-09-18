@@ -2,6 +2,7 @@ import React from "react";
 import landingLogo from "assets/images/landing-logo.png";
 import { makeStyles, Typography } from "@material-ui/core";
 import chatGroupImage from "assets/images/chat-group.png";
+import "emoji-mart/css/emoji-mart.css";
 
 const useStyles = makeStyles({
   root: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
     height: "300px",
     width: "600px",
   },
-})
+});
 
 function Banner() {
   const classes = useStyles();
@@ -32,13 +33,14 @@ function Banner() {
       <Typography className={classes.normalText} variant="h6">
         Be together, whenever
       </Typography>
-      <Typography
-        className={classes.greyText}
-        variant="subtitle1"
-      >
+      <Typography className={classes.greyText} variant="subtitle1">
         A simple way to text, video chat and plan things all in one place
       </Typography>
-      <img className={classes.chatGroup} src={chatGroupImage} alt="landing-logo" />
+      <img
+        className={classes.chatGroup}
+        src={chatGroupImage}
+        alt="landing-logo"
+      />
     </div>
   );
 }

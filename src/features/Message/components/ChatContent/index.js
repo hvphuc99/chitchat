@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useEffect } from "react";
 import MessageBox from "../MessageBox";
@@ -39,12 +39,12 @@ function ChatContent(props) {
   const classes = useStyles();
   const { currentUserId } = useSelector((state) => state.user);
   const { messageList } = props;
-  const scrollToBottom = (id) => {
-    const element = document.getElementById(id);
-    element.scrollIntoView();
+  const messageEnd = useRef();
+  const scrollToBottom = () => {
+    messageEnd.current.scrollIntoView();
   };
   useEffect(() => {
-    scrollToBottom("messageEnd");
+    scrollToBottom();
   }, [messageList]);
 
   return (
@@ -68,7 +68,7 @@ function ChatContent(props) {
           />
         )
       )}
-      <div id="messageEnd"></div>
+      <div ref={messageEnd}></div>
     </div>
   );
 }

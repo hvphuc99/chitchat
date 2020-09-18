@@ -58,7 +58,8 @@ function InputField(props) {
     autoFocus,
     variant,
     margin,
-    autoComplete
+    autoComplete,
+    ...other
   } = props;
   const { name } = field;
   const { errors, touched } = form;
@@ -119,6 +120,7 @@ function InputField(props) {
         error={showErrors}
         helperText={touched[name] ? errors[name] : ""}
         {...field}
+        {...other}
       />
     );
   }

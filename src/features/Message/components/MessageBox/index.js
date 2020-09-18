@@ -47,12 +47,12 @@ const useStyles = makeStyles({
       alignItems: "center",
       width: "fit-content",
       borderRadius: "20px",
-      fontSize: "calc(13px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
       fontWeight: "600",
       color: "#223645",
       backgroundColor: "#e5edf5",
       margin: "12px 0px 5px 24px",
       padding: "16px 20px",
+      fontSize: "18px",
     },
   },
   messageBoxRight: {
@@ -69,12 +69,12 @@ const useStyles = makeStyles({
         alignItems: "center",
         width: "fit-content",
         borderRadius: "20px",
-        fontSize: "calc(13px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
         fontWeight: "600",
         color: "white",
         backgroundColor: "#1c9dea",
         margin: "12px 0px 5px 0px",
         padding: "16px 20px",
+        fontSize: "18px",
       },
       "& h6": {
         fontSize: "calc(13px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
@@ -85,7 +85,7 @@ const useStyles = makeStyles({
       },
     },
   },
-})
+});
 
 function MessageBox(props) {
   const classes = useStyles();

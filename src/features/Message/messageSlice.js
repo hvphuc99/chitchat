@@ -47,7 +47,7 @@ const messageSlice = createSlice({
     },
     resetMessage: (state, action) => (
       initialState
-    )
+    ),
   },
 });
 
