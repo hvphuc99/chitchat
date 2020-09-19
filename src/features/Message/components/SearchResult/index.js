@@ -239,11 +239,11 @@ function SearchResult(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item sm={7} className={classes.info}>
+      <Grid item xs={12} sm={7} className={classes.info}>
         <Avatar className={classes.avatar} src={picture} onClick={onClickResult}/>
         <h5 className={classes.name} onClick={onClickResult}>{firstName + " " + lastName}</h5>
       </Grid>
-      <Grid item sm={5} className={classes.option}>
+      <Grid item xs={12} sm={5} className={classes.option}>
         {renderOption()}
       </Grid>
     </Grid>

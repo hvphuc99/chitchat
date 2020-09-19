@@ -289,15 +289,17 @@ function Main(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid container item xs={3} className={classes.leftSideBar}>
-        <Grid item xs={2} className={classes.navigate}>
-          <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
-        </Grid>
-        <Grid item xs={10} className={classes.menu}>
-          {renderOption()}
+      <Grid item xs={12} sm={3}>
+        <Grid container className={classes.leftSideBar}>
+          <Grid item xs={12} sm={2} className={classes.navigate}>
+            <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+          </Grid>
+          <Grid item xs={12} sm={10} className={classes.menu}>
+            {renderOption()}
+          </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={9} className={classes.chatForm}>
+      <Grid item xs={12} sm={9} className={classes.chatForm}>
         {showChatForm ? (
           <ChatForm />
         ) : (

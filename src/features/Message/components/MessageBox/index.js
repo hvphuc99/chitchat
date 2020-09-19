@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Avatar, Box, makeStyles } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
+import Avatar from "../Avatar";
 
 MessageBox.propTypes = {
   content: PropTypes.string.isRequired,
@@ -27,6 +28,7 @@ const useStyles = makeStyles({
       display: "flex",
       alignItems: "center",
       marginLeft: "24px",
+      width: "100%",
       "& h5": {
         fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
         fontWeight: "700",
@@ -46,13 +48,15 @@ const useStyles = makeStyles({
       display: "flex",
       alignItems: "center",
       width: "fit-content",
-      borderRadius: "20px",
+      maxWidth: "100%",
+      wordBreak: "break-all",
+      fontSize: "18px",
       fontWeight: "600",
       color: "#223645",
       backgroundColor: "#e5edf5",
       margin: "12px 0px 5px 24px",
       padding: "16px 20px",
-      fontSize: "18px",
+      borderRadius: "20px",
     },
   },
   messageBoxRight: {
@@ -63,18 +67,21 @@ const useStyles = makeStyles({
       display: "flex",
       flexDirection: "column",
       alignItems: "flex-end",
+      width: "100%",
       "& .messageBoxRightContent": {
         display: "flex",
         justifyContent: "inherit",
         alignItems: "center",
         width: "fit-content",
-        borderRadius: "20px",
+        maxWidth: "100%",
+        wordBreak: "break-all",
+        fontSize: "18px",
         fontWeight: "600",
         color: "white",
         backgroundColor: "#1c9dea",
         margin: "12px 0px 5px 0px",
         padding: "16px 20px",
-        fontSize: "18px",
+        borderRadius: "20px",
       },
       "& h6": {
         fontSize: "calc(13px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",

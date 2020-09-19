@@ -14,7 +14,6 @@ import { useState } from "react";
 const useStyles = makeStyles({
   root: {
     display: "flex",
-    flexWrap: "wrap",
     flexDirection: "column",
     alignContent: "space-between",
     height: "100%",
@@ -22,7 +21,22 @@ const useStyles = makeStyles({
   },
   content: {
     flexGrow: "1",
-    height: "500px",
+    width: "100%",
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      width: "0.4em",
+    },
+    "&::-webkit-scrollbar-track": {
+      boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+      webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+    },
+    "& .Mui-selected": {
+      backgroundColor: "#eff7fe",
+      borderLeft: "4px solid #1c9dea",
+    },
   },
 });
 

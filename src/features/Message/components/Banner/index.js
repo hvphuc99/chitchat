@@ -19,8 +19,7 @@ const useStyles = makeStyles({
     paddingBottom: "16px",
   },
   chatGroup: {
-    height: "300px",
-    width: "600px",
+    width: "50%",
   },
 });
 

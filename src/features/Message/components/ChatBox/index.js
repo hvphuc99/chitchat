@@ -58,14 +58,14 @@ function ChatBox(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item sm={2}>
-        <Avatar src={avatar} active={active} />
+      <Grid item xs={12} sm={2}>
+        <Avatar src={avatar} active={active}/>
       </Grid>
-      <Grid item sm={8} className={classes.overviewMessage}>
+      <Grid item xs={12} sm={8} className={classes.overviewMessage}>
         <h5>{name}</h5>
         <h6>{message}</h6>
       </Grid>
-      <Grid item sm={2} className={classes.date}>
+      <Grid item xs={12} sm={2} className={classes.date}>
         <h6>{date}</h6>
       </Grid>
     </Grid>

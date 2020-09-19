@@ -98,7 +98,7 @@ function FriendBox(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item sm={2}>
+      <Grid item xs={12} sm={2}>
         <Avatar
           src={picture}
           active={true}
@@ -106,10 +106,10 @@ function FriendBox(props) {
           cursorHover={true}
         />
       </Grid>
-      <Grid item sm={6} className={classes.name}>
+      <Grid item xs={12} sm={6} className={classes.name}>
         <h5 onClick={onClickUser}>{name}</h5>
       </Grid>
-      <Grid item sm={4} className={classes.buttonContainer}>
+      <Grid item xs={12} sm={4} className={classes.buttonContainer}>
         <Button
           className="navigateLoginBtn"
           size="medium"

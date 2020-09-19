@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import {
+  Avatar,
   Box,
   Icon,
+  List,
+  ListItem,
+  ListItemAvatar,
   ListItemIcon,
   ListItemText,
   makeStyles,
@@ -53,6 +57,12 @@ const useStyles = makeStyles({
       marginLeft: "16px",
     },
   },
+  iconContainer: {
+    display: "flex",
+    flexDirection: "row",
+    maxWidth: "calc(100% - 32px)",
+    maxHeight: "calc(100% - 32px)"
+  },
 });
 
 const customAnchorOrigin = {
@@ -94,6 +104,7 @@ function ChatFooter(props) {
   const { onSubmit } = props;
   const [showEmoji, setShowEmoji] = useState(null);
   const [showMoreOption, setShowMoreOption] = useState(null);
+  const [showSticker, setShowSticker] = useState(null);
 
   const handleClickEmoji = (event) => {
     setShowEmoji(event.currentTarget);
@@ -109,6 +120,28 @@ function ChatFooter(props) {
 
   const closeMoreOption = () => {
     setShowMoreOption(null);
+  };
+
+  const handleClickSticker = (event) => {
+    setShowSticker(event.currentTarget);
+  };
+
+  const handleCloseSticker = () => {
+    setShowSticker(null);
+  };
+
+  const renderTest = () => {
+    let test = [];
+    for (let i = 0; i < 20; i++) {
+      test = test.concat(
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar src="null" />
+          </ListItemAvatar>
+        </ListItem>
+      );
+    }
+    return test;
   };
 
   return (
@@ -134,7 +167,25 @@ function ChatFooter(props) {
                     anchorOrigin={customAnchorOrigin}
                     transformOrigin={customTransformOrigin}
                     message="Choose a sticker"
+                    onClick={handleClickSticker}
                   />
+                  <Popover
+                    open={Boolean(showSticker)}
+                    anchorEl={showSticker}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    onClose={handleCloseSticker}
+                  >
+                    <List className={classes.iconContainer}>
+                      {renderTest()}
+                    </List>
+                  </Popover>
                 </div>
                 <div className="icon">
                   <IconButton

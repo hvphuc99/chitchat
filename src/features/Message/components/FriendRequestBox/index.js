@@ -88,10 +88,10 @@ function FriendRequestBox(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item sm={2}>
+      <Grid item xs={12} sm={2}>
         <Avatar src={avatar} />
       </Grid>
-      <Grid item sm={10} className={classes.content}>
+      <Grid item xs={12} sm={10} className={classes.content}>
         <div className={classes.header}>
           <h5>{name}</h5>
           <h6>{convertTimestamp(timestamp)}</h6>
