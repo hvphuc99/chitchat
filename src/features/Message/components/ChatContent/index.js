@@ -41,7 +41,7 @@ function ChatContent(props) {
   const { messageList } = props;
   const messageEnd = useRef();
   const scrollToBottom = () => {
-    messageEnd.current.scrollIntoView();
+    messageEnd.current.scrollIntoView({ behavior: "smooth", block: "center" });
   };
   useEffect(() => {
     scrollToBottom();
