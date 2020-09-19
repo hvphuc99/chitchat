@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import {
   Avatar,
   Box,
+  GridList,
+  GridListTile,
   Icon,
   List,
   ListItem,
@@ -19,6 +21,7 @@ import { Formik, Form, FastField } from "formik";
 import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";
 import { Picker } from "emoji-mart";
+import Sticker from "../Sticker";
 
 ChatFooter.propTypes = {
   onSubmit: PropTypes.func,
@@ -56,12 +59,6 @@ const useStyles = makeStyles({
     "& .icon": {
       marginLeft: "16px",
     },
-  },
-  iconContainer: {
-    display: "flex",
-    flexDirection: "row",
-    maxWidth: "calc(100% - 32px)",
-    maxHeight: "calc(100% - 32px)"
   },
 });
 
@@ -130,20 +127,6 @@ function ChatFooter(props) {
     setShowSticker(null);
   };
 
-  const renderTest = () => {
-    let test = [];
-    for (let i = 0; i < 20; i++) {
-      test = test.concat(
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar src="null" />
-          </ListItemAvatar>
-        </ListItem>
-      );
-    }
-    return test;
-  };
-
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {(formikProps) => {
@@ -182,9 +165,7 @@ function ChatFooter(props) {
                     }}
                     onClose={handleCloseSticker}
                   >
-                    <List className={classes.iconContainer}>
-                      {renderTest()}
-                    </List>
+                    <Sticker />
                   </Popover>
                 </div>
                 <div className="icon">
@@ -266,6 +247,7 @@ function ChatFooter(props) {
                   variant="outlined"
                   margin="none"
                   autoComplete="off"
+                  autoFocus={true}
                 />
               </div>
               <div className={classes.rightSide}>

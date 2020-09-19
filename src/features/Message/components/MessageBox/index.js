@@ -57,6 +57,7 @@ const useStyles = makeStyles({
       margin: "12px 0px 5px 24px",
       padding: "16px 20px",
       borderRadius: "20px",
+      borderBottomLeftRadius: "0px",
     },
   },
   messageBoxRight: {
@@ -81,7 +82,8 @@ const useStyles = makeStyles({
         backgroundColor: "#1c9dea",
         margin: "12px 0px 5px 0px",
         padding: "16px 20px",
-        borderRadius: "20px",
+        borderRadius: "30px",
+        borderBottomRightRadius: "0px",
       },
       "& h6": {
         fontSize: "calc(13px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
