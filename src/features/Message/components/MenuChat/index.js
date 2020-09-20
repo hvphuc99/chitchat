@@ -69,7 +69,6 @@ const useStyles = makeStyles({
 function MenuChat(props) {
   const classes = useStyles();
   const { groupChats } = props;
-  const { currentUserId } = useSelector((state) => state.user);
   const { currentGroupChatId } = useSelector((state) => state.message);
   const [selectedGroupChatId, setSelectedGroupChatId] = useState(null);
   const dispatch = useDispatch();
@@ -110,6 +109,7 @@ function MenuChat(props) {
               picture,
               content,
               timestamp,
+              type,
             }) => (
               <ListItem
                 className={classes.messageContainer}
@@ -121,17 +121,13 @@ function MenuChat(props) {
                 }
               >
                 <ChatBox
+                  id = {senderId}
                   name={name}
-                  message={
-                    senderId === currentUserId
-                      ? "You: " + content
-                      : senderName
-                      ? `${senderName}: ${content}`
-                      : content
-                  }
+                  message={content}
                   date={convertTimestamp(timestamp)}
                   active={true}
                   avatar={picture}
+                  type={type}
                 />
               </ListItem>
             )

@@ -1,4 +1,5 @@
 import { db } from "services/firebase";
+import * as typeMessages from "constants/typeMessage";
 
 const messageApi = {
   groupChatsListener: (userId, handleData) => {
@@ -25,7 +26,7 @@ const messageApi = {
       .ref("/groupChats/" + groupChatId + "/messages")
       .on("value", handleData);
   },
-  sendMessage: (senderId, groupChatId, content, type) => {
+  sendMessage: (senderId, groupChatId, content, type = typeMessages.TEXT) => {
     const timestamp = Date.now();
     return new Promise((resolve, reject) => {
       db.ref("/groupChats/" + groupChatId)

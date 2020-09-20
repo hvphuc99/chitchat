@@ -9,6 +9,7 @@ const initialState = {
   loadingMessageList: false,
   selectedOption: ALL_MESSAGE_OPTION,
   numberOfFriendRequest: 0,
+  messageList: [],
 };
 
 const messageSlice = createSlice({
@@ -45,6 +46,15 @@ const messageSlice = createSlice({
     setNumberOfFriendRequest: (state, action) => {
       state.numberOfFriendRequest = action.payload;
     },
+    setMessageList: (state, action) => {
+      state.messageList = action.payload;
+    },
+    addMessage: (state, action) => {
+      state.messageList.push(action.payload);
+    },
+    clearMessageList: (state, action) => {
+      state.messageList = [];
+    },
     resetMessage: (state, action) => (
       initialState
     ),
@@ -64,5 +74,8 @@ export const {
   setSelectedOption,
   resetMessage,
   setNumberOfFriendRequest,
+  setMessageList,
+  addMessage,
+  clearMessageList,
 } = actions;
 export default reducer;

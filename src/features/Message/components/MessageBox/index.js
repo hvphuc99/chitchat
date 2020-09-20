@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Box, makeStyles } from "@material-ui/core";
 import Avatar from "../Avatar";
+import * as typeMessages from "constants/typeMessage";
 
 MessageBox.propTypes = {
   content: PropTypes.string.isRequired,
@@ -44,7 +45,7 @@ const useStyles = makeStyles({
         margin: "0px 0px 0px 20px",
       },
     },
-    "& .messageBoxContent": {
+    "& .messageBoxLeftContent": {
       display: "flex",
       alignItems: "center",
       width: "fit-content",
@@ -100,6 +101,21 @@ function MessageBox(props) {
   const classes = useStyles();
   const { name, avatar, position, content, timestamp, type } = props;
 
+  const renderContent = () => {
+    if (type === typeMessages.TEXT) {
+      return content;
+    }
+    if (type === typeMessages.STICKER) {
+      return (
+        <img
+          alt="sticker"
+          src={content}
+          style={{ height: "200px", width: "200px" }}
+        />
+      );
+    }
+  };
+
   if (position === "left") {
     return (
       <Box className={classes.messageBoxLeft}>
@@ -109,7 +125,11 @@ function MessageBox(props) {
             <h5>{name}</h5>
             <h6>{timestamp}</h6>
           </div>
-          <div className="messageBoxContent">{content}</div>
+          {type === typeMessages.STICKER ? (
+            renderContent()
+          ) : (
+            <div className="messageBoxLeftContent">{renderContent()}</div>
+          )}
         </span>
       </Box>
     );
@@ -118,7 +138,11 @@ function MessageBox(props) {
       <Box className={classes.messageBoxRight}>
         <div className="messageBoxRightContainer">
           <h6>{timestamp}</h6>
-          <div className="messageBoxRightContent">{content}</div>
+          {type === typeMessages.STICKER ? (
+            renderContent()
+          ) : (
+            <div className="messageBoxRightContent">{renderContent()}</div>
+          )}
         </div>
       </Box>
     );

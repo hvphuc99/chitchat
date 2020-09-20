@@ -152,7 +152,7 @@ function Main(props) {
                   name: firstName + " " + lastName,
                 });
               } else {
-                const { senderId, content, timestamp } = message;
+                const { senderId, content, timestamp, type } = message;
                 standardizedList = standardizedList.concat({
                   id,
                   name: firstName + " " + lastName,
@@ -160,6 +160,7 @@ function Main(props) {
                   picture,
                   content,
                   timestamp,
+                  type,
                 });
               }
               if (standardizedList.length === belongGroups.length) {
@@ -188,7 +189,7 @@ function Main(props) {
                 setLoadingAllMessages(false);
               }
             } else {
-              const { senderId, content, timestamp } = message;
+              const { senderId, content, timestamp, type } = message;
               userApi.getUserInfo(senderId).then((userInfo) => {
                 const { firstName, lastName } = userInfo;
                 standardizedList = standardizedList.concat({
@@ -198,6 +199,7 @@ function Main(props) {
                   senderName: firstName + " " + lastName,
                   content,
                   timestamp,
+                  type,
                 });
                 if (standardizedList.length === belongGroups.length) {
                   setGroupChats(

@@ -7,6 +7,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
+    width: "100%",
   },
   circular: {
     color: "#1C9DEA",
