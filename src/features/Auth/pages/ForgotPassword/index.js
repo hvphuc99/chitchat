@@ -5,6 +5,11 @@ import AuthNavigation from "features/Auth/components/AuthNavigation";
 import ForgotPasswordForm from "features/Auth/components/ForgotPasswordForm";
 import MediaLogo from "features/Auth/components/MediaLogo";
 import React from "react";
+import userApi from "api/userApi";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setNotify } from "app/notifySlice";
 
 const useStyles = makeStyles({
   root: {
@@ -24,9 +29,25 @@ const initialValues = {
 
 function ForgotPassword() {
   const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleSubmit = (values) => {
+    const { email } = values;
+    setLoading(true);
+    userApi
+      .resetPassword(email)
+      .then((res) => {
+        dispatch(setNotify({
+          type: "success",
+          message: "Check your email for a link to reset your password"
+        }))
+        history.push("/login");
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -40,6 +61,7 @@ function ForgotPassword() {
           <ForgotPasswordForm
             initialValues={initialValues}
             handleSubmit={handleSubmit}
+            loading={loading}
           />
           <MediaLogo />
         </div>

@@ -1,10 +1,7 @@
 import { Typography, makeStyles } from "@material-ui/core";
 
-import PropTypes from "prop-types";
 import React from "react";
-import logo from "assets/images/landing-logo.png";
-
-AuthHeader.propTypes = {};
+import landingLogo from "assets/images/landing-logo.png";
 
 const useStyles = makeStyles({
   root: {
@@ -18,15 +15,15 @@ const useStyles = makeStyles({
     "& .loginFormHeader__h6--color--grey": {
       color: "#647589",
     },
-  }
-})
+  },
+});
 
 function AuthHeader(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <img src={logo} alt="logo" />
+      <img src={landingLogo} alt="landing-logo" />
       <Typography className="loginFormHeader__h6" variant="h6">
         Hello Everyone , We are Chitchat
       </Typography>
