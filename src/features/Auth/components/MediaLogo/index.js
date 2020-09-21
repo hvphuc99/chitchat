@@ -1,9 +1,12 @@
-import { Icon, IconButton, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
-import PropTypes from "prop-types";
 import React from "react";
-
-MediaLogo.propTypes = {};
+import IconButton from "custom-fields/IconButton";
+import userApi from "api/userApi";
+import { useDispatch } from "react-redux";
+import { setCurrentUserId, setToken } from "app/userSlice";
+import { useHistory } from "react-router-dom";
+import { setNotify } from "app/notifySlice";
 
 const useStyles = makeStyles({
   root: {
@@ -11,29 +14,61 @@ const useStyles = makeStyles({
     left: "-25px",
     top: "50%",
     transform: "translateY(-50%)",
-    "& .google-button": {
-      display: "block",
-      backgroundColor: "#ff4e2b",
-      marginBottom: "15px",
-    },
-    "& .facebook-button": {
-      display: "block",
-      backgroundColor: "#2c67ce",
-    },
+  },
+  iconBtn: {
+    marginBottom: "15px",
   },
 });
 
 function MediaLogo(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleClickLoginWithGoogle = () => {
+    userApi.loginWithGoogle().then((user) => {
+      const { id, token } = user;
+      dispatch(setCurrentUserId(id));
+      dispatch(setToken(token));
+      history.push("/");
+      dispatch(
+        setNotify({
+          type: "success",
+          message: "Login successful",
+        })
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  };
+
+  const handleClickLoginWithFacebook = () => {
+    userApi.loginWithFacebook().then((token) => console.log(token));
+  };
 
   return (
     <div className={classes.root}>
-      <IconButton className="google-button">
-        <Icon className="fa fa-google" style={{ color: "white" }} />
-      </IconButton>
-      <IconButton className="facebook-button">
-        <Icon className="fa fa-facebook" style={{ color: "white" }} />
-      </IconButton>
+      <div className={classes.iconBtn}>
+        <IconButton
+          icon="fa fa-google"
+          iconColor="white"
+          backgroundColor="#ff4e2b"
+          backgroundColorHover="#F73F37"
+          message="Sign in with Google"
+          onClick={handleClickLoginWithGoogle}
+        />
+      </div>
+      <div className={classes.iconBtn}>
+        <IconButton
+          icon="fa fa-facebook"
+          iconColor="white"
+          backgroundColor="#2D67CE"
+          backgroundColorHover="#2D67CE"
+          message="Sign in with Facebook"
+          onClick={handleClickLoginWithFacebook}
+        />
+      </div>
     </div>
   );
 }

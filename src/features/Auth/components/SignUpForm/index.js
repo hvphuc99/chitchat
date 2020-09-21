@@ -1,31 +1,52 @@
-import { Button, Grid, makeStyles } from "@material-ui/core";
+import { Button, Grid, makeStyles, CircularProgress } from "@material-ui/core";
 import { FastField, Form, Formik } from "formik";
 
 import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";
 import React from "react";
+import * as Yup from "yup";
 
 SignUpForm.propTypes = {
+  initialValues: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 SignUpForm.defaultProps = {
   handleSubmit: null,
+  loading: false,
 };
 
 const useStyles = makeStyles({
   signUpButton: {
     color: "white",
-    marginTop: "30px",
+    marginTop: "20px",
+  },
+  circular: {
+    color: "white",
   },
 });
 
 function SignUpForm(props) {
   const classes = useStyles();
-  const { initialValues, handleSubmit } = props;
+  const { initialValues, handleSubmit, loading } = props;
+
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string().required("First Name is required"),
+    lastName: Yup.string().required("First Name is required"),
+    email: Yup.string()
+      .email("Email is not valid")
+      .required("Email is required"),
+    password: Yup.string().required("Password is required").min(6, "Password must contain at least 6 characters"),
+    confirmPassword: Yup.string().required("Password is required").oneOf([Yup.ref("password"), null], "Passwords must match"),
+  });
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+    >
       {(formikProps) => {
         const { values } = formikProps;
 
@@ -78,6 +99,7 @@ function SignUpForm(props) {
               component={InputField}
               type="password"
               label="Confirm Password"
+              labelWidth={135}
               value={values.confirmPassword}
               variant="outlined"
               margin="normal"
@@ -91,7 +113,7 @@ function SignUpForm(props) {
               variant="contained"
               fullWidth
             >
-              Sign up
+              {loading ? <CircularProgress className={classes.circular} size={25.57} /> : "Sign up" }
             </Button>
           </Form>
         );
