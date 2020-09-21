@@ -1,4 +1,4 @@
-import { db, storage } from "services/firebase";
+import { db } from "services/firebase";
 
 const stickerApi = {
   getPiyomaruSticker: () => {

@@ -4,11 +4,17 @@ import ChatHeader from "../ChatHeader";
 import ChatFooter from "../ChatFooter";
 import ChatContent from "../ChatContent";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage, clearMessageList, setLoadingMessageList, setMessageList } from "features/Message/messageSlice";
+import {
+  addMessage,
+  clearMessageList,
+  setLoadingMessageList,
+  setMessageList,
+} from "features/Message/messageSlice";
 import messageApi from "api/messageApi";
 import { useEffect } from "react";
 import userApi from "api/userApi";
 import Loading from "components/Loading";
+import * as typeMessages from "constants/typeMessage";
 
 const useStyles = makeStyles({
   root: {
@@ -53,16 +59,53 @@ function ChatForm(props) {
 
   const handleSendTextMessage = (values, { resetForm }) => {
     const { message } = values;
+    messageApi.sendMessage(
+      currentUserId,
+      currentGroupChatId,
+      message,
+      typeMessages.TEXT
+    );
     if (message === "") return;
-    messageApi.sendMessage(currentUserId, currentGroupChatId, message, 0);
     const itemMessage = {
       senderId: currentUserId,
       timestamp: Date.now(),
       content: message,
-      type: 0,
+      type: typeMessages.TEXT,
     };
-    dispatch(addMessage(itemMessage))
+    dispatch(addMessage(itemMessage));
     resetForm();
+  };
+
+  const handleSendPhoto = (url) => {
+    messageApi.sendMessage(
+      currentUserId,
+      currentGroupChatId,
+      url,
+      typeMessages.PHOTO
+    );
+    const itemMessage = {
+      senderId: currentUserId,
+      timestamp: Date.now(),
+      content: url,
+      type: typeMessages.PHOTO,
+    };
+    dispatch(addMessage(itemMessage));
+  };
+
+  const handleSendOtherFile = (url) => {
+    messageApi.sendMessage(
+      currentUserId,
+      currentGroupChatId,
+      url,
+      typeMessages.OTHER_FILE
+    );
+    const itemMessage = {
+      senderId: currentUserId,
+      timestamp: Date.now(),
+      content: url,
+      type: typeMessages.OTHER_FILE,
+    };
+    dispatch(addMessage(itemMessage));
   };
 
   useEffect(() => {
@@ -85,9 +128,13 @@ function ChatForm(props) {
             ...message,
           });
           if (newList.length === list.length) {
-            dispatch(setMessageList(newList.sort((firstMess, secondMess) => {
-              return secondMess.timestamp > firstMess.timestamp ? -1 : 1;
-            })))
+            dispatch(
+              setMessageList(
+                newList.sort((firstMess, secondMess) => {
+                  return secondMess.timestamp > firstMess.timestamp ? -1 : 1;
+                })
+              )
+            );
             dispatch(setLoadingMessageList(false));
           }
         });
@@ -103,9 +150,17 @@ function ChatForm(props) {
         active={true}
       />
       <div className={classes.content}>
-        {loadingMessageList ? <Loading /> : <ChatContent messageList={messageList} />}
+        {loadingMessageList ? (
+          <Loading />
+        ) : (
+          <ChatContent messageList={messageList} />
+        )}
       </div>
-      <ChatFooter onSubmit={handleSendTextMessage} />
+      <ChatFooter
+        onSubmit={handleSendTextMessage}
+        onSendPhoto={handleSendPhoto}
+        onSendOtherFile={handleSendOtherFile}
+      />
     </Box>
   );
 }

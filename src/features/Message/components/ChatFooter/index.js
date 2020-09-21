@@ -1,13 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
-  Avatar,
   Box,
-  GridList,
-  GridListTile,
   Icon,
-  List,
-  ListItem,
-  ListItemAvatar,
   ListItemIcon,
   ListItemText,
   makeStyles,
@@ -22,13 +16,18 @@ import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";
 import { Picker } from "emoji-mart";
 import Sticker from "../Sticker";
+import storageApi from "api/storageApi";
 
 ChatFooter.propTypes = {
   onSubmit: PropTypes.func,
+  onSendPhoto: PropTypes.func,
+  onSendOtherFile: PropTypes.func,
 };
 
 ChatFooter.defaultProps = {
   onSubmit: null,
+  onSendPhoto: null,
+  onSendOtherFile: null,
 };
 
 const useStyles = makeStyles({
@@ -59,6 +58,9 @@ const useStyles = makeStyles({
     "& .icon": {
       marginLeft: "16px",
     },
+  },
+  viewInput: {
+    display: "none",
   },
 });
 
@@ -98,10 +100,12 @@ const StyledMenu = withStyles({
 
 function ChatFooter(props) {
   const classes = useStyles();
-  const { onSubmit } = props;
+  const { onSubmit, onSendPhoto, onSendOtherFile } = props;
   const [showEmoji, setShowEmoji] = useState(null);
   const [showMoreOption, setShowMoreOption] = useState(null);
   const [showSticker, setShowSticker] = useState(null);
+  const refInputPhoto = useRef();
+  const refInputOtherFile = useRef();
 
   const handleClickEmoji = (event) => {
     setShowEmoji(event.currentTarget);
@@ -126,6 +130,30 @@ function ChatFooter(props) {
   const handleCloseSticker = () => {
     setShowSticker(null);
   };
+
+  const onChoosePhoto = (event) => {
+    closeMoreOption();
+    if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+      storageApi.uploadPhoto(image).then((url) => {
+        onSendPhoto(url);
+      })
+    } else {
+      // Do nothing
+    }
+  }
+
+  const onChooseOtherFile = (event) => {
+    closeMoreOption();
+    if (event.target.files && event.target.files[0]) {
+      const otherFile = event.target.files[0];
+      storageApi.uploadOtherFile(otherFile).then((url) => {
+        onSendOtherFile(url);
+      })
+    } else {
+      // Do nothing
+    }
+  }
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
@@ -217,7 +245,7 @@ function ChatFooter(props) {
                     open={Boolean(showMoreOption)}
                     onClose={closeMoreOption}
                   >
-                    <MenuItem>
+                    <MenuItem onClick={() => refInputPhoto.current.click()}>
                       <ListItemIcon>
                         <Icon
                           className="fas fa-image"
@@ -226,7 +254,14 @@ function ChatFooter(props) {
                       </ListItemIcon>
                       <ListItemText primary="Attach a photo" />
                     </MenuItem>
-                    <MenuItem>
+                    <input
+                      ref={refInputPhoto}
+                      accept="image/*"
+                      type="file"
+                      className={classes.viewInput}
+                      onChange={onChoosePhoto}
+                    />
+                    <MenuItem onClick={() => refInputOtherFile.current.click()}>
                       <ListItemIcon>
                         <Icon
                           className="fas fa-paperclip"
@@ -235,6 +270,13 @@ function ChatFooter(props) {
                       </ListItemIcon>
                       <ListItemText primary="Attach a file" />
                     </MenuItem>
+                    <input
+                      ref={refInputOtherFile}
+                      accept="*"
+                      type="file"
+                      className={classes.viewInput}
+                      onChange={onChooseOtherFile}
+                    />
                   </StyledMenu>
                 </div>
               </div>

@@ -77,6 +77,20 @@ function ChatBox(props) {
         return name + " sent a sticker";
       }
     }
+    if (type === typeMessages.PHOTO) {
+      if (id === currentUserId) {
+        return "You sent a photo";
+      } else {
+        return name + " sent a photo";
+      }
+    }
+    if (type === typeMessages.OTHER_FILE) {
+      if (id === currentUserId) {
+        return "You sent a file";
+      } else {
+        return name + " sent a file";
+      }
+    }
   }
 
   return (
