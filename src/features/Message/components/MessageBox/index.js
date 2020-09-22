@@ -102,7 +102,6 @@ const useStyles = makeStyles({
     },
   },
   uploadPhoto: {
-    width: "500px",
     height: "300px",
     borderRadius: "30px",
   },
