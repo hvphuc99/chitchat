@@ -14,6 +14,7 @@ import Banner from "features/Message/components/Banner";
 import * as options from "constants/index";
 import MenuFriendRequest from "features/Message/components/MenuFriendRequest";
 import MenuFriend from "features/Message/components/MenuFriend";
+import ComingSoon from "components/ComingSoon";
 
 const useStyles = makeStyles({
   root: {
@@ -44,7 +45,10 @@ const useStyles = makeStyles({
   menuTitle: {
     margin: "auto",
     marginBottom: "30px",
-  }
+  },
+  comingSoon: {
+    flexGrow: 1,
+  },
 });
 
 function Main(props) {
@@ -83,11 +87,7 @@ function Main(props) {
             <Typography variant="h5" className={classes.menuTitle}>
               Friends
             </Typography>
-            {loadingFriends ? (
-              <Loading />
-            ) : (
-              <MenuFriend friends={friends} />
-            )}
+            {loadingFriends ? <Loading /> : <MenuFriend friends={friends} />}
           </>
         );
         break;
@@ -106,7 +106,16 @@ function Main(props) {
         );
         break;
       case options.PROFILE_OPTION:
-        element = <p>profile</p>;
+        element = (
+          <>
+            <Typography variant="h5" className={classes.menuTitle}>
+              Profile
+            </Typography>
+            <div className={classes.comingSoon}>
+              <ComingSoon />
+            </div>
+          </>
+        );
         break;
       default:
     }
@@ -231,7 +240,7 @@ function Main(props) {
       let requestList = [];
 
       for (let userIdKey in requests) {
-        const {id, timestamp} = requests[userIdKey];
+        const { id, timestamp } = requests[userIdKey];
         userApi.getUserInfo(id).then((userInfo) => {
           const { id, firstName, lastName, picture } = userInfo;
           const name = firstName + " " + lastName;
@@ -244,9 +253,13 @@ function Main(props) {
           });
 
           if (requestList.length === Object.keys(requests).length) {
-            setFriendRequests(requestList.sort((firstRequest, secondRequest) => {
-              return secondRequest.timestamp > firstRequest.timestamp ? -1 : 1;
-            }));
+            setFriendRequests(
+              requestList.sort((firstRequest, secondRequest) => {
+                return secondRequest.timestamp > firstRequest.timestamp
+                  ? -1
+                  : 1;
+              })
+            );
             setNumberOfFriendRequest(requestList.length);
             setLoadingFriendRequests(false);
           }
@@ -278,15 +291,16 @@ function Main(props) {
           });
 
           if (friendList.length === Object.keys(friends).length) {
-            setFriends(friendList.sort((firstFriend, secondFriend) => {
-              return firstFriend.firstName > secondFriend.firstName ? -1 : 1;
-            }));
+            setFriends(
+              friendList.sort((firstFriend, secondFriend) => {
+                return firstFriend.firstName > secondFriend.firstName ? -1 : 1;
+              })
+            );
             setLoadingFriends(false);
           }
         });
       }
     });
-
   }, []);
 
   return (

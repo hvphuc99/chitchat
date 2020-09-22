@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { makeStyles, Box } from "@material-ui/core";
+import {
+  makeStyles,
+  Box,
+  Slide,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from "@material-ui/core";
 import Avatar from "../Avatar";
 import IconButton from "custom-fields/IconButton";
+import ComingSoon from "components/ComingSoon";
 
 ChatHeader.propTypes = {
   name: PropTypes.string.isRequired,
@@ -51,11 +59,33 @@ const useStyles = makeStyles({
       marginLeft: "20px",
     },
   },
+  dialog: {
+    "& .MuiDialog-paper": {
+      position: "absolute",
+      width: "40%",
+    },
+    "& .MuiDialog-paperWidthSm": {
+      maxWidth: "none",
+    },
+  },
+});
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
 });
 
 function ChatHeader(props) {
   const classes = useStyles();
   const { name, avatar, active } = props;
+  const [showDialog, setShowDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setShowDialog(true);
+  };
+
+  const handleClickCloseDialog = () => {
+    setShowDialog(false);
+  };
 
   return (
     <Box className={classes.root}>
@@ -74,6 +104,7 @@ function ChatHeader(props) {
             backgroundColor="#eff1f2"
             backgroundColorHover="#D3D8DB"
             message="Voice Call"
+            onClick={handleClickOpenDialog}
           />
         </div>
         <div className="icon">
@@ -83,9 +114,21 @@ function ChatHeader(props) {
             backgroundColor="#eff1f2"
             backgroundColorHover="#D3D8DB"
             message="Video Chat"
+            onClick={handleClickOpenDialog}
           />
         </div>
       </div>
+      <Dialog
+        className={classes.dialog}
+        open={showDialog}
+        TransitionComponent={Transition}
+        onClose={handleClickCloseDialog}
+      >
+        <DialogTitle>Voice Call and Video Chat</DialogTitle>
+        <DialogContent>
+          <ComingSoon />
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }

@@ -54,11 +54,11 @@ const useStyles = makeStyles({
       fontSize: "18px",
       fontWeight: "600",
       color: "#223645",
-      backgroundColor: "#e5edf5",
+      backgroundColor: "#d5d9dc",
       margin: "12px 0px 5px 24px",
       padding: "16px 20px",
       borderRadius: "20px",
-      borderBottomLeftRadius: "0px",
+      borderTopLeftRadius: "0px",
       "& .otherFile": {
         color: "inherit",
       }
@@ -131,13 +131,12 @@ function MessageBox(props) {
       );
     }
     if (type === typeMessages.OTHER_FILE) {
-      const fullName = content.slice(
+      const name = content.slice(
         content.indexOf("%2F") + 3,
         content.indexOf("?alt")
       );
-      const name = fullName.slice(0, fullName.indexOf("_")) + fullName.slice(fullName.indexOf("."))
       return (
-        <Link className="otherFile" href={content}>
+        <Link className="otherFile" href={content} target="_blank">
           {name}
         </Link>
       );

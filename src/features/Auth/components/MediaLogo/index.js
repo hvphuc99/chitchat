@@ -59,7 +59,7 @@ function MediaLogo(props) {
           onClick={handleClickLoginWithGoogle}
         />
       </div>
-      <div className={classes.iconBtn}>
+      {/* <div className={classes.iconBtn}>
         <IconButton
           icon="fa fa-facebook"
           iconColor="white"
@@ -68,7 +68,7 @@ function MediaLogo(props) {
           message="Sign in with Facebook"
           onClick={handleClickLoginWithFacebook}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
