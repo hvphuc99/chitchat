@@ -176,6 +176,7 @@ const userApi = {
     return new Promise((resolve, reject) => {
       searchTerm = searchTerm.trim();
       searchTerm = searchTerm.replace(/\s\s+/g, " ");
+      searchTerm = searchTerm.toLowerCase();
       if (!searchTerm) resolve([]);
       db.ref("/users")
         .once("value")
