@@ -1,6 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, Grid, Avatar, Button, Icon, withStyles, Menu, MenuItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import {
+  makeStyles,
+  Grid,
+  Avatar,
+  Button,
+  Icon,
+  withStyles,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from "@material-ui/core";
 import { useState } from "react";
 import * as options from "constants/index";
 
@@ -64,13 +75,20 @@ const useStyles = makeStyles({
     "&:hover": {
       textDecoration: "underline",
       cursor: "pointer",
-    }
+    },
   },
   avatar: {
     "&:hover": {
       cursor: "pointer",
-    }
-  }
+    },
+  },
+  menuItem: {
+    padding: "0px 10px",
+  },
+  avatarContainer: {
+    width: "100%",
+    maxWidth: "46px",
+  },
 });
 
 const StyledMenu = withStyles({
@@ -122,12 +140,15 @@ function SearchResult(props) {
   const onClickUnfriend = () => {
     handleUnfriend(userId);
     setOption(options.ADD_FRIEND_OPTION);
-  }
+  };
 
   const renderAddFriendOption = () => {
     const content = "Add Friend";
     const icon = (
-      <Icon className="fas fa-user-plus" style={{ width: 30, height: 20, color: "#1c9dea" }} />
+      <Icon
+        className="fas fa-user-plus"
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }}
+      />
     );
     const onClick = () => {
       handleClickAddFriend(userId);
@@ -136,6 +157,7 @@ function SearchResult(props) {
     return (
       <Button
         variant="contained"
+        size="small"
         startIcon={icon}
         className={classes.optionButton}
         onClick={onClick}
@@ -148,7 +170,10 @@ function SearchResult(props) {
   const renderCancelRequestOption = () => {
     const content = "Cancel Request";
     const icon = (
-      <Icon className="fas fa-user-times" style={{ width: 30, height: 20, color: "#1c9dea" }} />
+      <Icon
+        className="fas fa-user-times"
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }}
+      />
     );
     const onClick = () => {
       handleClickCancelRequest(userId);
@@ -157,6 +182,7 @@ function SearchResult(props) {
     return (
       <Button
         variant="contained"
+        size="small"
         startIcon={icon}
         className={classes.optionButton}
         onClick={onClick}
@@ -169,12 +195,16 @@ function SearchResult(props) {
   const renderFriendsOption = () => {
     const content = "Friends";
     const icon = (
-      <Icon className="fas fa-user-check" style={{ width: 30, height: 20, color: "#1c9dea" }} />
+      <Icon
+        className="fas fa-user-check"
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }}
+      />
     );
     return (
       <>
         <Button
           variant="contained"
+          size="small"
           startIcon={icon}
           className={classes.optionButton}
           onClick={handleClickFriendOption}
@@ -182,21 +212,15 @@ function SearchResult(props) {
           {content}
         </Button>
         <StyledMenu
-        anchorEl={showUnfriend}
-        keepMounted
-        open={Boolean(showUnfriend)}
-        onClose={closeFriendOption}
-      >
-        <MenuItem onClick={onClickUnfriend}>
-          <ListItemIcon>
-            <Icon
-              className="fas fa-user-times"
-              style={{ width: 30, height: 20, color: "#1c9dea" }}
-            />
-          </ListItemIcon>
-          <ListItemText primary="Unfriend" />
-        </MenuItem>
-      </StyledMenu>
+          anchorEl={showUnfriend}
+          keepMounted
+          open={Boolean(showUnfriend)}
+          onClose={closeFriendOption}
+        >
+          <MenuItem onClick={onClickUnfriend} className={classes.menuItem}>
+            <ListItemText primary="Unfriend" />
+          </MenuItem>
+        </StyledMenu>
       </>
     );
   };
@@ -204,7 +228,10 @@ function SearchResult(props) {
   const renderAcceptRequestOption = () => {
     const content = "Accept Request";
     const icon = (
-      <Icon className="fas fa-user-plus" style={{ width: 30, height: 20, color: "#1c9dea" }} />
+      <Icon
+        className="fas fa-user-plus"
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }}
+      />
     );
     const onClick = () => {
       handleClickAcceptRequest(userId);
@@ -213,6 +240,7 @@ function SearchResult(props) {
     return (
       <Button
         variant="contained"
+        size="small"
         startIcon={icon}
         className={classes.optionButton}
         onClick={onClick}
@@ -235,13 +263,21 @@ function SearchResult(props) {
   const onClickResult = () => {
     const name = firstName + " " + lastName;
     handleClickUser(userId, name, picture);
-  }
+  };
 
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} sm={7} className={classes.info}>
-        <Avatar className={classes.avatar} src={picture} onClick={onClickResult}/>
-        <h5 className={classes.name} onClick={onClickResult}>{firstName + " " + lastName}</h5>
+        <div className={classes.avatarContainer}>
+          <Avatar
+            className={classes.avatar}
+            src={picture}
+            onClick={onClickResult}
+          />
+        </div>
+        <h5 className={classes.name} onClick={onClickResult}>
+          {firstName + " " + lastName}
+        </h5>
       </Grid>
       <Grid item xs={12} sm={5} className={classes.option}>
         {renderOption()}

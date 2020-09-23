@@ -43,9 +43,6 @@ const useStyles = makeStyles({
       color: "#647589",
       margin: "5px 0px 5px 16px",
       width: "100%",
-      textOverflow: "ellipsis",
-      overflow: "hidden",
-      whiteSpace: "nowrap",
     },
   },
   date: {
@@ -56,6 +53,10 @@ const useStyles = makeStyles({
       textAlign: "center",
     },
   },
+  avatar: {
+    width: "100%",
+    maxWidth: "46px"
+  }
 });
 
 function ChatBox(props) {
@@ -97,13 +98,13 @@ function ChatBox(props) {
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} sm={2}>
-        <Avatar src={avatar} active={active}/>
+        <div className={classes.avatar}><Avatar src={avatar} active={active}/></div>
       </Grid>
-      <Grid item xs={12} sm={7} className={classes.overviewMessage}>
+      <Grid item xs={12} sm={6} className={classes.overviewMessage}>
         <h5>{name}</h5>
         <h6>{renderMessage()}</h6>
       </Grid>
-      <Grid item xs={12} sm={3} className={classes.date}>
+      <Grid item xs={12} sm={4} className={classes.date}>
         <h6>{date}</h6>
       </Grid>
     </Grid>

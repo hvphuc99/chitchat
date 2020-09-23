@@ -47,24 +47,26 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(StylesLibrary.Badge);
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    height: "60px",
-    width: "60px",
+    width: "100%",
+  },
+  avatar: {
+    width: "100%",
   },
   cursorHover: {
     "&:hover": {
       cursor: "pointer",
     },
   }
-});
+}));
 
 function Avatar(props) {
   const classes = useStyles();
   const { src, active, onClick, cursorHover } = props;
 
   return (
-    <>
+    <div className={classes.root}>
       {active ? (
         <StyledBadge
           overlap="circle"
@@ -74,12 +76,12 @@ function Avatar(props) {
           }}
           variant="dot"
         >
-          <StylesLibrary.Avatar src={src} className={cursorHover ? classes.root + " " + classes.cursorHover : classes.root} onClick={onClick}/>
+          <StylesLibrary.Avatar src={src} className={cursorHover ? classes.cursorHover + " " + classes.avatar : classes.avatar} onClick={onClick}/>
         </StyledBadge>
       ) : (
-        <StylesLibrary.Avatar src={src} className={cursorHover ? classes.root + " " + classes.cursorHover : classes.root} onClick={onClick}/>
+        <StylesLibrary.Avatar src={src} className={cursorHover ? classes.cursorHover + " " + classes.avatar : classes.avatar} onClick={onClick}/>
       )}
-    </>
+    </div>
   );
 }
 

@@ -12,6 +12,9 @@ const useStyles = makeStyles({
     marginBottom: "30px",
     backgroundColor: "white",
     borderRadius: "10px",
+    "& button.MuiButton-root": {
+      fontSize: "revert",
+    },
     "& .normal-button": {
       backgroundColor: "#E2F0FC",
       color: "#1c9dea",

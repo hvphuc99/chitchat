@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   },
   leftSide: {
     display: "flex",
-    justifyContent: "center",
+    alignItems: "center",
     "& h5": {
       fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
       fontWeight: "700",
@@ -51,6 +51,9 @@ const useStyles = makeStyles({
     "& .online": {
       color: "#3fcc35",
     },
+  },
+  avatarContainer: {
+    maxWidth: "46px",
   },
   rightSide: {
     display: "flex",
@@ -90,7 +93,7 @@ function ChatHeader(props) {
   return (
     <Box className={classes.root}>
       <div className={classes.leftSide}>
-        <Avatar src={avatar} active={active} />
+        <div className={classes.avatarContainer}><Avatar src={avatar} active={active} /></div>
         <span>
           <h5>{name}</h5>
           {active ? <h6 className="online">Online</h6> : <h6>Offline</h6>}

@@ -39,7 +39,6 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
-    height: "50px",
     marginBottom: "30px",
     borderRadius: "30px",
     color: "#1c9dea",

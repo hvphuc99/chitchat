@@ -32,18 +32,32 @@ const useStyles = makeStyles({
       alignContent: "space-between",
       flexWrap: "wrap",
       flexGrow: "1",
-      textAlign: "center",
       padding: "30px 0px",
       "& .navigateBarBody": {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
         width: "100%",
-        "& .navigateIcon": {
+      "& .navigateIcon": {
+          width: "100%",
+          maxWidth: "45px",
           marginBottom: "40px",
+          "& button": {
+            width: "100%",
+          }
         },
       },
       "& .navigateBarFooter": {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
         width: "100%",
         "& .navigateIcon": {
+          maxWidth: "45px",
           marginTop: "40px",
+          "& button": {
+            width: "100%",
+          }
         },
       },
     },

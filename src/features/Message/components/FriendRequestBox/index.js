@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, Grid, Button } from "@material-ui/core";
 import Avatar from "../Avatar";
-import { formatTimeLL } from "utils";
+import { formatTimell } from "utils";
 
 FriendRequestBox.propTypes = {
   id: PropTypes.string.isRequired,
@@ -65,6 +65,10 @@ const useStyles = makeStyles({
       height: "fit-content",
     },
   },
+  avatar: {
+    width: "100%",
+    maxWidth: "46px",
+  },
 });
 
 function FriendRequestBox(props) {
@@ -89,12 +93,12 @@ function FriendRequestBox(props) {
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} sm={2}>
-        <Avatar src={avatar} />
+        <div className={classes.avatar}><Avatar src={avatar} /></div>
       </Grid>
       <Grid item xs={12} sm={10} className={classes.content}>
         <div className={classes.header}>
           <h5>{name}</h5>
-          <h6>{formatTimeLL(timestamp)}</h6>
+          <h6>{formatTimell(timestamp)}</h6>
         </div>
         <div className={classes.buttonContainer}>
           <Button
@@ -108,7 +112,7 @@ function FriendRequestBox(props) {
           </Button>
           <Button
             className="navigateLoginBtn delete-button"
-            size="medium"
+            size="small"
             variant="contained"
             fullWidth
             onClick={onClickDelete}

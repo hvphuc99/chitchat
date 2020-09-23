@@ -73,6 +73,13 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
   },
+  menuItem: {
+    padding: "0px 10px",
+  },
+  avatar: {
+    width: "100%",
+    maxWidth: "46px",
+  }
 });
 
 function FriendBox(props) {
@@ -99,12 +106,14 @@ function FriendBox(props) {
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} sm={2}>
-        <Avatar
-          src={picture}
-          active={true}
-          onClick={onClickUser}
-          cursorHover={true}
-        />
+        <div className={classes.avatar}>
+          <Avatar
+            src={picture}
+            active={true}
+            onClick={onClickUser}
+            cursorHover={true}
+          />
+        </div>
       </Grid>
       <Grid item xs={12} sm={6} className={classes.name}>
         <h5 onClick={onClickUser}>{name}</h5>
@@ -112,11 +121,11 @@ function FriendBox(props) {
       <Grid item xs={12} sm={4} className={classes.buttonContainer}>
         <Button
           className="navigateLoginBtn"
-          size="medium"
+          size="small"
           variant="contained"
           fullWidth
           onClick={handleClickFriendOption}
-          startIcon={<Icon className="fas fa-user-check" style={{ width: 30, height: 20, color: "#1c9dea" }} />}
+          startIcon={<Icon className="fas fa-user-check" style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }} />}
         >
           Friends
         </Button>
@@ -126,13 +135,7 @@ function FriendBox(props) {
           open={Boolean(showUnfriend)}
           onClose={closeFriendOption}
         >
-          <MenuItem onClick={onClickUnfriend}>
-            <ListItemIcon>
-              <Icon
-                className="fas fa-user-times"
-                style={{ width: 30, height: 20, color: "#1c9dea" }}
-              />
-            </ListItemIcon>
+          <MenuItem onClick={onClickUnfriend} className={classes.menuItem}>
             <ListItemText primary="Unfriend" />
           </MenuItem>
         </StyledMenu>

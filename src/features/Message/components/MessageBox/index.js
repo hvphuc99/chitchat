@@ -52,7 +52,6 @@ const useStyles = makeStyles({
       width: "fit-content",
       maxWidth: "100%",
       wordBreak: "break-all",
-      fontSize: "18px",
       fontWeight: "600",
       color: "#223645",
       backgroundColor: "#d5d9dc",
@@ -81,7 +80,6 @@ const useStyles = makeStyles({
         width: "fit-content",
         maxWidth: "100%",
         wordBreak: "break-all",
-        fontSize: "18px",
         fontWeight: "600",
         color: "white",
         backgroundColor: "#1c9dea",
@@ -107,6 +105,10 @@ const useStyles = makeStyles({
     height: "300px",
     borderRadius: "30px",
   },
+  avatar: {
+    width: "3%",
+    minWidth: "46px",
+  }
 });
 
 function MessageBox(props) {
@@ -122,7 +124,7 @@ function MessageBox(props) {
         <img
           alt="sticker"
           src={content}
-          style={{ height: "200px", width: "200px" }}
+          style={{ height: "150px", width: "150px" }}
         />
       );
     }
@@ -147,7 +149,7 @@ function MessageBox(props) {
   if (position === "left") {
     return (
       <Box className={classes.messageBoxLeft}>
-        <Avatar src={avatar} />
+        <div className={classes.avatar}><Avatar src={avatar} /></div>
         <span>
           <div className="messageBoxLeftHeader">
             <h5>{name}</h5>
