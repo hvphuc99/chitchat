@@ -25,13 +25,13 @@ function AuthHeader(props) {
     <div className={classes.root}>
       <img src={landingLogo} alt="landing-logo" />
       <Typography className="loginFormHeader__h6" variant="h6">
-        Hello Everyone , We are Chitchat
+        Hello Everyone, We are Chitchat
       </Typography>
       <Typography
         className="loginFormHeader__h6--color--grey"
         variant="subtitle1"
       >
-        Welcome to chitchat please, login to your account
+        Welcome to chitchat please, login with your account
       </Typography>
     </div>
   );

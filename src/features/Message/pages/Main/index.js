@@ -305,7 +305,7 @@ function Main(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item xs={12} sm={3}>
+      <Grid item xs={12} sm={4}>
         <Grid container className={classes.leftSideBar}>
           <Grid item xs={12} sm={2} className={classes.navigate}>
             <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
@@ -315,7 +315,7 @@ function Main(props) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={9} className={classes.chatForm}>
+      <Grid item xs={12} sm={8} className={classes.chatForm}>
         {showChatForm ? (
           <ChatForm />
         ) : (

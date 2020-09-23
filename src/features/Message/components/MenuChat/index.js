@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useState } from "react";
 import ChatBox from "../ChatBox";
-import { convertTimestamp } from "utils";
+import { formatTimeLL } from "utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentGroupChatId,
@@ -124,7 +124,7 @@ function MenuChat(props) {
                   id = {senderId}
                   name={name}
                   message={content}
-                  date={convertTimestamp(timestamp)}
+                  date={formatTimeLL(timestamp)}
                   active={true}
                   avatar={picture}
                   type={type}
