@@ -58,7 +58,8 @@ function ChatForm(props) {
   const { currentUserId } = useSelector((state) => state.user);
 
   const handleSendTextMessage = (values, { resetForm }) => {
-    const { message } = values;
+    let { message } = values;
+    message = message.trim();
     if (message === "") return;
     messageApi.sendMessage(
       currentUserId,
