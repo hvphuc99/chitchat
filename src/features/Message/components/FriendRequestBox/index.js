@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, Grid, Button } from "@material-ui/core";
 import Avatar from "../Avatar";
-import { convertTimestamp } from "utils";
+import { formatTimeLL } from "utils";
 
 FriendRequestBox.propTypes = {
   id: PropTypes.string.isRequired,
@@ -94,7 +94,7 @@ function FriendRequestBox(props) {
       <Grid item xs={12} sm={10} className={classes.content}>
         <div className={classes.header}>
           <h5>{name}</h5>
-          <h6>{convertTimestamp(timestamp)}</h6>
+          <h6>{formatTimeLL(timestamp)}</h6>
         </div>
         <div className={classes.buttonContainer}>
           <Button
