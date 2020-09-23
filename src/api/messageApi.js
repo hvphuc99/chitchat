@@ -37,9 +37,7 @@ const messageApi = {
     db.ref("/groupChats/" + groupChatId)
       .once("value")
       .then((groupChat) => {
-        debugger
         if (!groupChat.val()) {
-        debugger
         let members = [];
           members[0] = groupChatId.slice(0, groupChatId.indexOf("-"));
           members[1] = groupChatId.slice(groupChatId.indexOf("-") + 1);
@@ -67,8 +65,6 @@ const messageApi = {
             content,
             type,
             timestamp,
-          }, (err) => {
-            debugger
           });
         }
       });
