@@ -68,7 +68,7 @@ function ChatForm(props) {
     );
     const itemMessage = {
       senderId: currentUserId,
-      timestamp: Date.now(),
+      timestamp: null,
       content: message,
       type: typeMessages.TEXT,
     };
@@ -85,7 +85,7 @@ function ChatForm(props) {
     );
     const itemMessage = {
       senderId: currentUserId,
-      timestamp: Date.now(),
+      timestamp: null,
       content: url,
       type: typeMessages.PHOTO,
     };
@@ -101,7 +101,7 @@ function ChatForm(props) {
     );
     const itemMessage = {
       senderId: currentUserId,
-      timestamp: Date.now(),
+      timestamp: null,
       content: url,
       type: typeMessages.OTHER_FILE,
     };

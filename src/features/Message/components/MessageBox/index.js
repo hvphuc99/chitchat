@@ -43,6 +43,7 @@ const useStyles = makeStyles({
         textTransform: "none",
         color: "#647589",
         margin: "0px 0px 0px 20px",
+        height: "19px",
       },
     },
     "& .messageBoxLeftContent": {
@@ -98,6 +99,7 @@ const useStyles = makeStyles({
         textTransform: "none",
         color: "#647589",
         margin: "0px 0px 12px 0px",
+        height: "19px",
       },
     },
   },
