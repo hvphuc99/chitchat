@@ -55,7 +55,7 @@ const userApi = {
           }
         })
         .catch((err) => {
-          reject(err);
+          reject("Email address is already used");
         });
     });
   },
