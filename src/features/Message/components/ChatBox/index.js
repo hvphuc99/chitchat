@@ -43,6 +43,9 @@ const useStyles = makeStyles({
       color: "#647589",
       margin: "5px 0px 5px 16px",
       width: "100%",
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
     },
   },
   date: {
