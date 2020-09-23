@@ -59,13 +59,13 @@ function ChatForm(props) {
 
   const handleSendTextMessage = (values, { resetForm }) => {
     const { message } = values;
+    if (message === "") return;
     messageApi.sendMessage(
       currentUserId,
       currentGroupChatId,
       message,
       typeMessages.TEXT
     );
-    if (message === "") return;
     const itemMessage = {
       senderId: currentUserId,
       timestamp: Date.now(),
