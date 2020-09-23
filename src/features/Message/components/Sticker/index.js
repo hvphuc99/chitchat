@@ -13,6 +13,7 @@ import messageApi from "api/messageApi";
 import { useDispatch, useSelector } from "react-redux";
 import * as typeMessages from "constants/typeMessage";
 import { addMessage } from "features/Message/messageSlice";
+import { SignalCellularNull } from "@material-ui/icons";
 
 Sticker.propTypes = {};
 
@@ -107,7 +108,7 @@ function Sticker() {
         dispatch(
           addMessage({
             senderId: currentUserId,
-            timestamp: Date.now(),
+            timestamp: null,
             content: stickerUrl,
             type: typeMessages.STICKER,
           })
@@ -133,7 +134,7 @@ function Sticker() {
         dispatch(
           addMessage({
             senderId: currentUserId,
-            timestamp: Date.now(),
+            timestamp: null,
             content: stickerUrl,
             type: typeMessages.STICKER,
           })
@@ -159,7 +160,7 @@ function Sticker() {
       dispatch(
         addMessage({
           senderId: currentUserId,
-          timestamp: Date.now(),
+          timestamp: null,
           content: stickerUrl,
           type: typeMessages.STICKER,
         })
