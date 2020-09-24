@@ -98,6 +98,17 @@ const useStyles = makeStyles({
     width: "100%",
     maxWidth: "46px",
   },
+  itemText: {
+    marginLeft: "5px",
+    "& .MuiTypography-body1": {
+      "@media (max-width: 1600px)": {
+        fontSize: "12px",
+      },
+      "@media (max-width: 1500px)": {
+        fontSize: "10px",
+      },
+    },
+  },
 });
 
 const StyledMenu = withStyles({
@@ -227,7 +238,15 @@ function SearchResult(props) {
           onClose={closeFriendOption}
         >
           <MenuItem onClick={onClickUnfriend} className={classes.menuItem}>
-            <ListItemText primary="Unfriend" />
+            <Icon
+              className="fas fa-user-times"
+              style={{
+                width: "fit-content",
+                color: "#1c9dea",
+                fontSize: "12px",
+              }}
+            />
+            <ListItemText primary="Unfriend" className={classes.itemText} />
           </MenuItem>
         </StyledMenu>
       </>

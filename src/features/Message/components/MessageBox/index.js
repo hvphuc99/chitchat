@@ -56,7 +56,7 @@ const useStyles = makeStyles({
       color: "#223645",
       backgroundColor: "#d5d9dc",
       margin: "12px 0px 5px 24px",
-      padding: "10px 20px",
+      padding: "12px 20px",
       borderRadius: "20px",
       borderTopLeftRadius: "0px",
       "& .otherFile": {
@@ -84,7 +84,7 @@ const useStyles = makeStyles({
         color: "white",
         backgroundColor: "#1c9dea",
         margin: "0px 0px 5px 0px",
-        padding: "10px 20px",
+        padding: "12px 20px",
         borderRadius: "30px",
         borderBottomRightRadius: "0px",
         "& .otherFile": {
