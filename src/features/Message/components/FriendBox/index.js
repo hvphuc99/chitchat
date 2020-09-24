@@ -51,6 +51,7 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     marginBottom: "2px",
+    alignItems: "center",
   },
   name: {
     display: "flex",
