@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useEffect } from "react";
 import MessageBox from "../MessageBox";
 import { useSelector } from "react-redux";
-import { formatTimelll } from "utils";
+import { formatTimeFull } from "utils";
 import PropTypes from "prop-types";
 
 ChatContent.propTypes = {
@@ -31,7 +31,7 @@ function ChatContent(props) {
           <MessageBox
             position="right"
             content={content}
-            timestamp={formatTimelll(timestamp)}
+            timestamp={formatTimeFull(timestamp)}
             type={type}
           />
         ) : (
@@ -40,7 +40,7 @@ function ChatContent(props) {
             avatar={picture}
             position="left"
             content={content}
-            timestamp={formatTimelll(timestamp)}
+            timestamp={formatTimeFull(timestamp)}
             type={type}
           />
         )

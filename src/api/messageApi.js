@@ -27,6 +27,9 @@ const messageApi = {
       .ref("/groupChats/" + groupChatId + "/messages")
       .on("value", handleData);
   },
+  removeMessageListListener: (groupChatId) => {
+    db.ref("/groupChats/" + groupChatId + "/messages").off("value");
+  },
   sendMessage: async (
     senderId,
     groupChatId,

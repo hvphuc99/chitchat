@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useState } from "react";
 import ChatBox from "../ChatBox";
-import { formatTimell } from "utils";
+import { formatTime } from "utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentGroupChatId,
@@ -20,6 +20,7 @@ import {
 } from "features/Message/messageSlice";
 import search from "assets/images/search.png";
 import { useEffect } from "react";
+import messageApi from "api/messageApi";
 
 MenuChat.propTypes = {
   groupChats: PropTypes.array,
@@ -74,6 +75,9 @@ function MenuChat(props) {
   const dispatch = useDispatch();
 
   const handleClickListItem = (event, id, name, picture) => {
+    if (currentGroupChatId) {
+      messageApi.removeMessageListListener(currentGroupChatId);
+    }
     setSelectedGroupChatId(id);
     dispatch(setCurrentGroupChatId(id));
     dispatch(setCurrentGroupChatName(name));
@@ -84,7 +88,7 @@ function MenuChat(props) {
 
   useEffect(() => {
     setSelectedGroupChatId(currentGroupChatId);
-  }, [currentGroupChatId])
+  }, [currentGroupChatId]);
 
   return (
     <Container className={classes.root}>
@@ -121,10 +125,10 @@ function MenuChat(props) {
                 }
               >
                 <ChatBox
-                  id = {senderId}
+                  id={senderId}
                   name={name}
                   message={content}
-                  date={formatTimell(timestamp)}
+                  date={formatTime(timestamp)}
                   active={true}
                   avatar={picture}
                   type={type}
