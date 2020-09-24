@@ -37,11 +37,23 @@ const useStyles = makeStyles({
       color: "#1C1F22",
       backgroundColor: "#D8DADF",
       marginLeft: "10px",
+      "@media (max-width: 1600px)": {
+        fontSize: "12px",
+      },
+      "@media (max-width: 1500px)": {
+        fontSize: "8px",
+      },
     },
     "& .confirm-button": {
       backgroundColor: "#1c9dea",
       color: "white",
       marginLeft: "16px",
+      "@media (max-width: 1600px)": {
+        fontSize: "12px",
+      },
+      "@media (max-width: 1500px)": {
+        fontSize: "8px",
+      },
     },
   },
   header: {
@@ -56,6 +68,12 @@ const useStyles = makeStyles({
       textTransform: "none",
       color: "#223645",
       margin: "0px 0px 0px 16px",
+      "@media (max-width: 1600px)": {
+        fontSize: "17px",
+      },
+      "@media (max-width: 1500px)": {
+        fontSize: "15px",
+      },
     },
     "& h6": {
       fontSize: "calc(11px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
@@ -63,11 +81,10 @@ const useStyles = makeStyles({
       color: "#647589",
       margin: "0px 0px 0px 0px",
       height: "fit-content",
+      "@media (max-width: 1500px)": {
+        fontSize: "10px",
+      },
     },
-  },
-  avatar: {
-    width: "100%",
-    maxWidth: "46px",
   },
 });
 
@@ -93,7 +110,7 @@ function FriendRequestBox(props) {
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} sm={2}>
-        <div className={classes.avatar}><Avatar src={avatar} /></div>
+        <Avatar src={avatar} />
       </Grid>
       <Grid item xs={12} sm={10} className={classes.content}>
         <div className={classes.header}>
@@ -102,7 +119,7 @@ function FriendRequestBox(props) {
         </div>
         <div className={classes.buttonContainer}>
           <Button
-            className="navigateLoginBtn confirm-button"
+            className="confirm-button"
             size="small"
             variant="contained"
             fullWidth
@@ -111,7 +128,7 @@ function FriendRequestBox(props) {
             Confirm
           </Button>
           <Button
-            className="navigateLoginBtn delete-button"
+            className="delete-button"
             size="small"
             variant="contained"
             fullWidth

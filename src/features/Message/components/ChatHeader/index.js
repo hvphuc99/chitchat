@@ -52,9 +52,6 @@ const useStyles = makeStyles({
       color: "#3fcc35",
     },
   },
-  avatarContainer: {
-    maxWidth: "46px",
-  },
   rightSide: {
     display: "flex",
     justifyContent: "center",
@@ -93,7 +90,7 @@ function ChatHeader(props) {
   return (
     <Box className={classes.root}>
       <div className={classes.leftSide}>
-        <div className={classes.avatarContainer}><Avatar src={avatar} active={active} /></div>
+        <Avatar src={avatar} active={active} />
         <span>
           <h5>{name}</h5>
           {active ? <h6 className="online">Online</h6> : <h6>Offline</h6>}

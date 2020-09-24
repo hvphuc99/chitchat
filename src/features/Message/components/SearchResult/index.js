@@ -70,11 +70,20 @@ const useStyles = makeStyles({
     color: "#1C1F22",
     backgroundColor: "#D8DADF",
     marginLeft: "20px",
+    "@media (max-width: 1200px)": {
+      fontSize: "10px",
+    },
   },
   name: {
     "&:hover": {
       textDecoration: "underline",
       cursor: "pointer",
+    },
+    "@media (max-width: 1600px)": {
+      fontSize: "17px",
+    },
+    "@media (max-width: 1500px)": {
+      fontSize: "15px",
     },
   },
   avatar: {
@@ -147,7 +156,7 @@ function SearchResult(props) {
     const icon = (
       <Icon
         className="fas fa-user-plus"
-        style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }}
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "12px" }}
       />
     );
     const onClick = () => {
@@ -172,7 +181,7 @@ function SearchResult(props) {
     const icon = (
       <Icon
         className="fas fa-user-times"
-        style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }}
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "12px" }}
       />
     );
     const onClick = () => {
@@ -197,7 +206,7 @@ function SearchResult(props) {
     const icon = (
       <Icon
         className="fas fa-user-check"
-        style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }}
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "12px" }}
       />
     );
     return (
@@ -230,7 +239,7 @@ function SearchResult(props) {
     const icon = (
       <Icon
         className="fas fa-user-plus"
-        style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }}
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "12px" }}
       />
     );
     const onClick = () => {

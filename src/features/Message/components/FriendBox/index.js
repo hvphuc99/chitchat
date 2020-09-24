@@ -67,6 +67,12 @@ const useStyles = makeStyles({
         textDecoration: "underline",
         cursor: "pointer",
       },
+      "@media (max-width: 1600px)": {
+        fontSize: "17px",
+      },
+      "@media (max-width: 1500px)": {
+        fontSize: "15px",
+      },
     },
   },
   buttonContainer: {
@@ -76,10 +82,14 @@ const useStyles = makeStyles({
   menuItem: {
     padding: "0px 10px",
   },
-  avatar: {
-    width: "100%",
-    maxWidth: "46px",
-  }
+  friendButton: {
+    "@media (max-width: 1600px)": {
+      fontSize: "12px",
+    },
+    "@media (max-width: 1500px)": {
+      fontSize: "8px",
+    },
+  },
 });
 
 function FriendBox(props) {
@@ -106,26 +116,33 @@ function FriendBox(props) {
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} sm={2}>
-        <div className={classes.avatar}>
-          <Avatar
-            src={picture}
-            active={true}
-            onClick={onClickUser}
-            cursorHover={true}
-          />
-        </div>
+        <Avatar
+          src={picture}
+          active={true}
+          onClick={onClickUser}
+          cursorHover={true}
+        />
       </Grid>
       <Grid item xs={12} sm={6} className={classes.name}>
         <h5 onClick={onClickUser}>{name}</h5>
       </Grid>
       <Grid item xs={12} sm={4} className={classes.buttonContainer}>
         <Button
-          className="navigateLoginBtn"
+          className={classes.friendButton}
           size="small"
           variant="contained"
           fullWidth
           onClick={handleClickFriendOption}
-          startIcon={<Icon className="fas fa-user-check" style={{ width: "fit-content", color: "#1c9dea", fontSize: "13px" }} />}
+          startIcon={
+            <Icon
+              className="fas fa-user-check"
+              style={{
+                width: "fit-content",
+                color: "#1c9dea",
+                fontSize: "12px",
+              }}
+            />
+          }
         >
           Friends
         </Button>

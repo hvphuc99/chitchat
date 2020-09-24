@@ -56,7 +56,7 @@ const useStyles = makeStyles({
       color: "#223645",
       backgroundColor: "#d5d9dc",
       margin: "12px 0px 5px 24px",
-      padding: "16px 20px",
+      padding: "10px 20px",
       borderRadius: "20px",
       borderTopLeftRadius: "0px",
       "& .otherFile": {
@@ -84,7 +84,7 @@ const useStyles = makeStyles({
         color: "white",
         backgroundColor: "#1c9dea",
         margin: "0px 0px 5px 0px",
-        padding: "16px 20px",
+        padding: "10px 20px",
         borderRadius: "30px",
         borderBottomRightRadius: "0px",
         "& .otherFile": {
@@ -105,10 +105,6 @@ const useStyles = makeStyles({
     height: "300px",
     borderRadius: "30px",
   },
-  avatar: {
-    width: "3%",
-    minWidth: "46px",
-  }
 });
 
 function MessageBox(props) {
@@ -149,7 +145,7 @@ function MessageBox(props) {
   if (position === "left") {
     return (
       <Box className={classes.messageBoxLeft}>
-        <div className={classes.avatar}><Avatar src={avatar} /></div>
+        <Avatar src={avatar} />
         <span>
           <div className="messageBoxLeftHeader">
             <h5>{name}</h5>

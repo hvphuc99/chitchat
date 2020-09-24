@@ -45,6 +45,12 @@ const useStyles = makeStyles({
   menuTitle: {
     margin: "auto",
     marginBottom: "30px",
+    "@media (max-width: 1600px)": {
+      fontSize: "20px",
+    },
+    "@media (max-width: 1500px)": {
+      fontSize: "16px",
+    },
   },
   comingSoon: {
     flexGrow: 1,
