@@ -35,14 +35,14 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     "& h5": {
-      fontSize: "13px",
+      fontSize: "15px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
       margin: "0px 0px 5px 16px",
     },
     "& h6": {
-      fontSize: "10px",
+      fontSize: "11px",
       fontWeight: "400",
       textTransform: "none",
       color: "#647589",

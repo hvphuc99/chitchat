@@ -59,6 +59,8 @@ function IconButton(props) {
     iconColorSelected,
     size,
     fontSize,
+    width,
+    height,
     ...other
   } = props;
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { Drawer, Grid, makeStyles, Typography } from "@material-ui/core";
 import NavigateBar from "features/Message/components/NavigateBar";
 import MenuChat from "features/Message/components/MenuChat";
 import ChatForm from "features/Message/components/ChatForm";
@@ -15,6 +15,8 @@ import * as options from "constants/index";
 import MenuFriendRequest from "features/Message/components/MenuFriendRequest";
 import MenuFriend from "features/Message/components/MenuFriend";
 import ComingSoon from "components/ComingSoon";
+import IconButton from "custom-fields/IconButton";
+import useMedia from "services/mediaQuery";
 
 const useStyles = makeStyles({
   root: {
@@ -45,15 +47,34 @@ const useStyles = makeStyles({
   menuTitle: {
     fontSize: "18px",
     margin: "auto",
-    marginBottom: "30px",
+    marginBottom: "10px",
   },
   comingSoon: {
     flexGrow: 1,
+  },
+  menuChatHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: "10px",
+  },
+  menuButton: {
+    height: "40px",
+    width: "40px",
+    backgroundColor: "#E2F0FC",
   },
 });
 
 function Main(props) {
   const classes = useStyles();
+
+  const {
+    isLargeSize,
+    isMediumSize,
+    isSmallSize,
+    isExtraSmallSize,
+  } = useMedia();
+
   const { currentUserId } = useSelector((state) => state.user);
   const { showChatForm, selectedOption } = useSelector(
     (state) => state.message
@@ -65,6 +86,7 @@ function Main(props) {
   const [loadingFriendRequests, setLoadingFriendRequests] = useState(true);
   const [loadingFriends, setLoadingFriends] = useState(true);
   const [numberOfFriendRequest, setNumberOfFriendRequest] = useState(0);
+  const [showNavigate, setShowNavigate] = useState(false);
 
   const renderOption = () => {
     let element = null;
@@ -73,7 +95,31 @@ function Main(props) {
       case options.ALL_MESSAGE_OPTION:
         element = (
           <>
-            <Search />
+            <div className={classes.menuChatHeader}>
+              {isSmallSize && (
+                <>
+                  <div>
+                    <IconButton
+                      icon="fas fa-bars"
+                      iconColor="#1c9dea"
+                      message="Menu"
+                      className={classes.menuButton}
+                      onClick={() => setShowNavigate(true)}
+                    />
+                  </div>
+                  <Drawer
+                    anchor="left"
+                    open={showNavigate}
+                    onClose={() => setShowNavigate(false)}
+                  >
+                    <NavigateBar
+                      numberOfFriendRequest={numberOfFriendRequest}
+                    />
+                  </Drawer>
+                </>
+              )}
+              <Search />
+            </div>
             {loadingAllMessages ? (
               <Loading />
             ) : (
@@ -85,6 +131,26 @@ function Main(props) {
       case options.FRIENDs_OPTION:
         element = (
           <>
+            {isSmallSize && (
+              <>
+                <div>
+                  <IconButton
+                    icon="fas fa-bars"
+                    iconColor="#1c9dea"
+                    message="Menu"
+                    className={classes.menuButton}
+                    onClick={() => setShowNavigate(true)}
+                  />
+                </div>
+                <Drawer
+                  anchor="left"
+                  open={showNavigate}
+                  onClose={() => setShowNavigate(false)}
+                >
+                  <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+                </Drawer>
+              </>
+            )}
             <Typography variant="h5" className={classes.menuTitle}>
               Friends
             </Typography>
@@ -95,6 +161,26 @@ function Main(props) {
       case options.FRIEND_REQUESTS_OPTION:
         element = (
           <>
+            {isSmallSize && (
+              <>
+                <div>
+                  <IconButton
+                    icon="fas fa-bars"
+                    iconColor="#1c9dea"
+                    message="Menu"
+                    className={classes.menuButton}
+                    onClick={() => setShowNavigate(true)}
+                  />
+                </div>
+                <Drawer
+                  anchor="left"
+                  open={showNavigate}
+                  onClose={() => setShowNavigate(false)}
+                >
+                  <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+                </Drawer>
+              </>
+            )}
             <Typography variant="h5" className={classes.menuTitle}>
               Friend Requests
             </Typography>
@@ -109,6 +195,26 @@ function Main(props) {
       case options.PROFILE_OPTION:
         element = (
           <>
+            {isSmallSize && (
+              <>
+                <div>
+                  <IconButton
+                    icon="fas fa-bars"
+                    iconColor="#1c9dea"
+                    message="Menu"
+                    className={classes.menuButton}
+                    onClick={() => setShowNavigate(true)}
+                  />
+                </div>
+                <Drawer
+                  anchor="left"
+                  open={showNavigate}
+                  onClose={() => setShowNavigate(false)}
+                >
+                  <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+                </Drawer>
+              </>
+            )}
             <Typography variant="h5" className={classes.menuTitle}>
               Profile
             </Typography>
@@ -306,26 +412,86 @@ function Main(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item xs={12} sm={3}>
-        <Grid container className={classes.leftSideBar}>
-          <Grid item xs={12} sm={2} className={classes.navigate}>
-            <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+      {isLargeSize && (
+        <>
+          <Grid item xs={12} sm={3}>
+            <Grid container className={classes.leftSideBar}>
+              <Grid item xs={12} sm={2} className={classes.navigate}>
+                <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+              </Grid>
+              <Grid item xs={12} sm={10} className={classes.menu}>
+                {renderOption()}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={10} className={classes.menu}>
-            {renderOption()}
+          <Grid item xs={12} sm={9} className={classes.chatForm}>
+            {showChatForm ? (
+              <ChatForm />
+            ) : (
+              <div className={classes.banner}>
+                {" "}
+                <Banner />
+              </div>
+            )}
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} sm={9} className={classes.chatForm}>
-        {showChatForm ? (
-          <ChatForm />
-        ) : (
-          <div className={classes.banner}>
-            {" "}
-            <Banner />
-          </div>
-        )}
-      </Grid>
+        </>
+      )}
+      {isMediumSize && (
+        <>
+          <Grid item xs={4}>
+            <Grid container className={classes.leftSideBar}>
+              <Grid item xs={2} className={classes.navigate}>
+                <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+              </Grid>
+              <Grid item xs={10} className={classes.menu}>
+                {renderOption()}
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={8} className={classes.chatForm}>
+            {showChatForm ? (
+              <ChatForm />
+            ) : (
+              <div className={classes.banner}>
+                {" "}
+                <Banner />
+              </div>
+            )}
+          </Grid>
+        </>
+      )}
+      {isSmallSize && (
+        <>
+          <Grid item xs={4}>
+            <Grid container className={classes.leftSideBar}>
+              <Grid item xs={12} className={classes.menu}>
+                {renderOption()}
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={8} className={classes.chatForm}>
+            {showChatForm ? (
+              <ChatForm />
+            ) : (
+              <div className={classes.banner}>
+                {" "}
+                <Banner />
+              </div>
+            )}
+          </Grid>
+        </>
+      )}
+      {isExtraSmallSize && (
+        <>
+          <Grid item xs={12}>
+            <Grid container className={classes.leftSideBar}>
+              <Grid item xs={12} className={classes.menu}>
+                {renderOption()}
+              </Grid>
+            </Grid>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 }

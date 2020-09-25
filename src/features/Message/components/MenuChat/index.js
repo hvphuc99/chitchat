@@ -49,6 +49,10 @@ const useStyles = makeStyles({
       backgroundColor: "#eff7fe",
       borderLeft: "2px solid #1c9dea",
     },
+    "& .MuiListItem-gutters": {
+      paddingLeft: "0px",
+      paddingRight: "0px",
+    }
   },
   messageContainer: {
     margin: "0px 0px 10px 0px",

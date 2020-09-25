@@ -30,14 +30,14 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "flex-start",
     "& h5": {
-      fontSize: "13px",
+      fontSize: "15px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
       margin: "0px 0px 5px 10px",
     },
     "& h6": {
-      fontSize: "10px",
+      fontSize: "11px",
       fontWeight: "400",
       textTransform: "none",
       color: "#647589",
@@ -49,6 +49,8 @@ const useStyles = makeStyles({
     },
   },
   date: {
+    display: "flex",
+    justifyContent: "flex-end",
     "& h6": {
       fontSize: "10px",
       fontWeight: "400",
@@ -97,7 +99,7 @@ function ChatBox(props) {
         return name + " sent a file";
       }
     }
-  }
+  };
 
   return (
     <Grid container className={classes.root}>

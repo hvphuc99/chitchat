@@ -18,7 +18,15 @@ import SearchResult from "../SearchResult";
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "components/Loading";
 import * as options from "constants/index";
-import { setCurrentGroupChatId, setCurrentGroupChatName, setCurrentGroupChatPicture, setLoadingMessageList, setShowChatForm } from "features/Message/messageSlice";
+import {
+  setCurrentGroupChatId,
+  setCurrentGroupChatName,
+  setCurrentGroupChatPicture,
+  setLoadingMessageList,
+  setShowChatForm,
+} from "features/Message/messageSlice";
+import IconButton from "custom-fields/IconButton";
+import useMedia from "services/mediaQuery";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -29,7 +37,10 @@ const useStyles = makeStyles({
     "& .MuiDialog-paper": {
       position: "absolute",
       top: "10%",
-      width: "40%",
+      width: "50%",
+      "@media (max-width: 1299px)": {
+        width: "65%",
+      },
     },
     "& .MuiDialog-paperWidthSm": {
       maxWidth: "none",
@@ -39,7 +50,6 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
-    marginBottom: "30px",
     borderRadius: "30px",
     color: "#1c9dea",
     "&:hover": {
@@ -56,6 +66,9 @@ const useStyles = makeStyles({
 
 function Search(props) {
   const classes = useStyles();
+
+  const { isMediumOrLargeSize, isSmallSize } = useMedia();
+
   const dispatch = useDispatch();
 
   const { currentUserId } = useSelector((state) => state.user);
@@ -71,7 +84,7 @@ function Search(props) {
   const resetSearchForm = () => {
     setSearchTerm("");
     setUserList([]);
-  }
+  };
 
   const handleClickOpenSearchForm = () => {
     setShowSearchForm(true);
@@ -198,9 +211,11 @@ function Search(props) {
       return (
         <div className={classes.notFoundContainer}>
           <Typography variant="h6">No results found</Typography>
-          <Typography variant="subtitle1">Try different keywords or remove search filters</Typography>
+          <Typography variant="subtitle1">
+            Try different keywords or remove search filters
+          </Typography>
         </div>
-      )
+      );
     }
     return userList.map(
       ({
@@ -243,7 +258,7 @@ function Search(props) {
     setShowSearchForm(false);
     resetSearchForm();
     dispatch(setShowChatForm(true));
-  }
+  };
 
   const handleUnfriend = (userId) => {
     userApi
@@ -256,15 +271,28 @@ function Search(props) {
 
   return (
     <>
-      <Button
-        className={classes.searchButton}
-        variant="contained"
-        color="secondary"
-        startIcon={<SearchIcon />}
-        onClick={handleClickOpenSearchForm}
-      >
-        Search
-      </Button>
+      {isMediumOrLargeSize && (
+        <Button
+          className={classes.searchButton}
+          variant="contained"
+          color="secondary"
+          startIcon={<SearchIcon />}
+          onClick={handleClickOpenSearchForm}
+        >
+          Search
+        </Button>
+      )}
+      {isSmallSize && (
+        <div>
+          <IconButton
+            icon="fas fa-search"
+            iconColor="#1c9dea"
+            backgroundColor="#E2F0FC"
+            message="Search"
+            onClick={handleClickOpenSearchForm}
+          />
+        </div>
+      )}
       <Dialog
         className={classes.root}
         open={showSearchForm}

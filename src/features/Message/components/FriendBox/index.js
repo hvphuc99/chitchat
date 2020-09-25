@@ -58,7 +58,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "flex-start",
     "& h5": {
-      fontSize: "13px",
+      fontSize: "15px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
@@ -73,7 +73,10 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     "& .MuiButton-label": {
+      fontSize: "11px",
+      "@media (max-width: 1100px)": {
       fontSize: "9px",
+      },
     },
   },
   menuItem: {
@@ -85,7 +88,7 @@ const useStyles = makeStyles({
   },
   itemTextContainer: {
     "& .MuiTypography-body1": {
-      fontSize: "10px",
+      fontSize: "11px",
       marginLeft: "5px",
     },
   }
@@ -137,7 +140,7 @@ function FriendBox(props) {
               style={{
                 width: "fit-content",
                 color: "#1c9dea",
-                fontSize: "10px",
+                fontSize: "11px",
               }}
             />
           }
@@ -156,7 +159,7 @@ function FriendBox(props) {
               style={{
                 width: "fit-content",
                 color: "#1c9dea",
-                fontSize: "10px",
+                fontSize: "11px",
               }}
             />
             <ListItemText primary="Unfriend" className={classes.itemTextContainer} />

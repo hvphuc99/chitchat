@@ -54,7 +54,7 @@ const useStyles = makeStyles({
     justifyContent: "flex-start",
     alignItems: "center",
     "& h5": {
-      fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "15px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
@@ -70,6 +70,9 @@ const useStyles = makeStyles({
     color: "#1C1F22",
     backgroundColor: "#D8DADF",
     marginLeft: "20px",
+    "& .MuiButton-label": {
+      fontSize: "11px",
+    }
   },
   name: {
     "&:hover": {
@@ -150,7 +153,7 @@ function SearchResult(props) {
     const icon = (
       <Icon
         className="fas fa-user-plus"
-        style={{ width: "fit-content", color: "#1c9dea", fontSize: "12px" }}
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "11px" }}
       />
     );
     const onClick = () => {
@@ -175,7 +178,7 @@ function SearchResult(props) {
     const icon = (
       <Icon
         className="fas fa-user-times"
-        style={{ width: "fit-content", color: "#1c9dea", fontSize: "12px" }}
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "11px" }}
       />
     );
     const onClick = () => {
@@ -200,7 +203,7 @@ function SearchResult(props) {
     const icon = (
       <Icon
         className="fas fa-user-check"
-        style={{ width: "fit-content", color: "#1c9dea", fontSize: "12px" }}
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "11px" }}
       />
     );
     return (
@@ -226,7 +229,7 @@ function SearchResult(props) {
               style={{
                 width: "fit-content",
                 color: "#1c9dea",
-                fontSize: "12px",
+                fontSize: "11px",
               }}
             />
             <ListItemText primary="Unfriend" className={classes.itemText} />
@@ -241,7 +244,7 @@ function SearchResult(props) {
     const icon = (
       <Icon
         className="fas fa-user-plus"
-        style={{ width: "fit-content", color: "#1c9dea", fontSize: "12px" }}
+        style={{ width: "fit-content", color: "#1c9dea", fontSize: "11px" }}
       />
     );
     const onClick = () => {

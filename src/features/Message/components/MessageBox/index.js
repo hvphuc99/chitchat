@@ -25,25 +25,25 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-start",
     padding: "0px 20px",
+    margin: "8px 0px",
     "& .messageBoxLeftHeader": {
       display: "flex",
       alignItems: "center",
       marginLeft: "24px",
       width: "100%",
       "& h5": {
-        fontSize: "13px",
+        fontSize: "15px",
         fontWeight: "700",
         textTransform: "none",
         color: "#223645",
         margin: "0",
       },
       "& h6": {
-        fontSize: "10px",
+        fontSize: "11px",
         fontWeight: "400",
         textTransform: "none",
         color: "#647589",
-        margin: "7px 0px 0px 20px",
-        height: "19px",
+        margin: "0px 0px 0px 20px",
       },
     },
     "& .messageBoxLeftContent": {
@@ -52,11 +52,11 @@ const useStyles = makeStyles({
       width: "fit-content",
       maxWidth: "100%",
       wordBreak: "break-all",
-      fontSize: "13px",
+      fontSize: "15px",
       fontWeight: "600",
       color: "#223645",
       backgroundColor: "#d5d9dc",
-      margin: "5px 0px 5px 24px",
+      margin: "3px 0px 5px 24px",
       padding: "12px 20px",
       borderRadius: "20px",
       borderTopLeftRadius: "0px",
@@ -69,6 +69,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     padding: "0px 20px",
+    margin: "8px 0px",
     "& .messageBoxRightContainer": {
       display: "flex",
       flexDirection: "column",
@@ -81,11 +82,11 @@ const useStyles = makeStyles({
         width: "fit-content",
         maxWidth: "100%",
         wordBreak: "break-all",
-        fontSize: "13px",
+        fontSize: "15px",
         fontWeight: "600",
         color: "white",
         backgroundColor: "#1c9dea",
-        margin: "5px 0px 5px 0px",
+        margin: "0px 0px 5px 0px",
         padding: "12px 20px",
         borderRadius: "30px",
         borderBottomRightRadius: "0px",
@@ -94,17 +95,16 @@ const useStyles = makeStyles({
         },
       },
       "& h6": {
-        fontSize: "10px",
+        fontSize: "11px",
         fontWeight: "400",
         textTransform: "none",
         color: "#647589",
         margin: "0px",
-        height: "19px",
       },
     },
   },
   uploadPhoto: {
-    height: "200px",
+    height: "170px",
     borderRadius: "30px",
     margin: "5px 0px 5px 24px",
   },
@@ -123,7 +123,7 @@ function MessageBox(props) {
         <img
           alt="sticker"
           src={content}
-          style={{ height: "150px", width: "150px" }}
+          style={{ height: "100px", width: "100px" }}
         />
       );
     }
@@ -166,12 +166,12 @@ function MessageBox(props) {
     return (
       <Box className={classes.messageBoxRight}>
         <div className="messageBoxRightContainer">
-          <h6>{timestamp}</h6>
           {type === typeMessages.STICKER || type === typeMessages.PHOTO ? (
             renderContent()
           ) : (
             <div className="messageBoxRightContent">{renderContent()}</div>
           )}
+          <h6>{timestamp}</h6>
         </div>
       </Box>
     );

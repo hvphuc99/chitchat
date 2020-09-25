@@ -38,7 +38,7 @@ const useStyles = makeStyles({
       backgroundColor: "#D8DADF",
       marginLeft: "10px",
       "& .MuiButton-label": {
-        fontSize: "10px",
+        fontSize: "11px",
       },
     },
     "& .confirm-button": {
@@ -46,7 +46,7 @@ const useStyles = makeStyles({
       color: "white",
       marginLeft: "16px",
       "& .MuiButton-label": {
-        fontSize: "10px",
+        fontSize: "11px",
       },
     },
   },
@@ -57,14 +57,14 @@ const useStyles = makeStyles({
     alignItems: "center",
     marginBottom: "10px",
     "& h5": {
-      fontSize: "13px",
+      fontSize: "15px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
       margin: "0px 0px 0px 16px",
     },
     "& h6": {
-      fontSize: "10px",
+      fontSize: "11px",
       fontWeight: "400",
       color: "#647589",
       margin: "0px 0px 0px 0px",
