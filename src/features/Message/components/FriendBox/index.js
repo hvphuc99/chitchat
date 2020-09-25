@@ -57,51 +57,38 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingLeft: "16px",
     "& h5": {
-      fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "13px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
-      margin: "0px 0px 10px 0px",
+      margin: "0px 0px 10px 10px",
       "&:hover": {
         textDecoration: "underline",
         cursor: "pointer",
-      },
-      "@media (max-width: 1600px)": {
-        fontSize: "17px",
-      },
-      "@media (max-width: 1500px)": {
-        fontSize: "15px",
       },
     },
   },
   buttonContainer: {
     display: "flex",
     alignItems: "center",
+    "& .MuiButton-label": {
+      fontSize: "9px",
+    },
   },
   menuItem: {
     padding: "0px 10px",
   },
-  friendButton: {
-    "@media (max-width: 1600px)": {
-      fontSize: "12px",
-    },
-    "@media (max-width: 1500px)": {
-      fontSize: "8px",
-    },
+  avatarContainer: {
+    display: "flex",
+    justifyContent: "center",
   },
-  itemText: {
-    marginLeft: "5px",
+  itemTextContainer: {
     "& .MuiTypography-body1": {
-      "@media (max-width: 1600px)": {
-        fontSize: "12px",
-      },
-      "@media (max-width: 1500px)": {
-        fontSize: "10px",
-      },
+      fontSize: "10px",
+      marginLeft: "5px",
     },
-  },
+  }
 });
 
 function FriendBox(props) {
@@ -127,7 +114,7 @@ function FriendBox(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item xs={12} sm={2}>
+      <Grid item xs={12} sm={2} className={classes.avatarContainer}>
         <Avatar
           src={picture}
           active={true}
@@ -140,7 +127,6 @@ function FriendBox(props) {
       </Grid>
       <Grid item xs={12} sm={4} className={classes.buttonContainer}>
         <Button
-          className={classes.friendButton}
           size="small"
           variant="contained"
           fullWidth
@@ -151,7 +137,7 @@ function FriendBox(props) {
               style={{
                 width: "fit-content",
                 color: "#1c9dea",
-                fontSize: "12px",
+                fontSize: "10px",
               }}
             />
           }
@@ -170,10 +156,10 @@ function FriendBox(props) {
               style={{
                 width: "fit-content",
                 color: "#1c9dea",
-                fontSize: "12px",
+                fontSize: "10px",
               }}
             />
-            <ListItemText primary="Unfriend" className={classes.itemText} />
+            <ListItemText primary="Unfriend" className={classes.itemTextContainer} />
           </MenuItem>
         </StyledMenu>
       </Grid>

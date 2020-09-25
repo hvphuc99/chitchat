@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    padding: "20px 20px",
+    padding: "20px 15px",
   },
   chatForm: {
     height: "100%",
@@ -43,14 +43,9 @@ const useStyles = makeStyles({
     height: "100%",
   },
   menuTitle: {
+    fontSize: "18px",
     margin: "auto",
     marginBottom: "30px",
-    "@media (max-width: 1600px)": {
-      fontSize: "20px",
-    },
-    "@media (max-width: 1500px)": {
-      fontSize: "16px",
-    },
   },
   comingSoon: {
     flexGrow: 1,

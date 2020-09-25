@@ -45,6 +45,9 @@ const useStyles = makeStyles({
     "&:hover": {
       backgroundColor: "transparent",
     },
+    "& .MuiButton-label": {
+      fontSize: "12px",
+    },
   },
   notFoundContainer: {
     textAlign: "center",

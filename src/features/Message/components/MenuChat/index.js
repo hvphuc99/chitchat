@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     },
     "& .Mui-selected": {
       backgroundColor: "#eff7fe",
-      borderLeft: "4px solid #1c9dea",
+      borderLeft: "2px solid #1c9dea",
     },
   },
   messageContainer: {

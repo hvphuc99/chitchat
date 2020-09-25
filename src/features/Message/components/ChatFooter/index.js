@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "26px 36px",
+    padding: "13px 20px",
     width: "100%",
     backgroundColor: "white",
     borderTop: "1px solid #eff1f2",
@@ -50,6 +50,9 @@ const useStyles = makeStyles({
     flexGrow: "1",
     "& .MuiOutlinedInput-root": {
       borderRadius: "30px",
+    },
+    "& .MuiOutlinedInput-input": {
+      padding: "10px 13px",
     },
   },
   rightSide: {
@@ -285,7 +288,7 @@ function ChatFooter(props) {
                 <FastField
                   name="message"
                   component={InputField}
-                  placeholder="Write your message..."
+                  placeholder="Type a message..."
                   variant="outlined"
                   margin="none"
                   autoComplete="off"

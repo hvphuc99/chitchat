@@ -40,7 +40,7 @@ IconButton.defaultProps = {
   backgroundColorSelected: "#1c9dea",
   iconColorSelected: "white",
   size: "medium",
-  fontSize: "20px",
+  fontSize: "medium",
 };
 
 function IconButton(props) {

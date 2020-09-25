@@ -70,20 +70,11 @@ const useStyles = makeStyles({
     color: "#1C1F22",
     backgroundColor: "#D8DADF",
     marginLeft: "20px",
-    "@media (max-width: 1200px)": {
-      fontSize: "10px",
-    },
   },
   name: {
     "&:hover": {
       textDecoration: "underline",
       cursor: "pointer",
-    },
-    "@media (max-width: 1600px)": {
-      fontSize: "17px",
-    },
-    "@media (max-width: 1500px)": {
-      fontSize: "15px",
     },
   },
   avatar: {
@@ -100,14 +91,6 @@ const useStyles = makeStyles({
   },
   itemText: {
     marginLeft: "5px",
-    "& .MuiTypography-body1": {
-      "@media (max-width: 1600px)": {
-        fontSize: "12px",
-      },
-      "@media (max-width: 1500px)": {
-        fontSize: "10px",
-      },
-    },
   },
 });
 

@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "12px 36px",
+    padding: "5px 20px",
     width: "100%",
     backgroundColor: "white",
     borderBottom: "1px solid #eff1f2",
@@ -35,14 +35,14 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     "& h5": {
-      fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "13px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
       margin: "0px 0px 5px 16px",
     },
     "& h6": {
-      fontSize: "calc(13px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "10px",
       fontWeight: "400",
       textTransform: "none",
       color: "#647589",

@@ -30,44 +30,37 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "flex-start",
     "& h5": {
-      fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "13px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
-      margin: "0px 0px 5px 16px",
-      "@media (max-width: 1600px)": {
-        fontSize: "17px",
-      },
-      "@media (max-width: 1500px)": {
-        fontSize: "15px",
-      },
+      margin: "0px 0px 5px 10px",
     },
     "& h6": {
-      fontSize: "calc(13px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "10px",
       fontWeight: "400",
       textTransform: "none",
       color: "#647589",
-      margin: "5px 0px 5px 16px",
+      margin: "5px 0px 5px 10px",
       width: "100%",
       textOverflow: "ellipsis",
       overflow: "hidden",
       whiteSpace: "nowrap",
-      "@media (max-width: 1500px)": {
-        fontSize: "10px",
-      },
     },
   },
   date: {
     "& h6": {
-      fontSize: "calc(11px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "10px",
       fontWeight: "400",
       color: "#647589",
       textAlign: "center",
-      "@media (max-width: 1500px)": {
-        fontSize: "10px",
-      },
     },
   },
+  avatarContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });
 
 function ChatBox(props) {
@@ -108,7 +101,7 @@ function ChatBox(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item xs={12} sm={2}>
+      <Grid item xs={12} sm={2} className={classes.avatarContainer}>
         <Avatar src={avatar} active={active}/>
       </Grid>
       <Grid item xs={12} sm={6} className={classes.overviewMessage}>

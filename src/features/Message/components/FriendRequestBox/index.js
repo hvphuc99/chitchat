@@ -37,22 +37,16 @@ const useStyles = makeStyles({
       color: "#1C1F22",
       backgroundColor: "#D8DADF",
       marginLeft: "10px",
-      "@media (max-width: 1600px)": {
-        fontSize: "12px",
-      },
-      "@media (max-width: 1500px)": {
-        fontSize: "8px",
+      "& .MuiButton-label": {
+        fontSize: "10px",
       },
     },
     "& .confirm-button": {
       backgroundColor: "#1c9dea",
       color: "white",
       marginLeft: "16px",
-      "@media (max-width: 1600px)": {
-        fontSize: "12px",
-      },
-      "@media (max-width: 1500px)": {
-        fontSize: "8px",
+      "& .MuiButton-label": {
+        fontSize: "10px",
       },
     },
   },
@@ -63,28 +57,23 @@ const useStyles = makeStyles({
     alignItems: "center",
     marginBottom: "10px",
     "& h5": {
-      fontSize: "calc(17px + (14 - 13) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "13px",
       fontWeight: "700",
       textTransform: "none",
       color: "#223645",
       margin: "0px 0px 0px 16px",
-      "@media (max-width: 1600px)": {
-        fontSize: "17px",
-      },
-      "@media (max-width: 1500px)": {
-        fontSize: "15px",
-      },
     },
     "& h6": {
-      fontSize: "calc(11px + (12 - 11) * ((100vw - 320px) / (1920 - 320)))",
+      fontSize: "10px",
       fontWeight: "400",
       color: "#647589",
       margin: "0px 0px 0px 0px",
       height: "fit-content",
-      "@media (max-width: 1500px)": {
-        fontSize: "10px",
-      },
     },
+  },
+  avatarContainer: {
+    display: "flex",
+    justifyContent: "center",
   },
 });
 
@@ -109,7 +98,7 @@ function FriendRequestBox(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item xs={12} sm={2}>
+      <Grid item xs={12} sm={2} className={classes.avatarContainer}>
         <Avatar src={avatar} />
       </Grid>
       <Grid item xs={12} sm={10} className={classes.content}>
