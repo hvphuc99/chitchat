@@ -55,7 +55,7 @@ const useStyles = makeStyles({
     }
   },
   messageContainer: {
-    margin: "0px 0px 10px 0px",
+    margin: 0,
   },
   logoContainer: {
     display: "flex",

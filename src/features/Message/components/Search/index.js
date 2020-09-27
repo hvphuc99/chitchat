@@ -67,7 +67,7 @@ const useStyles = makeStyles({
 function Search(props) {
   const classes = useStyles();
 
-  const { isMediumOrLargeSize, isSmallSize } = useMedia();
+  const { isGreaterLargeSize, isMediumSize, isSmallSize } = useMedia();
 
   const dispatch = useDispatch();
 
@@ -271,7 +271,7 @@ function Search(props) {
 
   return (
     <>
-      {isMediumOrLargeSize && (
+      {isGreaterLargeSize && (
         <Button
           className={classes.searchButton}
           variant="contained"
@@ -283,6 +283,17 @@ function Search(props) {
         </Button>
       )}
       {isSmallSize && (
+        <Button
+          className={classes.searchButton}
+          variant="contained"
+          color="secondary"
+          startIcon={<SearchIcon />}
+          onClick={handleClickOpenSearchForm}
+        >
+          Search
+        </Button>
+      )}
+      {isMediumSize && (
         <div>
           <IconButton
             icon="fas fa-search"

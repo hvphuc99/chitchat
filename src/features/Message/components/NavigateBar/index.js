@@ -1,5 +1,10 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Icon,
+  makeStyles,
+} from "@material-ui/core";
 import { IconButton as LogoButton } from "@material-ui/core";
 import logo from "assets/images/logo.png";
 import IconButton from "custom-fields/IconButton";
@@ -8,11 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeToken, removeCurrentUserId } from "app/userSlice";
 import userApi from "api/userApi";
 import { setNotify } from "app/notifySlice";
-import {
-  setSelectedOption,
-  resetMessage,
-} from "features/Message/messageSlice";
+import { setSelectedOption, resetMessage } from "features/Message/messageSlice";
 import * as options from "constants/index";
+import useMedia from "services/mediaQuery";
 
 const useStyles = makeStyles({
   root: {
@@ -38,13 +41,13 @@ const useStyles = makeStyles({
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
-      "& .navigateIcon": {
+        "& .navigateIcon": {
           width: "100%",
           maxWidth: "45px",
           marginBottom: "40px",
           "& button": {
             width: "100%",
-          }
+          },
         },
       },
       "& .navigateBarFooter": {
@@ -57,15 +60,24 @@ const useStyles = makeStyles({
           marginTop: "40px",
           "& button": {
             width: "100%",
-          }
+          },
         },
       },
     },
+  },
+  bottomNavigationRoot: {
+    width: "100%",
+    "& .MuiBottomNavigationAction-root": {
+      maxWidth: "none",
+    }
   },
 });
 
 function NavigateBar(props) {
   const classes = useStyles();
+
+  const { isGreaterSmallSize, isSmallSize } = useMedia();
+
   const history = useHistory();
   const { selectedOption } = useSelector((state) => state.message);
   const dispatch = useDispatch();
@@ -106,79 +118,145 @@ function NavigateBar(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <div className="navigateBarHeader">
-        <LogoButton onClick={handleClickLogoButton}>
-          <img src={logo} alt="logo" />
-        </LogoButton>
-      </div>
-
-      <div className="navigateBarContent">
-        <div className="navigateBarBody">
-          <div className="navigateIcon">
-            <IconButton
-              icon="fas fa-comment-dots"
-              iconColor="#223645"
-              backgroundColor="#eff1f2"
-              backgroundColorHover="#D3D8DB"
-              message="All Message"
-              selected={selectedOption === options.ALL_MESSAGE_OPTION}
-              onClick={(event) => handleClickListItem(event, options.ALL_MESSAGE_OPTION)}
-            />
+    <>
+      {isGreaterSmallSize && (
+        <div className={classes.root}>
+          <div className="navigateBarHeader">
+            <LogoButton onClick={handleClickLogoButton}>
+              <img src={logo} alt="logo" />
+            </LogoButton>
           </div>
 
-          <div className="navigateIcon">
-            <IconButton
-              icon="fas fa-address-book"
-              iconColor="#223645"
-              backgroundColor="#eff1f2"
-              backgroundColorHover="#D3D8DB"
-              message="Friends"
-              selected={selectedOption === options.FRIENDs_OPTION}
-              onClick={(event) => handleClickListItem(event, options.FRIENDs_OPTION)}
-            />
-          </div>
+          <div className="navigateBarContent">
+            <div className="navigateBarBody">
+              <div className="navigateIcon">
+                <IconButton
+                  icon="fas fa-comment-dots"
+                  iconColor="#223645"
+                  backgroundColor="#eff1f2"
+                  backgroundColorHover="#D3D8DB"
+                  message="All messages"
+                  selected={selectedOption === options.ALL_MESSAGES_OPTION}
+                  onClick={(event) =>
+                    handleClickListItem(event, options.ALL_MESSAGES_OPTION)
+                  }
+                />
+              </div>
 
-          <div className="navigateIcon">
-            <IconButton
-              icon="fas fa-user-plus"
-              iconColor="#223645"
-              backgroundColor="#eff1f2"
-              backgroundColorHover="#D3D8DB"
-              message="Friend Requests"
-              badgeContent={numberOfFriendRequest}
-              selected={selectedOption === options.FRIEND_REQUESTS_OPTION}
-              onClick={(event) => handleClickListItem(event, options.FRIEND_REQUESTS_OPTION)}
-            />
+              <div className="navigateIcon">
+                <IconButton
+                  icon="fas fa-user-friends"
+                  iconColor="#223645"
+                  backgroundColor="#eff1f2"
+                  backgroundColorHover="#D3D8DB"
+                  message="Friends"
+                  selected={selectedOption === options.FRIENDs_OPTION}
+                  onClick={(event) =>
+                    handleClickListItem(event, options.FRIENDs_OPTION)
+                  }
+                />
+              </div>
+
+              <div className="navigateIcon">
+                <IconButton
+                  icon="fas fa-user-plus"
+                  iconColor="#223645"
+                  backgroundColor="#eff1f2"
+                  backgroundColorHover="#D3D8DB"
+                  message="Friend requests"
+                  badgeContent={numberOfFriendRequest}
+                  selected={selectedOption === options.FRIEND_REQUESTS_OPTION}
+                  onClick={(event) =>
+                    handleClickListItem(event, options.FRIEND_REQUESTS_OPTION)
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="navigateBarFooter">
+              <div className="navigateIcon">
+                <IconButton
+                  icon="fas fa-user-edit"
+                  iconColor="#223645"
+                  backgroundColor="#eff1f2"
+                  backgroundColorHover="#D3D8DB"
+                  message="Profile"
+                  selected={selectedOption === options.PROFILE_OPTION}
+                  onClick={(event) =>
+                    handleClickListItem(event, options.PROFILE_OPTION)
+                  }
+                />
+              </div>
+
+              <div className="navigateIcon">
+                <IconButton
+                  icon="fas fa-sign-out-alt"
+                  iconColor="#223645"
+                  backgroundColor="#eff1f2"
+                  backgroundColorHover="#D3D8DB"
+                  message="Log out"
+                  onClick={handleClickLogout}
+                />
+              </div>
+            </div>
           </div>
         </div>
+      )}
 
-        <div className="navigateBarFooter">
-          <div className="navigateIcon">
-            <IconButton
-              icon="fas fa-user-edit"
-              iconColor="#223645"
-              backgroundColor="#eff1f2"
-              backgroundColorHover="#D3D8DB"
-              message="Profile"
-              selected={selectedOption === options.PROFILE_OPTION}
-              onClick={(event) => handleClickListItem(event, options.PROFILE_OPTION)}
-            />
-          </div>
-
-          <div className="navigateIcon">
-            <IconButton
-              icon="fas fa-power-off"
-              iconColor="#223645"
-              backgroundColor="#eff1f2"
-              backgroundColorHover="#D3D8DB"
-              message="Log out"
-              onClick={handleClickLogout}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+      {isSmallSize && (
+        <BottomNavigation
+          value={selectedOption}
+          onChange={(event, newValue) => {
+            dispatch(setSelectedOption(newValue));
+          }}
+          showLabels
+          className={classes.bottomNavigationRoot}
+        >
+          <BottomNavigationAction
+            label="All messages"
+            value={options.ALL_MESSAGES_OPTION}
+            icon={
+              <Icon
+                className="fas fa-comment-dots"
+                style={{
+                  width: "fit-content",
+                  color: "inherit",
+                  fontSize: "20px",
+                }}
+              />
+            }
+          />
+          <BottomNavigationAction
+            label="Friends"
+            value={options.FRIENDS_OPTION}
+            icon={
+              <Icon
+                className="fas fa-user-friends"
+                style={{
+                  width: "fit-content",
+                  color: "inherit",
+                  fontSize: "20px",
+                }}
+              />
+            }
+          />
+          <BottomNavigationAction
+            label="Friend Requests"
+            value={options.FRIEND_REQUESTS_OPTION}
+            icon={
+              <Icon
+                className="fas fa-user-plus"
+                style={{
+                  width: "fit-content",
+                  color: "inherit",
+                  fontSize: "20px",
+                }}
+              />
+            }
+          />
+        </BottomNavigation>
+      )}
+    </>
   );
 }
 

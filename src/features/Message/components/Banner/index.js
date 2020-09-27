@@ -33,12 +33,12 @@ const useStyles = makeStyles({
 function Banner() {
   const classes = useStyles();
 
-  const { isMediumOrLargeSize, isSmallSize } = useMedia();
+  const { isGreaterLargeSize, isMediumSize } = useMedia();
 
   return (
     <div className={classes.root}>
       <img className={classes.logo} src={landingLogo} alt="landing-logo" />
-      {isMediumOrLargeSize && (
+      {isGreaterLargeSize && (
         <>
           <Typography className={classes.normalText} variant="h6">
             Be together, whenever
@@ -49,7 +49,7 @@ function Banner() {
         </>
       )}
 
-      {isSmallSize && (
+      {isMediumSize && (
         <>
           <Typography className={classes.normalText} variant="subtitle1">
             Be together, whenever

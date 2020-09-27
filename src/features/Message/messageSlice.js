@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ALL_MESSAGE_OPTION } from "constants/index";
+import { ALL_MESSAGES_OPTION } from "constants/index";
 
 const initialState = {
   currentGroupChatId: "",
@@ -7,7 +7,7 @@ const initialState = {
   currentGroupChatPicture: "",
   showChatForm: false,
   loadingMessageList: false,
-  selectedOption: ALL_MESSAGE_OPTION,
+  selectedOption: ALL_MESSAGES_OPTION,
   numberOfFriendRequest: 0,
   messageList: [],
 };

@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "13px 20px",
+    padding: "10px 20px",
     width: "100%",
     backgroundColor: "white",
     borderTop: "1px solid #eff1f2",
