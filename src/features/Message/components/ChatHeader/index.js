@@ -9,7 +9,7 @@ import {
   DialogContent,
 } from "@material-ui/core";
 import Avatar from "../Avatar";
-import IconButton from "custom-fields/IconButton";
+import IconButton from "components/IconButton";
 import ComingSoon from "components/ComingSoon";
 
 ChatHeader.propTypes = {
@@ -93,7 +93,7 @@ function ChatHeader(props) {
         <Avatar src={avatar} active={active} />
         <span>
           <h5>{name}</h5>
-          {active ? <h6 className="online">Online</h6> : <h6>Offline</h6>}
+          {/* {active ? <h6 className="online">Online</h6> : <h6>Offline</h6>} */}
         </span>
       </div>
       <div className={classes.rightSide}>

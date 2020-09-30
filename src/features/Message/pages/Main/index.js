@@ -15,12 +15,14 @@ import * as options from "constants/index";
 import MenuFriendRequest from "features/Message/components/MenuFriendRequest";
 import MenuFriend from "features/Message/components/MenuFriend";
 import ComingSoon from "components/ComingSoon";
-import IconButton from "custom-fields/IconButton";
+import IconButton from "components/IconButton";
 import useMedia from "services/mediaQuery";
 import { IconButton as LogoButton } from "@material-ui/core";
 import logo from "assets/images/logo.png";
 import { resetMessage } from "features/Message/messageSlice";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { removeCurrentUserId, removeToken } from "app/userSlice";
+import { setNotify } from "app/notifySlice";
 
 const useStyles = makeStyles({
   root: {
@@ -80,22 +82,20 @@ const useStyles = makeStyles({
     },
   },
   logoImg: {
-    height: 20,
-    width: 20,
+    height: 30,
+    width: 30,
   },
   menuHeaderLeft: {
     display: "flex",
     alignItems: "center",
-    "& .MuiTypography-h6": {
-      marginLeft: 10,
+    "& h6": {
+			fontWeight: 700,
+			marginLeft: 10,
     },
   },
   menuHeaderRight: {
     display: "flex",
     alignItems: "center",
-  },
-  menuHeaderRightBtn: {
-    marginRight: 10,
   },
   menuHeaderButton: {
     height: 30,
@@ -115,7 +115,7 @@ const useStyles = makeStyles({
     flexGrow: 1,
     padding: "20px 15px",
     width: "100%",
-    maxHeight: "calc(100% - 56)",
+    maxHeight: "calc(100% - 56px)",
   },
   menuChatSmallSize: {
     flexGrow: 1,
@@ -146,7 +146,32 @@ function Main(props) {
   const handleClickLogoButton = () => {
     dispatch(resetMessage());
     history.push("/");
-  };
+	};
+	
+	const handleClickLogout = () => {
+    userApi
+      .logout()
+      .then((res) => {
+        dispatch(removeToken());
+        dispatch(removeCurrentUserId());
+        dispatch(resetMessage());
+        dispatch(
+          setNotify({
+            type: "success",
+            message: res,
+          })
+        );
+        history.push("/login");
+      })
+      .catch((err) => {
+        dispatch(
+          setNotify({
+            type: "error",
+            message: err,
+          })
+        );
+      });
+	};
 
   const renderOption = () => {
     let element = null;
@@ -162,23 +187,16 @@ function Main(props) {
                     <LogoButton onClick={handleClickLogoButton}>
                       <img className={classes.logoImg} src={logo} alt="logo" />
                     </LogoButton>
-                    <Typography variant="h6">Chats</Typography>
+                    <Typography variant="subtitle1">Chats</Typography>
                   </div>
                   <div className={classes.menuHeaderRight}>
-                    <div className={classes.menuHeaderRightBtn}>
-                      <IconButton
-                        icon="fas fa-user-edit"
-                        iconColor="#1c9dea"
-                        message="Menu"
-                        className={classes.menuHeaderButton}
-                      />
-                    </div>
                     <div>
                       <IconButton
                         icon="fas fa-sign-out-alt"
                         iconColor="#1c9dea"
                         message="Menu"
-                        className={classes.menuHeaderButton}
+												className={classes.menuHeaderButton}
+												onClick={handleClickLogout}
                       />
                     </div>
                   </div>
@@ -229,7 +247,7 @@ function Main(props) {
           </>
         );
         break;
-      case options.FRIENDs_OPTION:
+      case options.FRIENDS_OPTION:
         element = (
           <>
             {isMediumSize && (

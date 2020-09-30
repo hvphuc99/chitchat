@@ -29,7 +29,8 @@ const useStyles = makeStyles({
   },
   leftSide: {
     display: "flex",
-    alignItems: "center",
+		alignItems: "center",
+		marginLeft: 5,
   },
   midSide: {
     flexGrow: "1",

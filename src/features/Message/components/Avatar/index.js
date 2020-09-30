@@ -57,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Avatar(props) {
   const classes = useStyles();
-  const { src, active, onClick, cursorHover } = props;
+	const { src, onClick, cursorHover } = props;
+	const active = false;
 
   return (
     <>

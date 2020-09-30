@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
 import React from "react";
-import IconButton from "custom-fields/IconButton";
+import IconButton from "components/IconButton";
 import userApi from "api/userApi";
 import { useDispatch } from "react-redux";
 import { setCurrentUserId, setToken } from "app/userSlice";

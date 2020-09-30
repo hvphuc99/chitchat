@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import { IconButton as LogoButton } from "@material-ui/core";
 import logo from "assets/images/logo.png";
-import IconButton from "custom-fields/IconButton";
+import IconButton from "components/IconButton";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken, removeCurrentUserId } from "app/userSlice";
@@ -28,7 +28,11 @@ const useStyles = makeStyles({
       display: "flex",
       justifyContent: "center",
       borderBottom: "1px solid #eff1f2",
-      paddingBottom: "20px",
+			paddingBottom: "20px",
+			"& img": {
+				width: 40,
+				height: 40,
+			},
     },
     "& .navigateBarContent": {
       display: "flex",
@@ -46,7 +50,8 @@ const useStyles = makeStyles({
           maxWidth: "45px",
           marginBottom: "40px",
           "& button": {
-            width: "100%",
+            width: 40,
+            height: 40,
           },
         },
       },
@@ -150,9 +155,9 @@ function NavigateBar(props) {
                   backgroundColor="#eff1f2"
                   backgroundColorHover="#D3D8DB"
                   message="Friends"
-                  selected={selectedOption === options.FRIENDs_OPTION}
+                  selected={selectedOption === options.FRIENDS_OPTION}
                   onClick={(event) =>
-                    handleClickListItem(event, options.FRIENDs_OPTION)
+                    handleClickListItem(event, options.FRIENDS_OPTION)
                   }
                 />
               </div>
@@ -241,7 +246,7 @@ function NavigateBar(props) {
             }
           />
           <BottomNavigationAction
-            label="Friend Requests"
+            label="Requests"
             value={options.FRIEND_REQUESTS_OPTION}
             icon={
               <Icon

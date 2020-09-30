@@ -10,7 +10,7 @@ import {
   Popover,
   withStyles,
 } from "@material-ui/core";
-import IconButton from "custom-fields/IconButton";
+import IconButton from "components/IconButton";
 import { Formik, Form, FastField } from "formik";
 import InputField from "custom-fields/InputField";
 import PropTypes from "prop-types";

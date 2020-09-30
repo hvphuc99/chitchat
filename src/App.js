@@ -11,7 +11,7 @@ import SignUp from "features/Auth/pages/SignUp";
 import theme from "custom-theme";
 import Message from "features/Message";
 import { useSelector, useDispatch } from "react-redux";
-import Notify from "custom-fields/Notify";
+import Notify from "components/Notify";
 import PrivateRoute from "components/PrivateRoute";
 import PublishRoute from "components/PublishRoute";
 import { useState } from "react";
