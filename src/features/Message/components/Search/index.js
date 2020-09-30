@@ -84,6 +84,7 @@ const useStyles = makeStyles({
 	},
 	searchFormFullScreenHeader: {
 		display: "flex",
+		alignItems	: "center",
 		"& .MuiFormControl-root": {
 			marginLeft: 10,
 		},
@@ -91,6 +92,13 @@ const useStyles = makeStyles({
 	searchFormFullScreenResult: {
 		flexGrow: 1,
 		padding: "20px 0px",
+		maxHeight: "calc(100% - 40px)",
+	},
+	backButton: {
+		height: "fit-content",
+		"& button": {
+			padding: "0px 5px 0px 0px",
+		},
 	},
 });
 
@@ -124,6 +132,7 @@ function Search(props) {
 	const handleClickCloseSearchForm = () => {
 		setShowSearchForm(false);
 		resetSearchForm();
+		setNotFound(false);
 	};
 
 	const handleClickOpenSearchFormFullScreen = () => {
@@ -132,12 +141,15 @@ function Search(props) {
 
 	const handleClickBack = () => {
 		setShowSearchFormFullScreen(false);
+		resetSearchForm();
+		setNotFound(false);
 	};
 
 	const handleOnChangeSearchForm = (e) => {
 		const value = e.target.value;
 		setSearchTerm(value);
 		setUserList([]);
+		setNotFound(false);
 
 		if (typingTimeoutRef.current) {
 			clearTimeout(typingTimeoutRef.current);
@@ -348,11 +360,11 @@ function Search(props) {
 					{showSearchFormFullScreen && <div className={classes.searchFormFullScreenRoot}>
 						<div className={classes.searchFormFullScreen}>
 							<div className={classes.searchFormFullScreenHeader}>
-								<div>
+								<div className={classes.backButton}>
 									<IconButton
 										icon="fas fa-arrow-left"
-										iconColor="#1c9dea"
-										backgroundColor="#E2F0FC"
+										iconColor="#223645a"
+										backgroundColor="white"
 										onClick={handleClickBack}
 									/>
 								</div>

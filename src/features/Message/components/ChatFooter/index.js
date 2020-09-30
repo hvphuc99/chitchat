@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import {
-  Box,
-  Icon,
-  ListItemIcon,
-  ListItemText,
-  makeStyles,
-  Menu,
-  MenuItem,
-  Popover,
-  withStyles,
+	Box,
+	Icon,
+	ListItemIcon,
+	ListItemText,
+	makeStyles,
+	Menu,
+	MenuItem,
+	Popover,
+	withStyles,
 } from "@material-ui/core";
 import IconButton from "components/IconButton";
 import { Formik, Form, FastField } from "formik";
@@ -17,306 +17,333 @@ import PropTypes from "prop-types";
 import { Picker } from "emoji-mart";
 import Sticker from "../Sticker";
 import storageApi from "api/storageApi";
+import useMedia from "services/mediaQuery";
 
 ChatFooter.propTypes = {
-  onSubmit: PropTypes.func,
-  onSendPhoto: PropTypes.func,
-  onSendOtherFile: PropTypes.func,
+	onSubmit: PropTypes.func,
+	onSendPhoto: PropTypes.func,
+	onSendOtherFile: PropTypes.func,
 };
 
 ChatFooter.defaultProps = {
-  onSubmit: null,
-  onSendPhoto: null,
-  onSendOtherFile: null,
+	onSubmit: null,
+	onSendPhoto: null,
+	onSendOtherFile: null,
 };
 
 const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "10px 20px",
-    width: "100%",
-    backgroundColor: "white",
-    borderTop: "1px solid #eff1f2",
-  },
-  leftSide: {
-    display: "flex",
-    alignItems: "center",
-    "& .icon": {
-      marginRight: "16px",
-    },
-  },
-  midSide: {
-    flexGrow: "1",
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "30px",
-    },
-    "& .MuiOutlinedInput-input": {
-      padding: "10px 13px",
-    },
-  },
-  rightSide: {
-    display: "flex",
-    alignItems: "center",
-    "& .icon": {
-      marginLeft: "16px",
-    },
-  },
-  viewInput: {
-    display: "none",
-  },
+	root: {
+		display: "flex",
+		justifyContent: "space-between",
+		padding: 15,
+		width: "100%",
+		backgroundColor: "white",
+		borderTop: "1px solid #eff1f2",
+	},
+	leftSide: {
+		display: "flex",
+		alignItems: "center",
+		"& .icon": {
+			marginRight: "5px",
+		},
+	},
+	midSide: {
+		flexGrow: "1",
+		"& .MuiOutlinedInput-root": {
+			borderRadius: "30px",
+		},
+		"& .MuiOutlinedInput-input": {
+			padding: "10px 13px",
+		},
+	},
+	rightSide: {
+		display: "flex",
+		alignItems: "center",
+		"& .icon": {
+			marginLeft: "16px",
+		},
+	},
+	viewInput: {
+		display: "none",
+	},
+	dotMoreIcon: {
+		"& button": {
+			padding: 0,
+			margin: "0px 5px",
+		},
+	},
 });
 
 const customAnchorOrigin = {
-  vertical: "top",
-  horizontal: "center",
+	vertical: "top",
+	horizontal: "center",
 };
 
 const customTransformOrigin = {
-  vertical: "bottom",
-  horizontal: "center",
+	vertical: "bottom",
+	horizontal: "center",
 };
 
 const initialValues = {
-  message: "",
+	message: "",
 };
 
 const StyledMenu = withStyles({
-  paper: {
-    border: "1px solid #d3d4d5",
-  },
+	paper: {
+		border: "1px solid #d3d4d5",
+	},
 })((props) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: "top",
-      horizontal: "center",
-    }}
-    transformOrigin={{
-      vertical: "bottom",
-      horizontal: "center",
-    }}
-    {...props}
-  />
+	<Menu
+		elevation={0}
+		getContentAnchorEl={null}
+		anchorOrigin={{
+			vertical: "top",
+			horizontal: "center",
+		}}
+		transformOrigin={{
+			vertical: "bottom",
+			horizontal: "center",
+		}}
+		{...props}
+	/>
 ));
 
 function ChatFooter(props) {
-  const classes = useStyles();
-  const { onSubmit, onSendPhoto, onSendOtherFile } = props;
-  const [showEmoji, setShowEmoji] = useState(null);
-  const [showMoreOption, setShowMoreOption] = useState(null);
-  const [showSticker, setShowSticker] = useState(null);
-  const refInputPhoto = useRef();
-  const refInputOtherFile = useRef();
+	const classes = useStyles();
 
-  const handleClickEmoji = (event) => {
-    setShowEmoji(event.currentTarget);
-  };
+	const { isSmallSize, isGreaterSmallSize } = useMedia();
 
-  const handleCloseEmoji = () => {
-    setShowEmoji(null);
-  };
+	const { onSubmit, onSendPhoto, onSendOtherFile } = props;
+	const [showEmoji, setShowEmoji] = useState(null);
+	const [showMoreOption, setShowMoreOption] = useState(null);
+	const [showSticker, setShowSticker] = useState(null);
+	const refInputPhoto = useRef();
+	const refInputOtherFile = useRef();
+	const refLeftSide = useRef();
 
-  const handleClickMoreOption = (event) => {
-    setShowMoreOption(event.currentTarget);
-  };
+	const handleClickEmoji = (event) => {
+		setShowEmoji(event.currentTarget);
+	};
 
-  const closeMoreOption = () => {
-    setShowMoreOption(null);
-  };
+	const handleCloseEmoji = () => {
+		setShowEmoji(null);
+	};
 
-  const handleClickSticker = (event) => {
-    setShowSticker(event.currentTarget);
-  };
+	const handleClickMoreOption = (event) => {
+		setShowMoreOption(event.currentTarget);
+	};
 
-  const handleCloseSticker = () => {
-    setShowSticker(null);
-  };
+	const closeMoreOption = () => {
+		setShowMoreOption(null);
+	};
 
-  const onChoosePhoto = (event) => {
-    closeMoreOption();
-    if (event.target.files && event.target.files[0]) {
-      const image = event.target.files[0];
-      storageApi.uploadPhoto(image).then((url) => {
-        onSendPhoto(url);
-      })
-    } else {
-      // Do nothing
-    }
-  }
+	const handleClickSticker = (event) => {
+		setShowSticker(event.currentTarget);
+	};
 
-  const onChooseOtherFile = (event) => {
-    closeMoreOption();
-    if (event.target.files && event.target.files[0]) {
-      const otherFile = event.target.files[0];
-      storageApi.uploadOtherFile(otherFile).then((url) => {
-        onSendOtherFile(url);
-      })
-    } else {
-      // Do nothing
-    }
-  }
+	const handleCloseSticker = () => {
+		setShowSticker(null);
+	};
 
-  return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
-      {(formikProps) => {
-        const { submitForm } = formikProps;
-        const handleSelectEmoji = (emoji) => {
-          formikProps.setFieldValue(
-            "message",
-            formikProps.values.message + emoji.native
-          );
-        };
-        return (
-          <Form>
-            <Box className={classes.root}>
-              <div className={classes.leftSide}>
-                <div className="icon">
-                  <IconButton
-                    icon="far fa-sticky-note"
-                    iconColor="#1c9dea"
-                    backgroundColor="rgba(28,157,234,0.15)"
-                    backgroundColorHover="#D3D8DB"
-                    anchorOrigin={customAnchorOrigin}
-                    transformOrigin={customTransformOrigin}
-                    message="Choose a sticker"
-                    onClick={handleClickSticker}
-                  />
-                  <Popover
-                    open={Boolean(showSticker)}
-                    anchorEl={showSticker}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                    transformOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    onClose={handleCloseSticker}
-                  >
-                    <Sticker />
-                  </Popover>
-                </div>
-                <div className="icon">
-                  <IconButton
-                    icon="far fa-smile"
-                    iconColor="#1c9dea"
-                    backgroundColor="rgba(28,157,234,0.15)"
-                    backgroundColorHover="#D3D8DB"
-                    anchorOrigin={customAnchorOrigin}
-                    transformOrigin={customTransformOrigin}
-                    message="Choose an emoji"
-                    onClick={handleClickEmoji}
-                  />
-                  <Popover
-                    open={Boolean(showEmoji)}
-                    anchorEl={showEmoji}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                    transformOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    onClose={handleCloseEmoji}
-                  >
-                    <Picker
-                      set="twitter"
-                      title="Pick your emoji"
-                      emoji="point_up"
-                      onSelect={handleSelectEmoji}
-                    />
-                  </Popover>
-                </div>
-                <div className="icon">
-                  <IconButton
-                    icon="fas fa-plus"
-                    iconColor="#1c9dea"
-                    backgroundColor="rgba(28,157,234,0.15)"
-                    backgroundColorHover="#D3D8DB"
-                    anchorOrigin={customAnchorOrigin}
-                    transformOrigin={customTransformOrigin}
-                    message="Open more option"
-                    onClick={handleClickMoreOption}
-                  />
-                  <StyledMenu
-                    anchorEl={showMoreOption}
-                    keepMounted
-                    open={Boolean(showMoreOption)}
-                    onClose={closeMoreOption}
-                  >
-                    <MenuItem onClick={() => refInputPhoto.current.click()}>
-                      <ListItemIcon>
-                        <Icon
-                          className="fas fa-image"
-                          style={{ color: "#1c9dea" }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary="Attach a photo" />
-                    </MenuItem>
-                    <input
-                      ref={refInputPhoto}
-                      accept="image/*"
-                      type="file"
-                      className={classes.viewInput}
-                      onChange={onChoosePhoto}
-                    />
-                    <MenuItem onClick={() => refInputOtherFile.current.click()}>
-                      <ListItemIcon>
-                        <Icon
-                          className="fas fa-paperclip"
-                          style={{ color: "#1c9dea" }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary="Attach a file" />
-                    </MenuItem>
-                    <input
-                      ref={refInputOtherFile}
-                      accept="*"
-                      type="file"
-                      className={classes.viewInput}
-                      onChange={onChooseOtherFile}
-                    />
-                  </StyledMenu>
-                </div>
-              </div>
+	const onChoosePhoto = (event) => {
+		closeMoreOption();
+		if (event.target.files && event.target.files[0]) {
+			const image = event.target.files[0];
+			storageApi.uploadPhoto(image).then((url) => {
+				onSendPhoto(url);
+			})
+		} else {
+			// Do nothing
+		}
+	}
 
-              <div className={classes.midSide}>
-                <FastField
-                  name="message"
-                  component={InputField}
-                  placeholder="Type a message..."
-                  variant="outlined"
-                  margin="none"
-                  autoComplete="off"
-                  autoFocus={true}
-                />
-              </div>
-              <div className={classes.rightSide}>
-                <div className="icon">
-                  <FastField
-                    name="plus"
-                    component={IconButton}
-                    icon="fas fa-paper-plane"
-                    iconColor="white"
-                    backgroundColor="#1c9dea"
-                    backgroundColorHover="#1280c1"
-                    anchorOrigin={customAnchorOrigin}
-                    transformOrigin={customTransformOrigin}
-                    message="Send your message"
-                    onClick={submitForm}
-                  />
-                </div>
-              </div>
-            </Box>
-          </Form>
-        );
-      }}
-    </Formik>
-  );
+	const onChooseOtherFile = (event) => {
+		closeMoreOption();
+		if (event.target.files && event.target.files[0]) {
+			const otherFile = event.target.files[0];
+			storageApi.uploadOtherFile(otherFile).then((url) => {
+				onSendOtherFile(url);
+			})
+		} else {
+			// Do nothing
+		}
+	}
+
+	return (
+		<Formik initialValues={initialValues} onSubmit={onSubmit}>
+			{(formikProps) => {
+				const { submitForm } = formikProps;
+				const handleSelectEmoji = (emoji) => {
+					formikProps.setFieldValue(
+						"message",
+						formikProps.values.message + emoji.native
+					);
+				};
+				return (
+					<Form>
+						<Box className={classes.root}>
+							<div className={classes.leftSide} ref={refLeftSide}>
+								<div className="icon">
+									<IconButton
+										icon="far fa-sticky-note"
+										iconColor="#1c9dea"
+										backgroundColor="rgba(28,157,234,0.15)"
+										backgroundColorHover="#D3D8DB"
+										anchorOrigin={customAnchorOrigin}
+										transformOrigin={customTransformOrigin}
+										message="Choose a sticker"
+										onClick={handleClickSticker}
+									/>
+									<Popover
+										open={Boolean(showSticker)}
+										anchorEl={showSticker}
+										anchorOrigin={{
+											vertical: "top",
+											horizontal: "center",
+										}}
+										transformOrigin={{
+											vertical: "bottom",
+											horizontal: "center",
+										}}
+										onClose={handleCloseSticker}
+									>
+										<Sticker />
+									</Popover>
+								</div>
+								<div className="icon">
+									<IconButton
+										icon="far fa-smile"
+										iconColor="#1c9dea"
+										backgroundColor="rgba(28,157,234,0.15)"
+										backgroundColorHover="#D3D8DB"
+										anchorOrigin={customAnchorOrigin}
+										transformOrigin={customTransformOrigin}
+										message="Choose an emoji"
+										onClick={handleClickEmoji}
+									/>
+									<Popover
+										open={Boolean(showEmoji)}
+										anchorEl={showEmoji}
+										anchorOrigin={{
+											vertical: "top",
+											horizontal: "center",
+										}}
+										transformOrigin={{
+											vertical: "bottom",
+											horizontal: "center",
+										}}
+										onClose={handleCloseEmoji}
+									>
+										<Picker
+											set="twitter"
+											title="Pick your emoji"
+											emoji="point_up"
+											onSelect={handleSelectEmoji}
+										/>
+									</Popover>
+								</div>
+								<div className="icon">
+									{isGreaterSmallSize && (
+										<IconButton
+											icon="fas fa-plus"
+											iconColor="#1c9dea"
+											backgroundColor="rgba(28,157,234,0.15)"
+											backgroundColorHover="#D3D8DB"
+											anchorOrigin={customAnchorOrigin}
+											transformOrigin={customTransformOrigin}
+											message="Open more option"
+											onClick={handleClickMoreOption}
+										/>
+									)}
+									{isSmallSize && (
+										<div className={classes.dotMoreIcon}>
+											<IconButton
+												icon="fas fa-ellipsis-v"
+												iconColor="#1c9dea"
+												backgroundColor="rgba(28,157,234,0.15)"
+												backgroundColorHover="#D3D8DB"
+												anchorOrigin={customAnchorOrigin}
+												transformOrigin={customTransformOrigin}
+												onClick={handleClickMoreOption}
+											/>
+										</div>
+									)}
+
+									<StyledMenu
+										anchorEl={showMoreOption}
+										keepMounted
+										open={Boolean(showMoreOption)}
+										onClose={closeMoreOption}
+									>
+										<MenuItem onClick={() => refInputPhoto.current.click()}>
+											<ListItemIcon>
+												<Icon
+													className="fas fa-image"
+													style={{ color: "#1c9dea" }}
+												/>
+											</ListItemIcon>
+											<ListItemText primary="Attach a photo" />
+										</MenuItem>
+										<input
+											ref={refInputPhoto}
+											accept="image/*"
+											type="file"
+											className={classes.viewInput}
+											onChange={onChoosePhoto}
+										/>
+										<MenuItem onClick={() => refInputOtherFile.current.click()}>
+											<ListItemIcon>
+												<Icon
+													className="fas fa-paperclip"
+													style={{ color: "#1c9dea" }}
+												/>
+											</ListItemIcon>
+											<ListItemText primary="Attach a file" />
+										</MenuItem>
+										<input
+											ref={refInputOtherFile}
+											accept="*"
+											type="file"
+											className={classes.viewInput}
+											onChange={onChooseOtherFile}
+										/>
+									</StyledMenu>
+								</div>
+							</div>
+
+							<div className={classes.midSide}>
+								<FastField
+									name="message"
+									component={InputField}
+									placeholder="Type a message..."
+									variant="outlined"
+									margin="none"
+									autoComplete="off"
+									autoFocus={true}
+								/>
+							</div>
+							<div className={classes.rightSide}>
+								<div className="icon">
+									<FastField
+										name="plus"
+										component={IconButton}
+										icon="fas fa-paper-plane"
+										iconColor="white"
+										backgroundColor="#1c9dea"
+										backgroundColorHover="#1280c1"
+										anchorOrigin={customAnchorOrigin}
+										transformOrigin={customTransformOrigin}
+										message="Send your message"
+										onClick={submitForm}
+									/>
+								</div>
+							</div>
+						</Box>
+					</Form>
+				);
+			}}
+		</Formik>
+	);
 }
 
 export default ChatFooter;

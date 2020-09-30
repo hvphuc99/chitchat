@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     height: "100%",
     borderRight: "1px solid #eff1f2",
-    padding: "20px 0px",
+    padding: "15px 0px",
     "& .navigateBarHeader": {
       display: "flex",
       justifyContent: "center",
@@ -33,13 +33,16 @@ const useStyles = makeStyles({
 				width: 40,
 				height: 40,
 			},
+			"& .MuiIconButton-root": {
+				padding: 0,
+			},
     },
     "& .navigateBarContent": {
       display: "flex",
       alignContent: "space-between",
       flexWrap: "wrap",
       flexGrow: "1",
-      padding: "30px 0px",
+      padding: "30px 0px 0px 0px",
       "& .navigateBarBody": {
         display: "flex",
         flexDirection: "column",

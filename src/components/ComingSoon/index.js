@@ -25,8 +25,8 @@ function ComingSoon(props) {
     <div className={classes.root}>
       <div className={classes.container}>
         <img className={classes.image} src={comingSoonImg} alt="coming-soon" />
-        <Typography variant="h6">Coming Soon</Typography>
-        <Typography variant="subtitle1">
+        <Typography variant="subtitle1">Coming Soon</Typography>
+        <Typography variant="subtitle2">
           In progress 
         </Typography>
       </div>

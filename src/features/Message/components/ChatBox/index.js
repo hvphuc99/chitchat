@@ -25,12 +25,11 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     justifyContent: "space-between",
-    width: "100%",
+		width: "100%",
   },
   leftSide: {
     display: "flex",
 		alignItems: "center",
-		marginLeft: 5,
   },
   midSide: {
     flexGrow: "1",

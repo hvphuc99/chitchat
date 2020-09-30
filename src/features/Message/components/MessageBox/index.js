@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   messageBoxLeft: {
     display: "flex",
     justifyContent: "flex-start",
-    padding: "0px 20px",
+    padding: "0px 5px",
     margin: "8px 0px",
     "& .messageBoxLeftHeader": {
       display: "flex",

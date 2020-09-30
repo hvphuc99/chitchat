@@ -113,7 +113,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
-    padding: "20px 15px",
+    padding: "15px 15px",
     width: "100%",
     maxHeight: "calc(100% - 56px)",
   },
@@ -580,6 +580,7 @@ function Main(props) {
         <div className={classes.smallSizeRoot}>
           <div className={classes.menuSmallSize}>{renderOption()}</div>
           <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+					{showChatForm && <ChatForm />}
         </div>
       )}
     </Grid>
