@@ -72,7 +72,7 @@ const useStyles = makeStyles({
 		left: 0,
 		zIndex: 2,
 		width: "100vw",
-		height: "100vh",
+		height: "100%",
 		padding: "20px 15px",
 		backgroundColor: "white",
 	},
@@ -307,7 +307,6 @@ function Search(props) {
 		dispatch(setCurrentGroupChatPicture(picture));
 		dispatch(setLoadingMessageList(true));
 		setShowSearchForm(false);
-		resetSearchForm();
 		dispatch(setShowChatForm(true));
 	};
 
