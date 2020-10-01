@@ -58,7 +58,7 @@ const useStyles = makeStyles({
 		display: "flex",
 		justifyContent: "center",
 		"& .icon": {
-			marginLeft: "20px",
+			marginLeft: "10px",
 		},
 	},
 	dialog: {

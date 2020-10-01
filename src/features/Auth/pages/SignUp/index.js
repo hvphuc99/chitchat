@@ -12,9 +12,9 @@ import { useState } from "react";
 import { setNotify } from "app/notifySlice";
 import useMedia from "services/mediaQuery";
 
-const useStyles = makeStyles({
+const useStyles = innerHeight => makeStyles({
 	root: {
-		height: "100%",
+		height: "100vh",
 		padding: "40px 0px",
 	},
 	signUpForm: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 	},
 	signUpSmallRoot: {
 		textAlign: "center",
-		height: "100%",
+		height: innerHeight,
 		width: "100%",
 		backgroundColor: "white",
 		padding: "0px 24px",
@@ -43,7 +43,7 @@ const initialValues = {
 };
 
 function SignUp() {
-	const classes = useStyles();
+	const classes = useStyles(window.innerHeight)();
 
 	const { isSmallSize, isGreaterSmallSize } = useMedia();
 

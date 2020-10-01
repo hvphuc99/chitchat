@@ -12,9 +12,9 @@ import { useDispatch } from "react-redux";
 import { setNotify } from "app/notifySlice";
 import useMedia from "services/mediaQuery";
 
-const useStyles = makeStyles({
+const useStyles = innerHeight => makeStyles({
 	root: {
-		height: "100%",
+		height: "100vh",
 		padding: "40px 0px",
 	},
 	forgotPasswordForm: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 	},
 	forgotPasswordSmallRoot: {
 		textAlign: "center",
-		height: "100%",
+		height: innerHeight,
 		width: "100%",
 		backgroundColor: "white",
 		padding: "0px 24px",
@@ -39,7 +39,7 @@ const initialValues = {
 };
 
 function ForgotPassword() {
-	const classes = useStyles();
+	const classes = useStyles(window.innerHeight)();
 
 	const { isSmallSize, isGreaterSmallSize } = useMedia();
 
