@@ -1,19 +1,19 @@
 import moment from "moment";
 
-export const formatTimeLL = (timestamp) => {
+export const formatTime = (timestamp) => {
   let formatTime = null;
   if (timestamp) {
-    formatTime = moment.unix(timestamp).format("LL");
+    formatTime = moment.unix(timestamp).format("ll");
   } else {
     // Do nothing
   }
   return formatTime;
 }
 
-export const formatTimeLLL = (timestamp) => {
+export const formatTimeFull = (timestamp) => {
   let formatTime = null;
   if (timestamp) {
-    formatTime = moment.unix(timestamp).format("LLL");
+    formatTime = moment.unix(timestamp).format("lll");
   } else {
     // Do nothing
   }

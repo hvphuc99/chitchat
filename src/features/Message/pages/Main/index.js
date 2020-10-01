@@ -1,9 +1,9 @@
 import React from "react";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { Drawer, Grid, makeStyles, Typography } from "@material-ui/core";
 import NavigateBar from "features/Message/components/NavigateBar";
 import MenuChat from "features/Message/components/MenuChat";
 import ChatForm from "features/Message/components/ChatForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import userApi from "api/userApi";
 import messageApi from "api/messageApi";
@@ -15,11 +15,20 @@ import * as options from "constants/index";
 import MenuFriendRequest from "features/Message/components/MenuFriendRequest";
 import MenuFriend from "features/Message/components/MenuFriend";
 import ComingSoon from "components/ComingSoon";
+import IconButton from "components/IconButton";
+import useMedia from "services/mediaQuery";
+import { IconButton as LogoButton } from "@material-ui/core";
+import logo from "assets/images/logo.png";
+import { resetMessage } from "features/Message/messageSlice";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { removeCurrentUserId, removeToken } from "app/userSlice";
+import { setNotify } from "app/notifySlice";
 
 const useStyles = makeStyles({
   root: {
     height: "100%",
   },
+  // Greater small size
   leftSideBar: {
     height: "100%",
     backgroundColor: "white",
@@ -31,7 +40,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    padding: "20px 20px",
+    padding: "20px 15px",
   },
   chatForm: {
     height: "100%",
@@ -43,16 +52,82 @@ const useStyles = makeStyles({
     height: "100%",
   },
   menuTitle: {
+    fontSize: "18px",
     margin: "auto",
-    marginBottom: "30px",
+    marginBottom: "10px",
   },
   comingSoon: {
     flexGrow: 1,
+  },
+  //Medium size
+  menuChatHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: "10px",
+  },
+  menuButton: {
+    height: 40,
+    width: 40,
+    backgroundColor: "#E2F0FC",
+  },
+  // Small size
+  menuHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: "18px",
+    "& .MuiIconButton-root": {
+      padding: 0,
+    },
+  },
+  logoImg: {
+    height: 30,
+    width: 30,
+  },
+  menuHeaderLeft: {
+    display: "flex",
+    alignItems: "center",
+    "& h6": {
+			fontWeight: 700,
+			marginLeft: 10,
+    },
+  },
+  menuHeaderRight: {
+    display: "flex",
+    alignItems: "center",
+  },
+  menuHeaderButton: {
+    height: 30,
+    width: 30,
+    backgroundColor: "#E2F0FC",
+  },
+  smallSizeRoot: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    backgroundColor: "white",
+    width: "100%",
+  },
+  menuSmallSize: {
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
+    padding: "15px 15px",
+    width: "100%",
+    maxHeight: "calc(100% - 56px)",
+  },
+  menuChatSmallSize: {
+    flexGrow: 1,
+    marginTop: 10,
   },
 });
 
 function Main(props) {
   const classes = useStyles();
+
+  const { isMediumSize, isSmallSize, isGreaterLargeSize } = useMedia();
+
   const { currentUserId } = useSelector((state) => state.user);
   const { showChatForm, selectedOption } = useSelector(
     (state) => state.message
@@ -64,26 +139,137 @@ function Main(props) {
   const [loadingFriendRequests, setLoadingFriendRequests] = useState(true);
   const [loadingFriends, setLoadingFriends] = useState(true);
   const [numberOfFriendRequest, setNumberOfFriendRequest] = useState(0);
+  const [showNavigate, setShowNavigate] = useState(false);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleClickLogoButton = () => {
+    dispatch(resetMessage());
+    history.push("/");
+	};
+	
+	const handleClickLogout = () => {
+    userApi
+      .logout()
+      .then((res) => {
+        dispatch(removeToken());
+        dispatch(removeCurrentUserId());
+        dispatch(resetMessage());
+        dispatch(
+          setNotify({
+            type: "success",
+            message: res,
+          })
+        );
+        history.push("/login");
+      })
+      .catch((err) => {
+        dispatch(
+          setNotify({
+            type: "error",
+            message: err,
+          })
+        );
+      });
+	};
 
   const renderOption = () => {
     let element = null;
 
     switch (selectedOption) {
-      case options.ALL_MESSAGE_OPTION:
+      case options.ALL_MESSAGES_OPTION:
         element = (
           <>
-            <Search />
-            {loadingAllMessages ? (
-              <Loading />
+            {isSmallSize ? (
+              <>
+                <div className={classes.menuHeader}>
+                  <div className={classes.menuHeaderLeft}>
+                    <LogoButton onClick={handleClickLogoButton}>
+                      <img className={classes.logoImg} src={logo} alt="logo" />
+                    </LogoButton>
+                    <Typography variant="subtitle1">Chats</Typography>
+                  </div>
+                  <div className={classes.menuHeaderRight}>
+                    <div>
+                      <IconButton
+                        icon="fas fa-sign-out-alt"
+                        iconColor="#1c9dea"
+                        message="Menu"
+												className={classes.menuHeaderButton}
+												onClick={handleClickLogout}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <Search />
+                <div className={classes.menuChatSmallSize}>
+                  {loadingAllMessages ? (
+                    <Loading />
+                  ) : (
+                    <MenuChat groupChats={groupChats} />
+                  )}
+                </div>
+              </>
             ) : (
-              <MenuChat groupChats={groupChats} />
+              <>
+                <div className={classes.menuChatHeader}>
+                  {isMediumSize && (
+                    <>
+                      <div>
+                        <IconButton
+                          icon="fas fa-bars"
+                          iconColor="#1c9dea"
+                          message="Menu"
+                          className={classes.menuButton}
+                          onClick={() => setShowNavigate(true)}
+                        />
+                      </div>
+                      <Drawer
+                        anchor="left"
+                        open={showNavigate}
+                        onClose={() => setShowNavigate(false)}
+                      >
+                        <NavigateBar
+                          numberOfFriendRequest={numberOfFriendRequest}
+                        />
+                      </Drawer>
+                    </>
+                  )}
+                  <Search />
+                </div>
+                {loadingAllMessages ? (
+                  <Loading />
+                ) : (
+                  <MenuChat groupChats={groupChats} />
+                )}
+              </>
             )}
           </>
         );
         break;
-      case options.FRIENDs_OPTION:
+      case options.FRIENDS_OPTION:
         element = (
           <>
+            {isMediumSize && (
+              <>
+                <div>
+                  <IconButton
+                    icon="fas fa-bars"
+                    iconColor="#1c9dea"
+                    message="Menu"
+                    className={classes.menuButton}
+                    onClick={() => setShowNavigate(true)}
+                  />
+                </div>
+                <Drawer
+                  anchor="left"
+                  open={showNavigate}
+                  onClose={() => setShowNavigate(false)}
+                >
+                  <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+                </Drawer>
+              </>
+            )}
             <Typography variant="h5" className={classes.menuTitle}>
               Friends
             </Typography>
@@ -94,6 +280,26 @@ function Main(props) {
       case options.FRIEND_REQUESTS_OPTION:
         element = (
           <>
+            {isMediumSize && (
+              <>
+                <div>
+                  <IconButton
+                    icon="fas fa-bars"
+                    iconColor="#1c9dea"
+                    message="Menu"
+                    className={classes.menuButton}
+                    onClick={() => setShowNavigate(true)}
+                  />
+                </div>
+                <Drawer
+                  anchor="left"
+                  open={showNavigate}
+                  onClose={() => setShowNavigate(false)}
+                >
+                  <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+                </Drawer>
+              </>
+            )}
             <Typography variant="h5" className={classes.menuTitle}>
               Friend Requests
             </Typography>
@@ -108,6 +314,26 @@ function Main(props) {
       case options.PROFILE_OPTION:
         element = (
           <>
+            {isMediumSize && (
+              <>
+                <div>
+                  <IconButton
+                    icon="fas fa-bars"
+                    iconColor="#1c9dea"
+                    message="Menu"
+                    className={classes.menuButton}
+                    onClick={() => setShowNavigate(true)}
+                  />
+                </div>
+                <Drawer
+                  anchor="left"
+                  open={showNavigate}
+                  onClose={() => setShowNavigate(false)}
+                >
+                  <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+                </Drawer>
+              </>
+            )}
             <Typography variant="h5" className={classes.menuTitle}>
               Profile
             </Typography>
@@ -305,26 +531,58 @@ function Main(props) {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item xs={12} sm={4}>
-        <Grid container className={classes.leftSideBar}>
-          <Grid item xs={12} sm={2} className={classes.navigate}>
-            <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+      {isGreaterLargeSize && (
+        <>
+          <Grid item xs={3}>
+            <Grid container className={classes.leftSideBar}>
+              <Grid item xs={2} className={classes.navigate}>
+                <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+              </Grid>
+              <Grid item xs={10} className={classes.menu}>
+                {renderOption()}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={10} className={classes.menu}>
-            {renderOption()}
+          <Grid item xs={9} className={classes.chatForm}>
+            {showChatForm ? (
+              <ChatForm />
+            ) : (
+              <div className={classes.banner}>
+                {" "}
+                <Banner />
+              </div>
+            )}
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} sm={8} className={classes.chatForm}>
-        {showChatForm ? (
-          <ChatForm />
-        ) : (
-          <div className={classes.banner}>
-            {" "}
-            <Banner />
-          </div>
-        )}
-      </Grid>
+        </>
+      )}
+
+      {isMediumSize && (
+        <>
+          <Grid item xs={4}>
+            <div className={classes.leftSideBar + " " + classes.menu}>
+              {renderOption()}
+            </div>
+          </Grid>
+          <Grid item xs={8} className={classes.chatForm}>
+            {showChatForm ? (
+              <ChatForm />
+            ) : (
+              <div className={classes.banner}>
+                {" "}
+                <Banner />
+              </div>
+            )}
+          </Grid>
+        </>
+      )}
+
+      {isSmallSize && (
+        <div className={classes.smallSizeRoot}>
+          <div className={classes.menuSmallSize}>{renderOption()}</div>
+          <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+					{showChatForm && <ChatForm />}
+        </div>
+      )}
     </Grid>
   );
 }

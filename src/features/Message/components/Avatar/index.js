@@ -47,21 +47,18 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(StylesLibrary.Badge);
 
-const useStyles = makeStyles({
-  root: {
-    height: "60px",
-    width: "60px",
-  },
+const useStyles = makeStyles((theme) => ({
   cursorHover: {
     "&:hover": {
       cursor: "pointer",
     },
   }
-});
+}));
 
 function Avatar(props) {
   const classes = useStyles();
-  const { src, active, onClick, cursorHover } = props;
+	const { src, onClick, cursorHover } = props;
+	const active = false;
 
   return (
     <>
@@ -74,10 +71,10 @@ function Avatar(props) {
           }}
           variant="dot"
         >
-          <StylesLibrary.Avatar src={src} className={cursorHover ? classes.root + " " + classes.cursorHover : classes.root} onClick={onClick}/>
+          <StylesLibrary.Avatar src={src} className={cursorHover ? classes.cursorHover + " " + classes.avatar : classes.avatar} onClick={onClick}/>
         </StyledBadge>
       ) : (
-        <StylesLibrary.Avatar src={src} className={cursorHover ? classes.root + " " + classes.cursorHover : classes.root} onClick={onClick}/>
+        <StylesLibrary.Avatar src={src} className={cursorHover ? classes.cursorHover + " " + classes.avatar : classes.avatar} onClick={onClick}/>
       )}
     </>
   );

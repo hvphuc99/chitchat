@@ -36,10 +36,10 @@ const useStyles = makeStyles({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(28,157,234,0.15)",
     },
-    "& .Mui-selected": {
-      backgroundColor: "#eff7fe",
-      borderLeft: "4px solid #1c9dea",
-    },
+		"& .MuiListItem-gutters": {
+			paddingLeft: "0px",
+			paddingRight: "0px",
+		}
   },
   requestsContainer: {
     margin: "0px 0px 10px 0px",

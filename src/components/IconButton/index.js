@@ -40,7 +40,7 @@ IconButton.defaultProps = {
   backgroundColorSelected: "#1c9dea",
   iconColorSelected: "white",
   size: "medium",
-  fontSize: "default",
+  fontSize: "medium",
 };
 
 function IconButton(props) {
@@ -59,6 +59,8 @@ function IconButton(props) {
     iconColorSelected,
     size,
     fontSize,
+    width,
+    height,
     ...other
   } = props;
 
@@ -70,18 +72,13 @@ function IconButton(props) {
       "&:hover": {
         backgroundColor: backgroundColorHover,
       },
-      "& .MuiIcon-root": {
-        width: "30px",
-        height: "25px",
-        margin: "2px 0px 2px 0px",
-      }
     },
     popover: {
       pointerEvents: "none",
     },
     selected: {
       backgroundColor: backgroundColorSelected,
-    }
+    },
   })();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -108,10 +105,10 @@ function IconButton(props) {
       >
         {badgeContent ? (
           <StylesLibrary.Badge badgeContent={badgeContent} color="error">
-            <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} />
+            <StylesLibrary.Icon className={icon} style={{ color: newIconColor, width: "fit-content", fontSize: fontSize }} />
           </StylesLibrary.Badge>
         ) : (
-          <StylesLibrary.Icon className={icon} style={{ color: newIconColor }} fontSize={fontSize} />
+          <StylesLibrary.Icon className={icon} style={{ color: newIconColor, width: "fit-content", fontSize: fontSize }}  />
         )}
       </StylesLibrary.IconButton>
       {message && (

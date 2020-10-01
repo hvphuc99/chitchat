@@ -53,7 +53,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
+		backgroundColor: theme.palette.background.paper,
+		"& .MuiTabs-flexContainer": {
+			justifyContent: "space-around",
+		},
   },
   listContainer: {
     display: "flex",
@@ -79,8 +82,8 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     "& img": {
-      width: 80,
-      height: 80,
+      width: 60,
+      height: 60,
     },
   },
 }));
@@ -107,7 +110,7 @@ function Sticker() {
         dispatch(
           addMessage({
             senderId: currentUserId,
-            timestamp: Date.now(),
+            timestamp: null,
             content: stickerUrl,
             type: typeMessages.STICKER,
           })
@@ -133,7 +136,7 @@ function Sticker() {
         dispatch(
           addMessage({
             senderId: currentUserId,
-            timestamp: Date.now(),
+            timestamp: null,
             content: stickerUrl,
             type: typeMessages.STICKER,
           })
@@ -159,7 +162,7 @@ function Sticker() {
       dispatch(
         addMessage({
           senderId: currentUserId,
-          timestamp: Date.now(),
+          timestamp: null,
           content: stickerUrl,
           type: typeMessages.STICKER,
         })

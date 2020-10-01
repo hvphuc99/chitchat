@@ -1,5 +1,6 @@
 import { auth, db } from "services/firebase";
 import firebase from "firebase";
+import timeApi from "./timeApi";
 
 const userApi = {
   login: (email, password) => {
@@ -198,27 +199,28 @@ const userApi = {
     });
   },
   sendFriendRequest: (idFrom, idTo) => {
-    const timestamp = Date.now();
     return new Promise((resolve, reject) => {
-      db.ref("/users/" + idFrom + "/sendFriendRequests/" + idTo).set(
-        {
-          id: idTo,
-          timestamp,
-        },
-        (err) => {
-          if (err) reject("An error happened");
-        }
-      );
-      db.ref("/users/" + idTo + "/receiveFriendRequests/" + idFrom).set(
-        {
-          id: idFrom,
-          timestamp,
-        },
-        (err) => {
-          if (err) reject("An error happened");
-        }
-      );
-      resolve("Send request successful");
+      timeApi.getCurrentUnixTime().then((timestamp) => {
+        db.ref("/users/" + idFrom + "/sendFriendRequests/" + idTo).set(
+          {
+            id: idTo,
+            timestamp,
+          },
+          (err) => {
+            if (err) reject("An error happened");
+          }
+        );
+        db.ref("/users/" + idTo + "/receiveFriendRequests/" + idFrom).set(
+          {
+            id: idFrom,
+            timestamp,
+          },
+          (err) => {
+            if (err) reject("An error happened");
+          }
+        );
+        resolve("Send request successful");
+      });
     });
   },
   removeFriendRequest: (idFrom, idTo) => {
@@ -281,22 +283,16 @@ const userApi = {
     });
   },
   friendsListener: (userId, handleData) => {
-    return db
-      .ref("/users/" + userId + "/friends")
-      .on("value", handleData);
+    return db.ref("/users/" + userId + "/friends").on("value", handleData);
   },
   removeFriend: (userId, friendId) => {
     return new Promise((resolve, reject) => {
-      db.ref("/users/" + userId + "/friends/" + friendId).remove(
-        (err) => {
-          if (err) reject("An error happened");
-        }
-      );
-      db.ref("/users/" + friendId + "/friends/" + userId).remove(
-        (err) => {
-          if (err) reject("An error happened");
-        }
-      );
+      db.ref("/users/" + userId + "/friends/" + friendId).remove((err) => {
+        if (err) reject("An error happened");
+      });
+      db.ref("/users/" + friendId + "/friends/" + userId).remove((err) => {
+        if (err) reject("An error happened");
+      });
       resolve("remove friend successful");
     });
   },
