@@ -319,7 +319,6 @@ function ChatFooter(props) {
 									variant="outlined"
 									margin="none"
 									autoComplete="off"
-									autoFocus={true}
 								/>
 							</div>
 							<div className={classes.rightSide}>

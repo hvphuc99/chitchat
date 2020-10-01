@@ -52,7 +52,7 @@ const useStyles = makeStyles({
 		left: 0,
 		zIndex: 2,
 		width: "100vw",
-		height: "100vh",
+		height: "100%",
 		backgroundColor: "white",
 	},
 	chatFormFullScreen: {
