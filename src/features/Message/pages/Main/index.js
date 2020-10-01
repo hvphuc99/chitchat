@@ -27,6 +27,7 @@ import { setNotify } from "app/notifySlice";
 const useStyles = innerHeight => makeStyles({
 	root: {
 		height: "100vh",
+		backgroundColor: "#EFF7FE",
 	},
 	// Greater small size
 	leftSideBar: {

@@ -16,6 +16,7 @@ const useStyles = innerHeight => makeStyles({
 	root: {
 		height: "100vh",
 		padding: "40px 0px",
+		backgroundColor: "#EFF7FE",
 	},
 	forgotPasswordForm: {
 		position: "relative",
