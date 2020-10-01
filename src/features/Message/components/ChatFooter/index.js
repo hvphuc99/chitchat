@@ -60,7 +60,7 @@ const useStyles = makeStyles({
 		display: "flex",
 		alignItems: "center",
 		"& .icon": {
-			marginLeft: "16px",
+			marginLeft: "5px",
 		},
 	},
 	viewInput: {

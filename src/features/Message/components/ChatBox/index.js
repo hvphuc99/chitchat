@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, Grid, Box } from "@material-ui/core";
+import { makeStyles, Box } from "@material-ui/core";
 import Avatar from "../Avatar";
 import * as typeMessages from "constants/typeMessage";
 import { useSelector } from "react-redux";
-import useMedia from "services/mediaQuery";
 
 ChatBox.propTypes = {
   id: PropTypes.string.isRequired,

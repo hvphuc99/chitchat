@@ -5,7 +5,6 @@ import {
 	Box,
 	Slide,
 	Dialog,
-	DialogTitle,
 	DialogContent,
 } from "@material-ui/core";
 import Avatar from "../Avatar";
@@ -74,7 +73,7 @@ const useStyles = makeStyles({
 	backButton: {
 		marginRight: 10,
 		"& button": {
-			padding: "0px 5px 0px 0px",
+			padding: 0,
 		},
 	},
 });

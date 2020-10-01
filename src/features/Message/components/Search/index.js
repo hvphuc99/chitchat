@@ -23,7 +23,6 @@ import {
 	setCurrentGroupChatName,
 	setCurrentGroupChatPicture,
 	setLoadingMessageList,
-	setSelectedOption,
 	setShowChatForm,
 } from "features/Message/messageSlice";
 import IconButton from "components/IconButton";
@@ -96,8 +95,9 @@ const useStyles = makeStyles({
 	},
 	backButton: {
 		height: "fit-content",
+		marginRight: 10,
 		"& button": {
-			padding: "0px 5px 0px 0px",
+			padding: 0,
 		},
 	},
 });

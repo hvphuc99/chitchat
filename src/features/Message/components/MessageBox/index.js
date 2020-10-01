@@ -68,7 +68,7 @@ const useStyles = makeStyles({
   messageBoxRight: {
     display: "flex",
     justifyContent: "flex-end",
-    padding: "0px 20px",
+    padding: "0px 5px",
     margin: "8px 0px",
     "& .messageBoxRightContainer": {
       display: "flex",
