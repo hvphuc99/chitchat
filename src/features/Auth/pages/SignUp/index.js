@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 		backgroundColor: "white",
 		padding: "0px 24px",
 		"& .MuiFormControl-marginNormal": {
-			margin: "5px 0px",
+			margin: "10px 0px 0px 0px",
 		},
 	},
 });
