@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 
 import React from "react";
 import IconButton from "components/IconButton";
@@ -19,13 +19,9 @@ const useStyles = makeStyles({
 	iconBtn: {
 		marginBottom: "15px",
 	},
-	loginWithGoogleContainer: {
-		marginTop: 40,
-	},
-	loginWithGoogle: {
-		color: "black",
-		fontSize: "1rem",
-	},
+	loginWithGoogleButton: {
+		color: "#647589",
+	}
 });
 
 function MediaLogo(props) {
@@ -86,11 +82,9 @@ function MediaLogo(props) {
 			)}
 
 			{isSmallSize && (
-				<div className={classes.loginWithGoogleContainer}>
-					<Link className={classes.loginWithGoogle} href="#" onClick={handleClickLoginWithGoogle}>
-						Sign in with Google
-					</Link>
-				</div>
+				<Typography className={classes.loginWithGoogleButton} variant="subtitle1" onClick={handleClickLoginWithGoogle}>
+					Sign in with Google
+				</Typography>
 			)}
 		</>
 	);

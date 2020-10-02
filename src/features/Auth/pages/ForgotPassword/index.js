@@ -28,7 +28,7 @@ const useStyles = innerHeight => makeStyles({
 		height: innerHeight,
 		width: "100%",
 		backgroundColor: "white",
-		padding: "0px 24px",
+		padding: "30px 24px 0px 24px",
 		"& .MuiFormControl-marginNormal": {
 			margin: 0,
 		},
@@ -88,16 +88,15 @@ function ForgotPassword() {
 
 			{isSmallSize && (
 				<Box className={classes.forgotPasswordSmallRoot}>
-					<Box display="flex" justifyContent="center">
-						<AuthNavigation />
-					</Box>
 					<AuthHeader />
 					<ForgotPasswordForm
 						initialValues={initialValues}
 						handleSubmit={handleSubmit}
 						loading={loading}
 					/>
-					{/* <MediaLogo /> */}
+					<Box display="flex" justifyContent="center">
+						<AuthNavigation />
+					</Box>
 				</Box>
 			)}
 		</>

@@ -222,7 +222,7 @@ function NavigateBar(props) {
 					className={classes.bottomNavigationRoot}
 				>
 					<BottomNavigationAction
-						label="All messages"
+						label="Messages"
 						value={options.ALL_MESSAGES_OPTION}
 						icon={
 							<Icon

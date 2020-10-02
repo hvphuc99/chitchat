@@ -20,7 +20,8 @@ ForgotPasswordForm.defaultProps = {
 const useStyles = makeStyles({
   forgotPasswordButton: {
     color: "white",
-    marginTop: "20px",
+		marginTop: "20px",
+		textTransform: "none",
   },
   circular: {
     color: "white",
@@ -65,7 +66,7 @@ function ForgotPasswordForm(props) {
               variant="contained"
               fullWidth
             >
-              {loading ? <CircularProgress className={classes.circular} size={25.57} /> : "Send password reset email" }
+              {loading ? <CircularProgress className={classes.circular} size={25.57} /> : "Send reset link" }
             </Button>
           </Form>
         );

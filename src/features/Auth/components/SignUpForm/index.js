@@ -20,7 +20,8 @@ SignUpForm.defaultProps = {
 const useStyles = makeStyles({
   signUpButton: {
     color: "white",
-    marginTop: "20px",
+		marginTop: "20px",
+		textTransform: "none",
   },
   circular: {
     color: "white",

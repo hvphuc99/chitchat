@@ -195,7 +195,6 @@ function Main(props) {
 											<IconButton
 												icon="fas fa-sign-out-alt"
 												iconColor="#1c9dea"
-												message="Menu"
 												className={classes.menuHeaderButton}
 												onClick={handleClickLogout}
 											/>

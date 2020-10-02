@@ -1,4 +1,4 @@
-import { Box, Button, Grid, makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles, Typography } from "@material-ui/core";
 
 import React from "react";
 import { useEffect } from "react";
@@ -26,26 +26,11 @@ const useStyles = makeStyles({
 		},
 	},
 	authNavigationSmallRoot: {
-		width: "70%",
-		margin: "20px 0px 40px 0px",
-		backgroundColor: "white",
-		"& button.MuiButton-root": {
-			fontSize: "revert",
-		},
-		"& .normal-button": {
-			backgroundColor: "#E2F0FC",
-			color: "#1c9dea",
-		},
-		"& .selected": {
-			backgroundColor: "#1c9dea",
-			color: "white",
-		},
-		"& .navigateLoginBtn": {
-			marginRight: 5,
-		},
-		"& .navigateSignUpBtn": {
-			marginLeft: 5,
-		},
+		width: "100%",
+		margin: "40px 0px 20px 0px",
+	},
+	authText: {
+		color: "#1c9dea",
 	},
 });
 
@@ -109,25 +94,23 @@ function AuthNavigation(props) {
 
 			{isSmallSize && (
 				<Box display="flex" justifyContent="center" className={classes.authNavigationSmallRoot}>
-					<Button
-						className={selectedIndex === 0 ? "navigateLoginBtn normal-button selected" : "navigateLoginBtn normal-button"}
-						size="medium"
-						variant="contained"
-						fullWidth
-						onClick={handleClickLoginButton}
-					>
-						Login
-					</Button>
+					{selectedIndex === 0 && (
+						<Typography className={classes.authText} variant="subtitle1" onClick={handleClickSignUpButton}>
+							Don't have an account? Sign up
+						</Typography>
+					)}
 
-					<Button
-						className={selectedIndex === 1 ? "navigateSignUpBtn normal-button selected" : "navigateSignUpBtn normal-button"}
-						size="medium"
-						variant="contained"
-						fullWidth
-						onClick={handleClickSignUpButton}
-					>
-						Sign up
-					</Button>
+					{selectedIndex === 1 && (
+						<Typography className={classes.authText} variant="subtitle1" onClick={handleClickLoginButton}>
+							Already have an account? Login
+						</Typography>
+					)}
+
+					{!selectedIndex && (
+						<Typography className={classes.authText} variant="subtitle1" onClick={handleClickLoginButton}>
+							Back to login
+						</Typography>
+					)}
 				</Box>
 			)}
 		</>

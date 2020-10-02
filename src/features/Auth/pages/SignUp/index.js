@@ -28,7 +28,7 @@ const useStyles = innerHeight => makeStyles({
 		height: innerHeight,
 		width: "100%",
 		backgroundColor: "white",
-		padding: "0px 24px",
+		padding: "30px 24px 0px 24px",
 		"& .MuiFormControl-marginNormal": {
 			margin: "5px 0px 10px 0px",
 		},
@@ -101,16 +101,15 @@ function SignUp() {
 
 			{isSmallSize && (
 				<Box className={classes.signUpSmallRoot}>
-					<Box display="flex" justifyContent="center">
-						<AuthNavigation />
-					</Box>
 					<AuthHeader />
 					<SignUpForm
 						initialValues={initialValues}
 						handleSubmit={handleSubmit}
 						loading={loading}
 					/>
-					{/* <MediaLogo /> */}
+					<Box display="flex" justifyContent="center">
+						<AuthNavigation />
+					</Box>
 				</Box>
 			)}
 		</>

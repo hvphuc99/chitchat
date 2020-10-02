@@ -57,6 +57,7 @@ const useStyles = makeStyles({
 		},
 		"& .MuiButton-label": {
 			fontSize: "12px",
+			textTransform: "none",
 		},
 	},
 	notFoundContainer: {
@@ -329,7 +330,7 @@ function Search(props) {
 					startIcon={<SearchIcon />}
 					onClick={handleClickOpenSearchForm}
 				>
-					Search
+					Search friends
 				</Button>
 			)}
 
@@ -354,7 +355,7 @@ function Search(props) {
 						startIcon={<SearchIcon />}
 						onClick={handleClickOpenSearchFormFullScreen}
 					>
-						Search
+						Search friends
 					</Button>
 					{showSearchFormFullScreen && <div className={classes.searchFormFullScreenRoot}>
 						<div className={classes.searchFormFullScreen}>

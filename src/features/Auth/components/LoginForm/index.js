@@ -24,7 +24,8 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
   loginButton: {
-    color: "white",
+		color: "white",
+		textTransform: "none",
   },
 });
 
