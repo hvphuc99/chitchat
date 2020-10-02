@@ -106,7 +106,7 @@ function AuthNavigation(props) {
 						</Typography>
 					)}
 
-					{!selectedIndex && (
+					{selectedIndex === null && (
 						<Typography className={classes.authText} variant="subtitle1" onClick={handleClickLoginButton}>
 							Back to login
 						</Typography>
