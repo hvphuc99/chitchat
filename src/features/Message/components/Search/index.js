@@ -74,7 +74,7 @@ const useStyles = makeStyles({
 		zIndex: 2,
 		width: "100vw",
 		height: "100%",
-		padding: "20px 15px",
+		padding: "10px 15px",
 		backgroundColor: "white",
 	},
 	searchFormFullScreen: {
