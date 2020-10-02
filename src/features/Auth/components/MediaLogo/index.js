@@ -5,7 +5,7 @@ import IconButton from "components/IconButton";
 import userApi from "api/userApi";
 import { useDispatch } from "react-redux";
 import { setCurrentUserId, setToken } from "app/userSlice";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { setNotify } from "app/notifySlice";
 import useMedia from "services/mediaQuery";
 
