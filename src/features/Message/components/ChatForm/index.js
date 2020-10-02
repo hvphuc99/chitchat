@@ -51,7 +51,7 @@ const useStyles = makeStyles({
 		top: 0,
 		left: 0,
 		zIndex: 2,
-		width: "100vw",
+		width: "100%",
 		height: "100%",
 		backgroundColor: "white",
 	},
