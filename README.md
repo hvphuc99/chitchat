@@ -22,6 +22,6 @@ Live demo: https://chitchat-af3b5.firebaseapp.com
 1. Clone this repository.
 2. Navigation to the root directory.
 3. Install dependencies and run the app.
-  > npm install
-  >
-  > npm start
+>> npm install
+>>
+>> npm start
