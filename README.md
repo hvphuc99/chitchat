@@ -10,7 +10,7 @@ Live demo: https://chitchat-af3b5.firebaseapp.com
 - ...
 
 ## Features
-- Login,sign up, reset password.
+- Login, sign up, reset password.
 - Support login with google account.
 - Chat with any user. You can send text, emoji, sticker, image and other files.
 - Search friends.
