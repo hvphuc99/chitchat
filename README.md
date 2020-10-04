@@ -1,4 +1,4 @@
-# Chit chat app
+# Chitchat App
 Live demo: https://chitchat-af3b5.firebaseapp.com
 
 ## Features
@@ -9,7 +9,7 @@ Live demo: https://chitchat-af3b5.firebaseapp.com
 - Sent request friend.
 - Show friends list, request friends list.
 
-## Tech stack used:
+## Tech Stacks
 - Reactjs
 - Redux Toolkit
 - Firebase (Authentication, Realtime Database, Storage)
