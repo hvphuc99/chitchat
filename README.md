@@ -1,14 +1,6 @@
 # Chit chat app
 Live demo: https://chitchat-af3b5.firebaseapp.com
 
-## Tech stack used:
-- Reactjs
-- Redux Toolkit
-- Firebase (Authentication, Realtime Database, Storage)
-- Material UI
-- Formik
-- ...
-
 ## Features
 - Login, sign up, reset password.
 - Support login with google account.
@@ -16,6 +8,14 @@ Live demo: https://chitchat-af3b5.firebaseapp.com
 - Search friends.
 - Sent request friend.
 - Show friends list, request friends list.
+
+## Tech stack used:
+- Reactjs
+- Redux Toolkit
+- Firebase (Authentication, Realtime Database, Storage)
+- Material UI
+- Formik
+- ...
 
 ## Usage
 1. Install nodejs version v13 or greater.
