@@ -6,7 +6,7 @@ Live demo: https://chitchat-af3b5.firebaseapp.com
 - Support login with google account.
 - Chat with any user. You can send text, emoji, sticker, image and other files.
 - Search friends.
-- Sent request friends and accept request friends.
+- Send request friends and accept request friends.
 - Show friends list and request friends list.
 - Responsive
 
