@@ -11,7 +11,7 @@ Live demo: https://chitchat-af3b5.firebaseapp.com
 - Responsive
 
 ## Tech Stacks
-- Reactjs
+- ReactJS
 - React router dom
 - React responsive
 - Redux toolkit
