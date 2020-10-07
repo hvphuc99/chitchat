@@ -30,6 +30,6 @@ Live demo: https://chitchat-af3b5.firebaseapp.com
 2. Navigation to the root directory.
 3. Open firebase.js file in src/services and configure your firebase.
 3. Install dependencies and run the app.
-> npm install
+>   npm install
 >
-> npm start
+>   npm start
