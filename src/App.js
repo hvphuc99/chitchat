@@ -1,7 +1,7 @@
 import "./App.scss";
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { CssBaseline, ThemeProvider } from "@material-ui/core";
+import { CssBaseline, makeStyles, ThemeProvider } from "@material-ui/core";
 
 import ForgotPassword from "features/Auth/pages/ForgotPassword";
 import Login from "features/Auth/pages/Login";
@@ -19,7 +19,15 @@ import userApi from "api/userApi";
 import { removeToken, setCurrentUserId } from "app/userSlice";
 import Loading from "components/Loading";
 
+const useStyles = (innerHeight) =>
+  makeStyles({
+    loadingContainer: {
+      height: innerHeight,
+    },
+  });
+
 function App() {
+  const classes = useStyles(window.innerHeight)();
   const { type, message } = useSelector((state) => state.notify);
   const { token } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
@@ -34,7 +42,11 @@ function App() {
       }
       setLoading(false);
     });
-    return <Loading />;
+    return (
+      <div className={classes.loadingContainer}>
+        <Loading />
+      </div>
+    );
   } else {
     return (
       <>
