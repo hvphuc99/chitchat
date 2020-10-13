@@ -35,7 +35,7 @@ const useStyles = makeStyles({
       webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
     },
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(28,157,234,0.15)",
+      backgroundColor: "transparent",
     },
 		"& .MuiListItem-gutters": {
 			paddingLeft: "0px",
