@@ -114,7 +114,7 @@ const useStyles = innerHeight => makeStyles({
 		display: "flex",
 		flexDirection: "column",
 		flexGrow: 1,
-		padding: "15px 15px",
+		padding: "15px 15px 0px 15px",
 		width: "100%",
 		maxHeight: `calc(100% - 56px)`,
 	},
