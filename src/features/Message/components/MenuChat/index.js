@@ -33,11 +33,11 @@ MenuChat.defaultProps = {
 
 const useStyles = makeStyles({
 	root: {
-		padding: "0",
+		padding: "0px 5px 0px 0px",
 		flexGrow: "1",
 		overflow: "auto",
 		"&::-webkit-scrollbar": {
-			width: "0.4em",
+			width: "0.3em",
 		},
 		"&::-webkit-scrollbar-track": {
 			boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",

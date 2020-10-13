@@ -122,6 +122,9 @@ const useStyles = innerHeight => makeStyles({
 		flexGrow: 1,
 		marginTop: 10,
 	},
+	leftSideBarContainer: {
+		height: "100%",
+	}
 });
 
 function Main(props) {
@@ -534,8 +537,8 @@ function Main(props) {
 			{isGreaterLargeSize && (
 				<>
 					<Grid container className={classes.root}>
-						<Grid item xs={3}>
-							<Grid container className={classes.leftSideBar}>
+						<Grid item xs={3} className={classes.leftSideBar}>
+							<Grid container className={classes.leftSideBarContainer}>
 								<Grid item xs={2} className={classes.navigate}>
 									<NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
 								</Grid>
