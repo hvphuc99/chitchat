@@ -38,9 +38,22 @@ const useStyles = makeStyles({
 			position: "absolute",
 			top: "10%",
 			width: "50%",
+			maxHeight: "70%",
 			"@media (max-width: 1299px)": {
 				width: "65%",
 			},
+			"& .MuiDialogContent-root": {
+				"&::-webkit-scrollbar": {
+					width: "0.6em",
+				},
+				"&::-webkit-scrollbar-track": {
+					boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+					webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+				},
+				"&::-webkit-scrollbar-thumb": {
+					backgroundColor: "rgba(28,157,234,0.15)",
+				},
+			}
 		},
 		"& .MuiDialog-paperWidthSm": {
 			maxWidth: "none",
@@ -74,7 +87,7 @@ const useStyles = makeStyles({
 		zIndex: 2,
 		width: "100vw",
 		height: "100%",
-		padding: "10px 15px",
+		padding: "10px 15px 5px 10px",
 		backgroundColor: "white",
 	},
 	searchFormFullScreen: {
@@ -91,8 +104,19 @@ const useStyles = makeStyles({
 	},
 	searchFormFullScreenResult: {
 		flexGrow: 1,
-		padding: "20px 0px",
+		padding: "20px 0px 0px 0px",
 		maxHeight: "calc(100% - 40px)",
+		overflow: "auto",
+    "&::-webkit-scrollbar": {
+      width: "0.4em",
+    },
+    "&::-webkit-scrollbar-track": {
+      boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+      webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+    },
 	},
 	backButton: {
 		height: "fit-content",
