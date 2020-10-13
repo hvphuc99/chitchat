@@ -121,6 +121,7 @@ const useStyles = innerHeight => makeStyles({
 	menuChatSmallSize: {
 		flexGrow: 1,
 		marginTop: 10,
+		maxHeight: "calc(100% - 91px)",
 	},
 	leftSideBarContainer: {
 		height: "100%",
@@ -564,8 +565,8 @@ function Main(props) {
 			{isMediumSize && (
 				<>
 					<Grid container className={classes.root}>
-						<Grid item xs={4}>
-							<div className={classes.leftSideBar + " " + classes.menu}>
+						<Grid item xs={4} className={classes.leftSideBar}>
+							<div className={classes.leftSideBarContainer + " " + classes.menu}>
 								{renderOption()}
 							</div>
 						</Grid>
