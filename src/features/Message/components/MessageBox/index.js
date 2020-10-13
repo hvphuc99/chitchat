@@ -107,7 +107,12 @@ const useStyles = makeStyles({
     height: "170px",
     borderRadius: "30px",
     margin: "5px 0px 5px 12px",
-  },
+	},
+	sticker: {
+		height: "100px",
+		width: "100px",
+		marginLeft: 12,
+	}
 });
 
 function MessageBox(props) {
@@ -121,9 +126,9 @@ function MessageBox(props) {
     if (type === typeMessages.STICKER) {
       return (
         <img
+					className={classes.sticker}
           alt="sticker"
           src={content}
-          style={{ height: "100px", width: "100px" }}
         />
       );
     }
