@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     "& .messageBoxLeftHeader": {
       display: "flex",
       alignItems: "center",
-      marginLeft: "24px",
+      marginLeft: "12px",
       width: "100%",
       "& h5": {
         fontSize: "15px",
@@ -56,7 +56,7 @@ const useStyles = makeStyles({
       fontWeight: "600",
       color: "#223645",
       backgroundColor: "#d5d9dc",
-      margin: "3px 0px 5px 24px",
+      margin: "3px 0px 5px 12px",
       padding: "12px 20px",
       borderRadius: "20px",
       borderTopLeftRadius: "0px",
@@ -106,7 +106,7 @@ const useStyles = makeStyles({
   uploadPhoto: {
     height: "170px",
     borderRadius: "30px",
-    margin: "5px 0px 5px 24px",
+    margin: "5px 0px 5px 12px",
   },
 });
 
