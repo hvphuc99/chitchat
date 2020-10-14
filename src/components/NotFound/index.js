@@ -1,6 +1,7 @@
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 
 import React from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const useStyles = makeStyles({
   root: {
@@ -37,6 +38,11 @@ const useStyles = makeStyles({
 
 function NotFound(props) {
   const classes = useStyles();
+  const history = useHistory();
+
+  const handleClickBackHomeButton = () => {
+    history.push("/");
+  };
 
   return (
     <Box display="flex" justifyContent="center" className={classes.root}>
@@ -52,6 +58,7 @@ function NotFound(props) {
           size="large"
           color="primary"
           variant="contained"
+          onClick={handleClickBackHomeButton}
         >
           Back To Home
         </Button>
