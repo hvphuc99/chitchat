@@ -129,7 +129,9 @@ const useStyles = innerHeight => makeStyles({
 });
 
 function Main(props) {
-	const classes = useStyles(window.innerHeight)();
+	const { mobileScreenSize } = useSelector((state) => state.screen);
+
+	const classes = useStyles(mobileScreenSize)();
 
 	const { isMediumSize, isSmallSize, isGreaterLargeSize } = useMedia();
 

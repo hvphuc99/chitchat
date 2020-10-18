@@ -18,6 +18,7 @@ import { useState } from "react";
 import userApi from "api/userApi";
 import { removeToken, setCurrentUserId } from "app/userSlice";
 import Loading from "components/Loading";
+import { setMobileScreenSize } from "app/screenSlice";
 
 const useStyles = (innerHeight) =>
   makeStyles({
@@ -31,7 +32,9 @@ function App() {
   const { type, message } = useSelector((state) => state.notify);
   const { token } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
+	
+	dispatch(setMobileScreenSize(window.innerHeight));
 
   if (loading) {
     userApi.verifyToken(token).then((userId) => {
