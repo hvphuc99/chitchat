@@ -10,6 +10,7 @@ const initialState = {
   selectedOption: ALL_MESSAGES_OPTION,
   numberOfFriendRequest: 0,
   messageList: [],
+  showSearchFormFullScreen: false,
 };
 
 const messageSlice = createSlice({
@@ -55,9 +56,10 @@ const messageSlice = createSlice({
     clearMessageList: (state, action) => {
       state.messageList = [];
     },
-    resetMessage: (state, action) => (
-      initialState
-    ),
+    resetMessage: (state, action) => initialState,
+    setShowSearchFormFullScreen: (state, action) => {
+      state.showSearchFormFullScreen = action.payload;
+    },
   },
 });
 
@@ -77,5 +79,6 @@ export const {
   setMessageList,
   addMessage,
   clearMessageList,
+  setShowSearchFormFullScreen,
 } = actions;
 export default reducer;

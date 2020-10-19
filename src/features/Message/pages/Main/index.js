@@ -134,9 +134,11 @@ function Main(props) {
   const classes = useStyles(mobileScreenSize)();
   const { isMediumSize, isSmallSize, isGreaterLargeSize } = useMedia();
   const { currentUserId } = useSelector((state) => state.user);
-  const { showChatForm, selectedOption } = useSelector(
-    (state) => state.message
-  );
+  const {
+    showChatForm,
+    selectedOption,
+    showSearchFormFullScreen,
+  } = useSelector((state) => state.message);
   const [groupChats, setGroupChats] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -589,10 +591,16 @@ function Main(props) {
       {isSmallSize && (
         <>
           {!showChatForm ? (
-            <div className={classes.smallSizeRoot}>
-              <div className={classes.menuSmallSize}>{renderOption()}</div>
-              <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
-            </div>
+            <>
+              {!showSearchFormFullScreen ? (
+                <div className={classes.smallSizeRoot}>
+                  <div className={classes.menuSmallSize}>{renderOption()}</div>
+                  <NavigateBar numberOfFriendRequest={numberOfFriendRequest} />
+                </div>
+              ) : (
+                <Search />
+              )}
+            </>
           ) : (
             <ChatForm />
           )}
