@@ -17,7 +17,7 @@ import Loading from "components/Loading";
 import * as typeMessages from "constants/typeMessage";
 import useMedia from "services/mediaQuery";
 
-const useStyles = makeStyles({
+const useStyles = (innerHeight) => makeStyles({
 	root: {
 		display: "flex",
 		flexDirection: "column",
@@ -46,6 +46,9 @@ const useStyles = makeStyles({
 			borderLeft: "4px solid #1c9dea",
 		},
 	},
+	fullScreenRoot: {
+		maxHeight: innerHeight,
+	},
 	chatFormFullScreenRoot: {
 		position: "absolute",
 		top: 0,
@@ -64,7 +67,8 @@ const useStyles = makeStyles({
 });
 
 function ChatForm(props) {
-	const classes = useStyles();
+	const { mobileScreenSize } = useSelector((state) => state.screen);
+	const classes = useStyles(mobileScreenSize)();
 
 	const { isSmallSize, isGreaterSmallSize } = useMedia();
 
@@ -187,26 +191,28 @@ function ChatForm(props) {
 			</Box>}
 
 			{isSmallSize && (
-				<div className={classes.chatFormFullScreenRoot}>
-					<Box className={classes.chatFormFullScreen}>
-						<ChatHeader
-							name={currentGroupChatName}
-							avatar={currentGroupChatPicture}
-							active={true}
-						/>
-						<div className={classes.content}>
-							{loadingMessageList ? (
-								<Loading />
-							) : (
-									<ChatContent messageList={messageList} />
-								)}
-						</div>
-						<ChatFooter
-							onSubmit={handleSendTextMessage}
-							onSendPhoto={handleSendPhoto}
-							onSendOtherFile={handleSendOtherFile}
-						/>
-					</Box>
+				<div className={classes.fullScreenRoot}>
+					<div className={classes.chatFormFullScreenRoot}>
+						<Box className={classes.chatFormFullScreen}>
+							<ChatHeader
+								name={currentGroupChatName}
+								avatar={currentGroupChatPicture}
+								active={true}
+							/>
+							<div className={classes.content}>
+								{loadingMessageList ? (
+									<Loading />
+								) : (
+										<ChatContent messageList={messageList} />
+									)}
+							</div>
+							<ChatFooter
+								onSubmit={handleSendTextMessage}
+								onSendPhoto={handleSendPhoto}
+								onSendOtherFile={handleSendOtherFile}
+							/>
+						</Box>
+					</div>
 				</div>
 			)}
 		</>
