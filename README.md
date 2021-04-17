@@ -25,7 +25,7 @@ Live demo: https://chitchat-af3b5.firebaseapp.com
 - Moment
 
 ## Usage
-1. Install nodejs version v13 or greater.
+1. Install Node.js version v13 or greater.
 1. Clone this repository.
 2. Navigation to the root directory.
 3. Open firebase.js file in src/services and configure your firebase.
